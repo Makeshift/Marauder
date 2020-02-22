@@ -29,6 +29,10 @@ docker compose up -d sonarr radarr headphones transmission
 ```
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
 
+**Q: Why Plexdrive AND Rclone?**
+
+**A:** Rclone by itself is sort of crap at caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
+
 ## Configuration and deployment
 
 ### Pre-Setup
@@ -36,7 +40,8 @@ Alternatively, you can also just comment out the services you don't want in the 
 You will need:
 - A Linux machine (I use Ubuntu 18.04 LTS)
 - Docker (19.03.6+) + Docker Compose (1.17.1+)
-- Some Rclone knowledge
+- Some Rclone knowledge (Possibly a previous setup as well to copy files from)
+- A Plexdrive setup to copy files from (Optional - will work without)
 - A Google Drive account with unlimited storage
 - A [Google Drive service account](https://rclone.org/drive/#service-account-support)
 - Encryption [set up already](https://rclone.org/crypt/) in Google Drive
@@ -60,13 +65,15 @@ cp .env.template .env
 
 There are several env vars required to get Rclone to work. Here are the vars and where you can get them:
 
-| Var                               | Source                                                                                | Notes                                                                                                                            |
-|--------------------------------   |-----------------------------------------------------------------------------------    |--------------------------------------------------------------------------------------------------------------------              |
-| rclone_encryption_password1       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password`                 |
-| rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password2`               |
-| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`                   |
-| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                  |
-| rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable. |
+| Var                               | Source                                                                                | Notes                                                                                                                                                                      |
+|--------------------------------   |-----------------------------------------------------------------------------------    |--------------------------------------------------------------------------------------------------------------------                                                        |
+| rclone_encryption_password1       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password`                                                           |
+| rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password2`                                                          |
+| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`                                                              |
+| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                                                            |
+| rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable.                                           |
+| plexdrive_config_file             | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/config.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON. |
+| plexdrive_token_file              | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/token.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON.  |
 
 Remember that you *do not* need to escape the variables in env files.
 
@@ -87,6 +94,9 @@ In case of a problem, you can run
 docker-compose down
 ```
 to clean up the stack. This will not delete any configuration.
+
+**Note:** If you are using Plexdrive as well as Rclone, it will need to process your entire Google Drive before it starts providing benefit. Keep an eye on the logs (`docker-compose logs -f`). I advise not continuing setup until Plexdrive is finished.
+When it finishes processing, you will likely need to restart the stack with `docker-compose 
 
 ### Service Configuration
 
