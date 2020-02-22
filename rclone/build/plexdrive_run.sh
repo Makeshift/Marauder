@@ -6,4 +6,4 @@ PREFFIX="[services.d] [plexdrive]-$(s6-basename ${0}):"
 
 echo -e "${PREFFIX} ${Green}starting Plexdrive $(date +%Y.%m.%d-%T)${Color_Off}"
 
-/bin/plexdrive mount -v 3 --cache-file /shared/caches/plexdrive.bolt -o allow_other /plexdrive
+/bin/plexdrive mount --cache-file="/shared/caches/plexdrive.bolt" -v 2 -o allow_other /plexdrive

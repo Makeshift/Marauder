@@ -33,6 +33,20 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** Rclone by itself is sort of crap at caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
 
+**Q: I have a big library and it takes a goddamn age to initially import/scan all of my media, even with Plexdrive. Can it be faster?**
+
+**A:** Rclone union will wait for all mounts to respond before returning a response to the request, so even though Plexdrive is helping out by caching the full directory tree, Rclone querying GDrive might still slow it down a bit.
+For an initial scan, you can disable the read/write Rclone mount and leave the read-only Plexdrive mount in `rclone/rclone.conf`. You will **not** be able to upload anything to this mount, but scanning should be a bit faster.
+
+In `rclone/rclone.conf`, change line 3:
+```
+remotes = /shared/separate plexdrive: encryptedgdrive:
+#to
+remotes = /shared/separate plexdrive:
+```
+
+Then restart the stack with `docker-compose restart`. Once your scan is finished, undo the change and restart it again.
+
 ## Configuration and deployment
 
 ### Pre-Setup
@@ -72,6 +86,7 @@ There are several env vars required to get Rclone to work. Here are the vars and
 | rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`                                                              |
 | rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                                                            |
 | rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable.                                           |
+| rclone_gdrive_mount_folder        | If your crypt directory is not the top level of Gdrive, this is the encrypted folder  | My GDrive is set up with Rclone encrypting the top level folder `encrypted`, so my mount folder is simply `encrypted`.                                                     |
 | plexdrive_config_file             | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/config.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON. |
 | plexdrive_token_file              | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/token.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON.  |
 
@@ -95,8 +110,15 @@ docker-compose down
 ```
 to clean up the stack. This will not delete any configuration.
 
-**Note:** If you are using Plexdrive as well as Rclone, it will need to process your entire Google Drive before it starts providing benefit. Keep an eye on the logs (`docker-compose logs -f`). I advise not continuing setup until Plexdrive is finished.
-When it finishes processing, you will likely need to restart the stack with `docker-compose 
+#### Plexdrive (Optional) 
+
+If you are using Plexdrive as well as Rclone, it will need to process your entire Google Drive before it starts providing benefit. Keep an eye on the logs (`docker-compose logs -f`). I advise not continuing setup until Plexdrive is finished.
+When the logs says `First cache build process finished!`, that's when it's done processing.
+
+At this point, you should restart the stack to ensure Plexdrive is correctly mounted
+```bash
+docker-compose restart ; docker-compose logs -f
+```
 
 ### Service Configuration
 
@@ -227,8 +249,10 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 |---------------------- |---------------------------------------------------------------------------------------------------------------------- |---------- |
 | `.env`                | Contains env vars used in the compose file itself                                                                     | Yes       |
 | `rclone/secrets.env`  | Secrets required for Rclone to run                                                                                    | Yes       |
+| `rclone/rclone.conf`  | If you've made any tweaks to the mount settings, you might want to back this up                                       | Maybe     |
 | `runtime_conf/`       | Contains all the service-specific config generated after first startup and during use                                 | Yes       |
 | `shared/separate`     | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)  | Maybe     |
+| `shared/caches`       | Contains Rclone's pre-upload cache, disk caches and Plexdrive caches                                                  | Maybe     |
 | `shared/merged`       | Union mount containing Google Drive and merged download directories                                                   | No        |
 
 ## Todo

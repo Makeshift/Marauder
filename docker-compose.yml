@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     network_mode: "host"
     build: 
-      context: ./rclone/
+      context: ./rclone/build/
     security_opt:
       - apparmor:unconfined
     devices:
