@@ -46,18 +46,18 @@ cp .env.template .env
 
 There are several env vars required to get Rclone to work. Here are the vars and where you can get them:
 
-| Var                               | Source                                                                                | Notes                                                                                                                 |
-|--------------------------------   |-----------------------------------------------------------------------------------    |--------------------------------------------------------------------------------------------------------------------   |
-| rclone_encryption_password1       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password`      |
-| rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/ .config/rclone/rclone.conf` under config param `password2`    |
-| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/ .config/rclone/rclone.conf` under config param `token`        |
-| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                       |
-| rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     |                                                                                                                       |
+| Var                               | Source                                                                                | Notes                                                                                                                            |
+|--------------------------------   |-----------------------------------------------------------------------------------    |--------------------------------------------------------------------------------------------------------------------              |
+| rclone_encryption_password1       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password`                 |
+| rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/ .config/rclone/rclone.conf` under config param `password2`               |
+| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/ .config/rclone/rclone.conf` under config param `token`                   |
+| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                  |
+| rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable. |
 
-Remember that you *do not* need to escape the variables in env files. However, you may need to use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable.
+Remember that you *do not* need to escape the variables in env files.
 
 ```bash
-cp rclone/secrets.env.template rclone/secrets.env`
+cp rclone/secrets.env.template rclone/secrets.env
 ```
 
 ### Starting the Stack
