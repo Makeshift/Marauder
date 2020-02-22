@@ -1,0 +1,217 @@
+version: '3.4'
+services:
+  rclone:
+    image: makeshift27015/rclone
+    restart: unless-stopped
+    network_mode: "host"
+    build: 
+      context: ./rclone/
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    environment:
+      MountCommands: "--fast-list --allow-other --allow-non-empty --umask 000 --uid 65534 --gid 65534 -v --checkers 64 --buffer-size=128M --transfers 64 --use-mmap"
+    env_file:
+      - ./rclone/secrets.env
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - ./rclone/rclone.conf:/rclone.conf:ro
+      - ./shared/:/shared/:rshared
+
+  nzbhydra:
+    image: hotio/nzbhydra2
+    restart: unless-stopped
+    network_mode: "host"
+    volumes:
+      - ./runtime_conf/nzbhydra:/config
+    environment:
+      - TZ=Etc/UTC
+    labels:
+      - proxy.hosts=nzbhydra.${domain},nzbhydra.local.${domain},nzbhydra.public.${domain}
+      - proxy.port=5076
+
+  radarr:
+    image: linuxserver/radarr
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - rclone
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./runtime_conf/radarr:/config
+      - ./shared/:/shared:rshared
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    labels:
+      - proxy.hosts=radarr.${domain},radarr.local.${domain},radarr.public.${domain}
+      - proxy.port=7878
+
+  sonarr:
+    image: linuxserver/sonarr:preview
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - rclone
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./runtime_conf/sonarr:/config
+      - ./shared/:/shared:rshared
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    labels:
+      - proxy.hosts=sonarr.${domain},sonarr.local.${domain},sonarr.public.${domain}
+      - proxy.port=8989
+
+  sabnzbd:
+    image: linuxserver/sabnzbd
+    network_mode: "host"
+    deploy:
+      resources:
+        limits:
+          cpus: '12'
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    depends_on:
+      - rclone
+    labels:
+      - proxy.hosts=sabnzbd.${domain},sabnzbd.local.${domain},sabnzbd.public.${domain}
+      - proxy.port=8080
+    volumes:
+      - ./runtime_conf/sabnzbd:/config
+      - ./shared/separate/downloads/:/shared/merged/downloads/:rshared
+    restart: unless-stopped
+
+  # traktarr:
+  #   image: cloudb0x/traktarr
+  #   network_mode: "host"
+  #   depends_on:
+  #     - sonarr
+  #     - radarr
+  #   volumes:
+  #     - ./traktarr:/config
+  #   restart: unless-stopped
+  #   entrypoint: "python traktarr.py --config /config/config.json run --run-now"
+
+  # medusa:
+  #   image: linuxserver/medusa
+  #   network_mode: "host"
+  #   environment:
+  #     TZ: "Europe/London"
+  #     PUID: 65534
+  #     PGID: 65534
+  #     UMASK_SET: 000
+  #   depends_on:
+  #     - rclone
+  #   labels:
+  #     - proxy.hosts=medusa.${domain},medusa.local.${domain},medusa.public.${domain}
+  #     - proxy.port=8081
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./medusa:/config
+  #     - ./shared/:/shared:rshared
+  #     - /etc/localtime:/etc/localtime:ro
+
+#  headphones:
+#    image: linuxserver/headphones
+#    network_mode: "host"
+#    environment:
+#      TZ: "Europe/London"
+#      PUID: 65534
+#      PGID: 65534
+#      UMASK_SET: 000
+#    volumes:
+#      - ./headphones:/config
+#      - ./shared/:/shared:rshared
+#      - /etc/localtime:/etc/localtime:ro
+#    depends_on:
+#      - rclone
+#    labels:
+#      - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
+#      - proxy.port=8181
+#    restart: unless-stopped
+
+#  lazylibrarian:
+#    image: linuxserver/lazylibrarian
+#    network_mode: "host"
+#    environment:
+#      TZ: "Europe/London"
+#      PUID: 65534
+#      PGID: 65534
+#      UMASK_SET: 000
+#    depends_on:
+#      - rclone
+#    volumes:
+#      - ./lazylibrarian:/config
+#      - ./shared/:/shared:rshared
+#      - /etc/localtime:/etc/localtime:ro
+#    labels:
+#      - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
+#      - proxy.port=5299
+#    restart: unless-stopped
+
+#  mylar:
+#    image: linuxserver/mylar
+#    network_mode: "host"
+#    environment:
+#      TZ: "Europe/London"
+#      PUID: 65534
+#      PGID: 65534
+#      UMASK_SET: 000
+#    depends_on:
+#      - rclone
+#    volumes:
+#      - ./mylar:/config
+#      - ./shared/:/shared:rshared
+#      - /etc/localtime:/etc/localtime:ro
+#    labels:
+#      - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
+#      - proxy.port=8090
+#    restart: unless-stopped
+
+#  bazarr:
+#    image: linuxserver/bazarr
+#    network_mode: "host"
+#    environment:
+#      TZ: "Europe/London"
+#      PUID: 65534
+#      PGID: 65534
+#      UMASK_SET: 000
+#    depends_on:
+#      - rclone
+#    volumes:
+#      - ./bazarr:/config
+#      - ./shared/:/shared:rshared
+#      - /etc/localtime:/etc/localtime:ro
+#    labels:
+#      - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
+#      - proxy.port=6767
+#    restart: unless-stopped
+
+  # radarr_bot:
+  #   image: itsmegb/telegram-radarr-bot
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - radarr
+  
+  #   volumes:
+  #     - ./radarr_bot/config:/config
+
+  # sonarr_bot:
+  #   image: subzero79/docker-telegram-sonarr-bot
+  #   restart: unless-stopped
+  #   depends_on:
+  #     - sonarr
+  
+  #   volumes:
+  #     - ./sonarr_bot/config:/config

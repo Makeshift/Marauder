@@ -1,0 +1,4 @@
+**/*.env
+telegram-radarr-bot/
+telegram-sonarr-bot/
+traktarr/
