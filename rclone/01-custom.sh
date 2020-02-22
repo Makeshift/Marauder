@@ -28,6 +28,3 @@ echo $ConfigPath > /var/run/s6/container_environment/ConfigPath
 echo $MountPoint > /var/run/s6/container_environment/MountPoint
 echo $RemotePath > /var/run/s6/container_environment/RemotePath
 echo $UnmountCommands > /var/run/s6/container_environment/UnmountCommands
-
-# Debug
-cat /credentials.json
