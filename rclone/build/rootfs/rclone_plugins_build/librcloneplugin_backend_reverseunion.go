@@ -27,6 +27,11 @@ func init() {
             Name:     "remotes",
             Help:     "List of space separated remotes.\nCan be 'remotea:test/dir remoteb:', '\"remotea:test/space dir\" remoteb:', etc.\nThe last remote is used to write to.",
             Required: true,
+        }, {
+            Name:     "reverse_list",
+            Help:     "If set to false, when listing files the union mount will check the remotes in the given remote order rather than in the default reverse order\nWARNING: This may cause inconsistencies between write and read, this remote will still write to the last remote in the list!",
+            Required: false,
+            Default:  true,
         }},
     }
     fs.Register(fsi)
@@ -34,7 +39,8 @@ func init() {
 
 // Options defines the configuration for this backend
 type Options struct {
-    Remotes fs.SpaceSepList `config:"remotes"`
+    Remotes      fs.SpaceSepList `config:"remotes"`
+    ReverseList  bool            `config:"reverse_list"`
 }
 
 // Fs represents a union of remotes
@@ -283,10 +289,14 @@ func (f *Fs) List(ctx context.Context, dir string) (entries fs.DirEntries, err e
     return entries, nil
 }
 
-// NewObject creates a new remote union file object based on the first Object it finds (in remote order)
+// NewObject creates a new remote union file object based on the first Object it finds (reverse remote order)
 func (f *Fs) NewObject(ctx context.Context, path string) (fs.Object, error) {
     for i := range f.remotes {
-        var remote = f.remotes[i]
+        var remoteCount = len(f.remotes)-i-1
+        if !f.opt.ReverseList {
+            remoteCount = i
+        }
+        var remote = f.remotes[remoteCount]
         var obj, err = remote.NewObject(ctx, path)
         if err == fs.ErrorObjectNotFound {
             continue

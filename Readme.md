@@ -18,11 +18,9 @@ This setup has one gigantic shared folder named `shared`. It's set up with Rclon
 ## FAQ
 
 **Q: Why are most of the containers on the host network?**
-
 **A:** You'd be surprised how much CPU a bandwith-heavy container can use using the Docker proxy (especially for something like Sabnzbd). It just makes sense to allow the heavy stuff to bridge straight to the host, which also comes with its own set of connectivity challenges. Also, each open port would be a proxy process, so having a large range for torrenting would suck.
 
 **Q: How do I disable some of the services I don't want/need?**
-
 **A:** The easiest way would probably choose the services you want when you're starting the stack. Some of them have dependants, so if you choose `sonarr` you will get `rclone` by default as well, but you can customise which ones you want:
 ```bash
 docker compose up -d sonarr radarr headphones transmission
@@ -30,11 +28,9 @@ docker compose up -d sonarr radarr headphones transmission
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
 
 **Q: Why Plexdrive AND Rclone?**
-
-**A:** Rclone by itself is sort of crap at caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
+**A:** Rclone by itself had some issues with caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
 
 **Q: Why do you use an Rclone union plugin rather than the normal one?**
-
 **A:** The plugin I include with the Rclone container is actually the standard Rclone union plugin with exactly one line changed:
 ```go
 var remote = f.remotes[len(f.remotes)-i-1]
@@ -42,7 +38,9 @@ var remote = f.remotes[len(f.remotes)-i-1]
 var remote = f.remotes[i]
 ```
 This means that with our current reverseunion mount `/shared/separate plexdrive: encryptedgdrive:` it will return the answer from plexdrive first, which resolves much faster than gdrive. This makes seeking and some other actions significantly faster.
-This DOES mean that there is a chance that the mount will return outdated information in the case of replacing/updating/deleting a file (Due to it writing to `encryptedgdrive` but reading from the cached `plexdrive`), but I believe in this particular use case it doesn't matter as much.
+This DOES mean that there is a chance that the mount will return outdated information in the case of replacing/updating/deleting a file (Due to it writing to `encryptedgdrive` but reading from the cached `plexdrive`), but I believe in this particular use case it doesn't matter that much.
+
+**Note:** I'm actually not sure if my added Plexdrive + plugin actually does anything anymore. It certainly used to, but Rclone's caching is now a lot better than it used to be. I have no decent side-by-side testing so I'm going to keep it as-is for now, but may remove Plexdrive + ReverseUnion later.
 
 ## Configuration and deployment
 
