@@ -115,6 +115,16 @@ At this point, you should restart the stack to ensure Plexdrive is correctly mou
 docker-compose restart ; docker-compose logs -f
 ```
 
+#### Pre-Warming Rclone (Optional)
+
+Whether you are using Plexdrive or not, it may be worth pre-warming the Rclone caches with data.
+Go to `shared/merged/Media` (or whichever folder your Media lies in) and run:
+```bash
+ls -R . > /dev/null &
+```
+
+You can continue using the remote while this happens, it will simply `ls` through every folder in your remote to warm the caches.
+
 ### Service Configuration
 
 #### NZBHydra2
