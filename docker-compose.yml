@@ -11,7 +11,7 @@ services:
     devices:
       - "/dev/fuse:/dev/fuse"
     environment:
-      MountCommands: "--fast-list --allow-other --allow-non-empty --umask 000 --uid 65534 --gid 65534 -v --checkers 64 --buffer-size 512M --transfers 64 --use-mmap --vfs-cache-mode writes --dir-cache-time 36h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 4G --cache-dir=/shared/caches/rclone/vfs/"
+      MountCommands: "--fast-list --allow-other --allow-non-empty --umask 000 --uid 65534 --gid 65534 -v --checkers 64 --buffer-size 512M --transfers 64 --use-mmap --vfs-cache-mode writes --poll-interval 120s --attr-timeout 8700h --dir-cache-time 8760h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 4G --vfs-cache-poll-interval 20m --vfs-cache-max-age 8760h --vfs-cache-max-size 256G --cache-dir=/shared/caches/rclone/vfs/"
     env_file:
       - ./rclone/secrets.env
     cap_add:
