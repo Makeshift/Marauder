@@ -120,10 +120,9 @@ docker-compose restart ; docker-compose logs -f
 Whether you are using Plexdrive or not, it may be worth pre-warming the Rclone caches with data.
 Go to `shared/merged/Media` (or whichever folder your Media lies in) and run:
 ```bash
-ls -R . > /dev/null &
+ls -R . > /dev/null &;disown
 ```
-
-You can continue using the remote while this happens, it will simply `ls` through every folder in your remote to warm the caches.
+You can continue using the remote while this happens, it will simply `ls` through every folder in your remote to warm the caches (and will disown it so it keeps going even if you kill your session).
 
 ### Service Configuration
 
@@ -245,6 +244,30 @@ Todo: Transmission
 | Import Extra Files                | Yes                                                               |
 | Extra File Extensions             | `srt,nfo`                                                         |
 | **Root Folders**                  | `/shared/merged/Media/TV`                                         |
+
+**In the `Indexers` tab**
+- Press the `+` to add a new indexer
+- Click `Newznab`
+
+| Setting Name  | Value                                             |
+|-------------- |------------------------------------------------   |
+| Name          | NZBHydra2                                         |
+| URL           | `http://localhost:5076`                           |
+| API Key       | The key you noted down in the NZBHydra section    |
+
+**In the `Download Client` tab**
+- Press the `+` to add a new download client
+- Click 'SABnzbd'
+
+| Setting Name  | Value                                                 |
+|-------------- |-----------------------------------------------------  |
+| Name          | SABnzbd                                               |
+| Host          | localhost                                             |
+| Port          | 8080                                                  |
+| API Key       | The API key you noted down from the SABnzbd section   |
+| Category      | radarr                                                |
+
+Todo: Transmission
 
 ## Backing up / Moving
 
