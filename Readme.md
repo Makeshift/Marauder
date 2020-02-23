@@ -33,19 +33,16 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** Rclone by itself is sort of crap at caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
 
-**Q: I have a big library and it takes a goddamn age to initially import/scan all of my media, even with Plexdrive. Can it be faster?**
+**Q: Why do you use an Rclone union plugin rather than the normal one?**
 
-**A:** Rclone union will wait for all mounts to respond before returning a response to the request, so even though Plexdrive is helping out by caching the full directory tree, Rclone querying GDrive might still slow it down a bit.
-For an initial scan, you can disable the read/write Rclone mount and leave the read-only Plexdrive mount in `rclone/rclone.conf`. You will **not** be able to upload anything to this mount, but scanning should be a bit faster.
-
-In `rclone/rclone.conf`, change line 3:
+**A:** The plugin I include with the Rclone container is actually the standard Rclone union plugin with exactly one line changed:
+```go
+var remote = f.remotes[len(f.remotes)-i-1]
+// became
+var remote = f.remotes[i]
 ```
-remotes = /shared/separate plexdrive: encryptedgdrive:
-#to
-remotes = /shared/separate plexdrive:
-```
-
-Then restart the stack with `docker-compose restart`. Once your scan is finished, undo the change and restart it again.
+This means that with our current reverseunion mount `/shared/separate plexdrive: encryptedgdrive:` it will return the answer from plexdrive first, which resolves much faster than gdrive. This makes seeking and some other actions significantly faster.
+This DOES mean that there is a chance that the mount will return outdated information in the case of replacing/updating/deleting a file (Due to it writing to `encryptedgdrive` but reading from the cached `plexdrive`), but I believe in this particular use case it doesn't matter as much.
 
 ## Configuration and deployment
 

@@ -1,0 +1,44 @@
+#!/usr/bin/with-contenv sh
+
+#set -x
+
+source /etc/colors.sh
+
+PREFFIX="[services.d] [rclone-mount]-$(s6-basename ${0}):"
+
+SERVICE_DIR=/var/run/s6/services
+SERVICE=rclone-mount
+
+checkRclone(){
+#    pgrep rclon[e] > /dev/null
+    ps aux | grep '.rclon[e].*'$RemotePath'' | grep -v grep > /dev/null
+    return $?
+}
+
+#s6-echo "shutdown rclone mount[DEBUG]"
+if checkRclone; then
+    s6-svc -d ${SERVICE_DIR}/${SERVICE}
+#    s6-svc -t ${SERVICE_DIR}/${SERVICE}
+    tempPID="$(pgrep rclon[e])"
+    kill ${tempPID}
+else
+    echo -e "${PREFFIX} ${Red}rclone process not present, restarting container[ERROR]${Color_Off}"
+    s6-svscanctl -t /var/run/s6/services
+fi
+
+echo -e "${PREFFIX} ${Yellow}waiting for rclone shutdown${Color_Off}"
+while checkRclone -eq 0; do
+    sleep 0.1
+done
+
+
+#bring container down when rclone crashes
+#s6-svscanctl -t /var/run/s6/services
+
+#while $(pgrep rclon[e] > /dev/null); do
+#    sleep 0.1
+#done
+
+#s6-svc -wD /var/run/s6/services/rclone-mount/
+
+#if ps aux | grep 's6-supervise rclone-mount' | grep -v grep > /dev/null; then s6-svc -t /var/run/s6/services/rclone-mount; fi;
