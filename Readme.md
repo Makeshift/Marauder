@@ -57,7 +57,7 @@ You will need:
 - The compose file has labels compatible with my [Docker Nginx Conf Generator](https://github.com/Makeshift/docker-generate-nginx-conf), but it isn't neccessary
 
 ```bash
-git clone github.com/Makeshift/MediaCompose
+git clone github.com/Makeshift/Media-Compose-Stack
 ```
 
 ### Secrets & Env Vars
@@ -97,7 +97,7 @@ Starting the stack should be as simple as
 ```bash
 docker-compose up -d ; docker-compose logs -f
 ```
-I advise the above command as it will disconnect you from the containers after it finishes building the containers, but still allow you to follow logs to watch for errors. `Ctrl+C` will not kill the running containers, just kill the log follow.
+I advise the above command as it will disconnect you from the containers after it finishes building them, but still allows you to follow logs to watch for errors. `Ctrl+C` will not kill the running containers, just kill the log follow.
 
 In case of a problem, you can run
 ```bash
@@ -180,19 +180,24 @@ Todo
 
 **In the `Media Management` tab**
 
-| Setting Name                      | Value                             |
-|-------------------------------    |---------------------------------  |
-| **Movie Naming**                  |                                   |
-| Rename Movies                     | Yes                               |
-| Replace Illegal Characters        | Yes                               |
-| Colon Replacement Format          | Replace with Space Dash Space     |
-| Standard Movie Format             | `{Movie Title} ({Release Year})`  |
-| **Importing**                     |                                   |
-| Skip Free Space Check             | Yes                               |
-| Use Hardlinks instead of Copy     | No                                |
-| Import Extra Files                | Yes                               |
-| Extra File Extensions             | `srt,nfo`                         |
-|                                   |                                   |
+The movie and folder formats were chosen to make importing easier in the case of losing the Radarr database. However, they are fairly optional.
+
+| Setting Name                      | Value                                                                                                                                      |
+|-------------------------------    |---------------------------------                                                                                                           |
+| **Movie Naming**                  |                                                                                                                                            |
+| Rename Movies                     | Yes                                                                                                                                        |
+| Replace Illegal Characters        | Yes                                                                                                                                        |
+| Colon Replacement Format          | Replace with Space Dash Space                                                                                                              |
+| Standard Movie Format             | `{Movie Title} ({Release Year}) ({IMDb Id}) {{Quality Full}}`                                                                              |
+| Movie Folder Format               | `{Movie TitleThe} ({Release Year}) ({IMDb Id})`                                                                                            |
+| **Folders**                       |                                                                                                                                            |
+| Automatically Rename Folders      | (Optional - May be a bad idea if you have a large collection that doesn't currently follow the above folder format) Yes                    |
+| **Importing**                     |                                                                                                                                            |
+| Skip Free Space Check             | Yes                                                                                                                                        |
+| Use Hardlinks instead of Copy     | No                                                                                                                                         |
+| Import Extra Files                | Yes                                                                                                                                        |
+| Extra File Extensions             | `srt,nfo`                                                                                                                                  |
+|                                   |                                                                                                                                            |
 
 **In the `Indexers` tab**
 - Press the `+` to add a new indexer
@@ -313,7 +318,7 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 - [x] NZBHydra2
 - [x] Radarr
 - [ ] Sonarr
-- [ ] Sabnzbd
+- [x] Sabnzbd
 - [ ] Traktarr
 - [ ] Medusa
 - [ ] Headphones

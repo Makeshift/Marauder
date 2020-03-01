@@ -11,7 +11,28 @@ services:
     devices:
       - "/dev/fuse:/dev/fuse"
     environment:
-      MountCommands: "--fast-list --allow-other --allow-non-empty --umask 000 --uid 65534 --gid 65534 -v --checkers 64 --buffer-size 512M --transfers 64 --use-mmap --vfs-cache-mode writes --poll-interval 120s --attr-timeout 8700h --dir-cache-time 8760h --vfs-read-chunk-size 32M --vfs-read-chunk-size-limit 4G --vfs-cache-poll-interval 20m --vfs-cache-max-age 8760h --vfs-cache-max-size 256G --cache-dir=/shared/caches/rclone/vfs/"
+      MountCommands: "                          \
+        --fast-list                             \
+        --allow-other                           \
+        --allow-non-empty                       \
+        --umask 000                             \
+        --uid 65534                             \
+        --gid 65534                             \
+        -v                                      \
+        --checkers 64                           \
+        --buffer-size 512M                      \
+        --transfers 64                          \
+        --use-mmap                              \
+        --vfs-cache-mode writes                 \
+        --poll-interval 120s                    \
+        --attr-timeout 8700h                    \
+        --dir-cache-time 8760h                  \
+        --vfs-read-chunk-size 32M               \
+        --vfs-read-chunk-size-limit 4G          \
+        --vfs-cache-poll-interval 20m           \
+        --vfs-cache-max-age 8760h               \
+        --vfs-cache-max-size 256G               \
+        --cache-dir=/shared/caches/rclone/vfs/"
     env_file:
       - ./rclone/secrets.env
     cap_add:
@@ -73,10 +94,10 @@ services:
   sabnzbd:
     image: linuxserver/sabnzbd
     network_mode: "host"
-    deploy:
-      resources:
-        limits:
-          cpus: '12'
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '12'
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -95,9 +116,6 @@ services:
   # traktarr:
   #   image: cloudb0x/traktarr
   #   network_mode: "host"
-  #   depends_on:
-  #     - sonarr
-  #     - radarr
   #   volumes:
   #     - ./traktarr:/config
   #   restart: unless-stopped
