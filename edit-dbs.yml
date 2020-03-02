@@ -1,0 +1,27 @@
+version: '3.4'
+services:
+  radarr:
+    image: coleifer/sqlite-web
+    container_name: radarr-edit
+    ports:
+      - "8082:8080"
+    labels:
+      - proxy.hosts=radarr-edit.${domain},radarr-edit.local.${domain},radarr-edit.public.${domain}
+      - proxy.port=8082
+    environment:
+      SQLITE_DATABASE: nzbdrone.db
+    volumes:
+      - ./runtime_conf/radarr:/data
+
+  sonarr:
+    image: coleifer/sqlite-web
+    container_name: sonarr-edit
+    ports:
+      - "8083:8080"
+    labels:
+      - proxy.hosts=sonarr-edit.${domain},sonarr-edit.local.${domain},sonarr-edit.public.${domain}
+      - proxy.port=8083
+    environment:
+      SQLITE_DATABASE: sonarr.db
+    volumes:
+      - ./runtime_conf/sonarr:/data

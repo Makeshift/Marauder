@@ -240,15 +240,17 @@ Todo: Transmission
 | Rename Episodes                   | Yes                                                               |
 | Replace Illegal Characters        | Yes                                                               |
 | Colon Replacement Format          | Replace with Space Dash Space                                     |
-| Standard Episode Format           | `{Series Title} - S{season:00}E{episode:00} - {Episode Title}`    |
-| Daily Episode Format              | `{Series Title} - {Air-Date} - {Episode Title}`                   |
-| Anime Episode Format              | `{Series Title} - S{season:00}E{episode:00} - {Episode Title}`    |
+| Series Folder Format              | `{Series TitleTheYear} ({ImdbId})`                                |
+| Standard Episode Format           | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
+| Daily Episode Format              | `{Series TitleTheYear} - {Air-Date} - {Episode Title} ({Quality Full})`                   |
+| Anime Episode Format              | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
 | **Importing**                     |                                                                   |
 | Skip Free Space Check             | Yes                                                               |
 | Use Hardlinks instead of Copy     | No                                                                |
 | Import Extra Files                | Yes                                                               |
 | Extra File Extensions             | `srt,nfo`                                                         |
-| **Root Folders**                  | `/shared/merged/Media/TV`                                         |
+| **Root Folders**                  | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |
+
 
 **In the `Indexers` tab**
 - Press the `+` to add a new indexer
@@ -270,7 +272,10 @@ Todo: Transmission
 | Host          | localhost                                             |
 | Port          | 8080                                                  |
 | API Key       | The API key you noted down from the SABnzbd section   |
-| Category      | radarr                                                |
+| Category      | sonarr                                                |
+
+**In the `Series` Menu**
+If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
 
 Todo: Transmission
 
@@ -287,6 +292,23 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `shared/separate`     | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)  | Maybe     |
 | `shared/caches`       | Contains Rclone's pre-upload cache, disk caches and Plexdrive caches                                                  | Maybe     |
 | `shared/merged`       | Union mount containing Google Drive and merged download directories                                                   | No        |
+
+## Debugging
+
+Some debug tools have been included, like [sqlite-web](https://github.com/coleifer/sqlite-web) which can be used to edit many of the sqlite DBs used by some of the services.
+
+Generally, unless you know what you're doing (and are okay with voiding your support by the service authors), you shouldn't need to touch these. I generally use it when I break Sonarr in some horrific way and need to fix it manually ;).
+
+You should **not** start these while the other services are running. You should `docker-compose down` first.
+
+Launch all the editors with: `docker-compose -f edit-dbs.yml up -d`, or individual editors with `docker-compose -f edit-dbs.ym up -d radarr`.
+
+The following editors are available:
+
+| Service   | Editor        | File                                  | Port  |
+|---------  |------------   |-------------------------------------  |------ |
+| radarr    | sqlite-web    | `./runtime_conf/radarr/nzbdrone.db`   | 8082  |
+| sonarr    | sqlite-web    | `./runtime_conf/sonarr/sonarr.db`     | 8083  |
 
 ## Todo
 ### Services:
@@ -317,7 +339,7 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 - [x] Secrets
 - [x] NZBHydra2
 - [x] Radarr
-- [ ] Sonarr
+- [x] Sonarr
 - [x] Sabnzbd
 - [ ] Traktarr
 - [ ] Medusa
