@@ -5,7 +5,7 @@ source /etc/colors.sh
 PREFFIX="[cont-init.d] $(s6-basename ${0}):"
 
 if [ -z "$SECRETS_SET" ]; then 
-    echo "ERROR - Secrets are not set!"
+    echo "${PREFFIX}${Red} ERROR - Secrets are not set!"
     exit 1
 fi
 
@@ -15,17 +15,9 @@ fi
 #create folders
 mkdir -p \
   $MountPoint \
-  /config/ \
-  /plexdrive/ \
-  /root/.plexdrive
-
-echo -e "${PREFFIX} ${Blue}installing system updates${Color_Off}"
-/sbin/apk --no-cache upgrade
-/bin/rm -rf /var/cache/apk/*
+  /config/ 
 
 # Overwrite base rclone conf with env vars
 (envsubst < /rclone.conf) > /config/.rclone.conf
 # Write some config files
 echo $rclone_service_credential_file > /credentials.json
-echo $plexdrive_config_file > /root/.plexdrive/config.json
-echo $plexdrive_token_file > /root/.plexdrive/token.json

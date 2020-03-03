@@ -19,20 +19,24 @@ services:
         --uid 65534                             \
         --gid 65534                             \
         -v                                      \
-        --checkers 64                           \
-        --buffer-size 512M                      \
-        --transfers 64                          \
+        --checkers 32                           \
+        --buffer-size 32M                       \
+        --transfers 16                          \
         --use-mmap                              \
         --vfs-cache-mode writes                 \
         --poll-interval 120s                    \
         --attr-timeout 8700h                    \
         --dir-cache-time 8760h                  \
-        --vfs-read-chunk-size 32M               \
+        --vfs-read-chunk-size 1M                \
         --vfs-read-chunk-size-limit 4G          \
         --vfs-cache-poll-interval 20m           \
         --vfs-cache-max-age 8760h               \
         --vfs-cache-max-size 256G               \
-        --cache-dir=/shared/caches/rclone/vfs/"
+        --cache-dir=/shared/caches/rclone/vfs/  \
+        --low-level-retries 3                   \
+        --multi-thread-cutoff 25M               \
+        --multi-thread-streams 8                \
+        --no-update-modtime"
     env_file:
       - ./rclone/secrets.env
     cap_add:

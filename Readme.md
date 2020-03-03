@@ -27,21 +27,6 @@ docker compose up -d sonarr radarr headphones transmission
 ```
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
 
-**Q: Why Plexdrive AND Rclone?**
-**A:** Rclone by itself had some issues with caching, especially when it comes to larger collections, so we union it with Plexdrive for faster response time. If you've ever tried to import 3000 films to Radarr from Google Drive, you know the pain.
-
-**Q: Why do you use an Rclone union plugin rather than the normal one?**
-**A:** The plugin I include with the Rclone container is actually the standard Rclone union plugin with exactly one line changed:
-```go
-var remote = f.remotes[len(f.remotes)-i-1]
-// became
-var remote = f.remotes[i]
-```
-This means that with our current reverseunion mount `/shared/separate plexdrive: encryptedgdrive:` it will return the answer from plexdrive first, which resolves much faster than gdrive. This makes seeking and some other actions significantly faster.
-This DOES mean that there is a chance that the mount will return outdated information in the case of replacing/updating/deleting a file (Due to it writing to `encryptedgdrive` but reading from the cached `plexdrive`), but I believe in this particular use case it doesn't matter that much.
-
-**Note:** I'm actually not sure if my added Plexdrive + plugin actually does anything anymore. It certainly used to, but Rclone's caching is now a lot better than it used to be. I have no decent side-by-side testing so I'm going to keep it as-is for now, but may remove Plexdrive + ReverseUnion later.
-
 ## Configuration and deployment
 
 ### Pre-Setup
@@ -50,7 +35,6 @@ You will need:
 - A Linux machine (I use Ubuntu 18.04 LTS)
 - Docker (19.03.6+) + Docker Compose (1.17.1+)
 - Some Rclone knowledge (Possibly a previous setup as well to copy files from)
-- A Plexdrive setup to copy files from (Optional - will work without)
 - A Google Drive account with unlimited storage
 - A [Google Drive service account](https://rclone.org/drive/#service-account-support)
 - Encryption [set up already](https://rclone.org/crypt/) in Google Drive
@@ -82,8 +66,6 @@ There are several env vars required to get Rclone to work. Here are the vars and
 | rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                                                            |
 | rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable.                                           |
 | rclone_gdrive_mount_folder        | If your crypt directory is not the top level of Gdrive, this is the encrypted folder  | My GDrive is set up with Rclone encrypting the top level folder `encrypted`, so my mount folder is simply `encrypted`.                                                     |
-| plexdrive_config_file             | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/config.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON. |
-| plexdrive_token_file              | Configure [Plexdrive](https://github.com/dweidenfeld/plexdrive)                       | If you've previously set up Plexdrive, this will be in `~/.config/plexdrive/token.json`. Use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON.  |
 
 Remember that you *do not* need to escape the variables in env files.
 
@@ -105,24 +87,21 @@ docker-compose down
 ```
 to clean up the stack. This will not delete any configuration.
 
-#### Plexdrive (Optional) 
-
-If you are using Plexdrive as well as Rclone, it will need to process your entire Google Drive before it starts providing benefit. Keep an eye on the logs (`docker-compose logs -f`). I advise not continuing setup until Plexdrive is finished.
-When the logs says `First cache build process finished!`, that's when it's done processing.
-
-At this point, you should restart the stack to ensure Plexdrive is correctly mounted
-```bash
-docker-compose restart ; docker-compose logs -f
-```
-
 #### Pre-Warming Rclone (Optional)
 
-Whether you are using Plexdrive or not, it may be worth pre-warming the Rclone caches with data.
+It may be worth pre-warming the Rclone caches with data.
 Go to `shared/merged/Media` (or whichever folder your Media lies in) and run:
 ```bash
-ls -R . > /dev/null &;disown
+ls -R . > /dev/null &
+disown
 ```
 You can continue using the remote while this happens, it will simply `ls` through every folder in your remote to warm the caches (and will disown it so it keeps going even if you kill your session).
+
+If you really want to see some sembelance of progress of your warming, grab the `rsync` package for your distribution, go to `shared/merged/Media` (or whichever folder your Media lies in) and run:
+```
+rsync -rhn --info=progress2 . $(mktemp -d)
+```
+The progress bar is a bit fake, but if you know approximately how large your collection is, you can work out how far along you are.
 
 ### Service Configuration
 
@@ -234,16 +213,16 @@ Todo: Transmission
 
 **In the `Media Management` tab**
 
+- Click "Show Advanced" at the top
+
 | Setting Name                      | Value                                                             |
 |-------------------------------    |---------------------------------                                  |
 | **Episode Naming**                |                                                                   |
 | Rename Episodes                   | Yes                                                               |
-| Replace Illegal Characters        | Yes                                                               |
-| Colon Replacement Format          | Replace with Space Dash Space                                     |
-| Series Folder Format              | `{Series TitleTheYear} ({ImdbId})`                                |
 | Standard Episode Format           | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
 | Daily Episode Format              | `{Series TitleTheYear} - {Air-Date} - {Episode Title} ({Quality Full})`                   |
 | Anime Episode Format              | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
+| Series Folder Format              | `{Series TitleTheYear} ({ImdbId})`                                |
 | **Importing**                     |                                                                   |
 | Skip Free Space Check             | Yes                                                               |
 | Use Hardlinks instead of Copy     | No                                                                |
@@ -290,7 +269,7 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `rclone/rclone.conf`  | If you've made any tweaks to the mount settings, you might want to back this up                                       | Maybe     |
 | `runtime_conf/`       | Contains all the service-specific config generated after first startup and during use                                 | Yes       |
 | `shared/separate`     | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)  | Maybe     |
-| `shared/caches`       | Contains Rclone's pre-upload cache, disk caches and Plexdrive caches                                                  | Maybe     |
+| `shared/caches`       | Contains Rclone's pre-upload cache & disk caches                                                  | Maybe     |
 | `shared/merged`       | Union mount containing Google Drive and merged download directories                                                   | No        |
 
 ## Debugging

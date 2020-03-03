@@ -6,6 +6,9 @@ source /etc/colors.sh
 
 PREFFIX="[services.d] [rclone-mount]-$(s6-basename ${0}):"
 
-echo -e "${PREFFIX} ${Green}starting rclone mount $(date +%Y.%m.%d-%T) ${Blue} /usr/sbin/rclone --config $ConfigPath mount $RemotePath $MountPoint $MountCommands ${Color_Off}"
+# Clean up mount options
+MountCommands=$(echo ${MountCommands} | xargs echo -n)
 
-/usr/sbin/rclone --config $ConfigPath mount $RemotePath $MountPoint $MountCommands
+echo -e "${PREFFIX} ${Green}starting rclone mount $(date +%Y.%m.%d-%T)\n ${Yellow} /usr/sbin/rclone --config $ConfigPath mount $RemotePath $MountPoint $MountCommands ${Color_Off}"
+
+/usr/sbin/rclone --config $ConfigPath mount $MountCommands $RemotePath $MountPoint
