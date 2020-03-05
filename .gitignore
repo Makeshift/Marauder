@@ -2,3 +2,5 @@
 telegram-radarr-bot/
 telegram-sonarr-bot/
 traktarr/
+runtime_conf/
+shared/

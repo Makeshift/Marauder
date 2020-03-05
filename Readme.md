@@ -159,6 +159,8 @@ Todo
 
 **In the `Media Management` tab**
 
+- Click the 'Advanced Settings' toggle at the top right to 'Shown'.
+
 The movie and folder formats were chosen to make importing easier in the case of losing the Radarr database. However, they are fairly optional.
 
 | Setting Name                      | Value                                                                                                                                      |
