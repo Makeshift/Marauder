@@ -317,17 +317,16 @@ Medusa is another TV series downloader, but happens to be slightly better at ani
 - Navigate to the web UI on port `8081`
 - Navigate to the `Settings` page (Cog at the top right)
 
-** In the `General` Menu**
+**In the `General` Menu**
 
-| Setting Name  | Value                                                 |
-|-------------- |-----------------------------------------------------  |
-| **Misc**      |                                                       |
-| Show root directories | `/shared/merged/Media/Anime`                  |
+| Setting Name          | Value                                                 |  
+| --------------        | ----------------------------------------------------- |  
+| **Misc**              |                                                       |  
+| Show root directories | `/shared/merged/Media/Anime`                          |  
 
 - Press 'Save Changes' at the bottom left
 
-** In the `Search Settings` Menu**
-__ In the `NZB Search` tab __
+**In the `Search Settings` Menu**
 
 | Setting Name                            | Value                                                 |  
 | --------------                          | ----------------------------------------------------- |  
@@ -340,17 +339,19 @@ __ In the `NZB Search` tab __
 | Use sabnzbd category (backlog episodes) | anime                                                 |  
 | Setting Name                            | Value                                                 |  
 
-__ In the `Torrent Search` tab __
+_In the `Torrent Search` tab_
 
-| --------------                          | ----------------------------------------------------- |  
-| **Torrent search**                      |                                                       |  
-| Search torrents                         | False (Until I get the Transmission stuff done)       |  
-
+| Setting Name       | Value                                                 |  
+| --------------     | ----------------------------------------------------- |  
+| **Torrent Search** |                                                       |  
+| Search Torrents    | False (For now)                                       |  
 - Press 'Save Changes' at the bottom left
 
-** In the `Search Providers` Menu **
-__ In the `Configure Custom Newsnab Providers` tab __
+**In the `Search Providers` Menu**
 
+_In the `Configure Custom Newsnab Providers` tab_
+
+| Setting Name                           | Value                                                 |  
 | --------------                         | ----------------------------------------------------- |  
 | **Configure Custom Newznab Providers** |                                                       |  
 | Select Provider                        | NZBGeek (It's a good base for NZBHydra)               |  
@@ -360,42 +361,49 @@ __ In the `Configure Custom Newsnab Providers` tab __
 
 - Press 'Save Changes' at the bottom left
 
-__ In the `Provider Priorities` tab __
+_In the `Provider Priorities` tab_
 
 - Ensure that the NZBHydra2 provider is ticked
 
-** In the `Subtitles Settings` Menu **
-__ In the `Subtitles Search` tab __
+**In the `Subtitles Settings` Menu**
 
+_In the `Subtitles Search` tab_
+
+| Setting Name         | Value                                                 |  
 | --------------       | ----------------------------------------------------- |  
 | **Subtitles Search** |                                                       |  
 | Search Subtitles     | Yes                                                   |  
 | Subtitle Languages   | English (Or something else, if you like)              |  
 
-__ In the `Subtitles Plugin` tab __
+_In the `Subtitles Plugin` tab_
 
 - You will need to configure these to your liking. Alternatively, you can let Bazarr do all the subtitle work for anime as well.
 
 ** In the `Post Processing` Menu **
-__ In the `Post Processing` tab **
 
+_In the `Post Processing` tab_
+
+| Setting Name                  | Value                                                 |  
 | --------------                | ----------------------------------------------------- |  
 | **Scheduled Post-Processing** |                                                       |  
 | Scheduled Postprocessor       | Yes                                                   |  
 | Post Processing Dir           | `/shared/merged/downloads/sabnzbd/medusa`             |  
 | Processing Method             | Move                                                  |  
 
-__ In the `Episode Naming` tab **
+_In the `Episode Naming` tab_
 
+| Setting Name       | Value                                                 |  
 | --------------     | ----------------------------------------------------- |  
 | **Episode Naming** |                                                       |  
 | Name Pattern       | `Season %0S/%SN - S%0SE%0E - %EN (%QN)`               |  
 
 - Press 'Save Changes' at the bottom left
 
-** In the `Anime` Menu **
-__ In the `AnimeDB Settings` tab __
+**In the `Anime` Menu**
 
+_In the `AnimeDB Settings` tab_
+
+| Setting Name   | Value                                                 |  
 | -------------- | ----------------------------------------------------- |  
 | **AniDB**      |                                                       |  
 | Enable         | Yes                                                   |  
@@ -410,6 +418,7 @@ __ In the `AnimeDB Settings` tab __
 - If you have existing shows, click 'Add Existing Shows' and follow the prompts.
 - My recommended settings for the `Customize Options` tab are as follows:
 
+| Setting Name                        | Value                                                 |  
 | --------------                      | ----------------------------------------------------- |  
 | Quality                             | Any                                                   |  
 | Subtitles                           | Yes                                                   |  
@@ -446,7 +455,7 @@ Todo
 
 <a id="telegram-bots"></a>
 #### Telegram Bots
-This stack will eventually include my (Telegram bot)[https://github.com/Makeshift/telegram-sonarr-radarr-bot], that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
+This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
 
 <a id="how-do-i-watch-my-media"></a>
 ## How do I watch my media?
