@@ -140,7 +140,7 @@ services:
       - proxy.port=8081
     restart: unless-stopped
     volumes:
-      - ./medusa:/config
+      - ./runtime_conf/medusa:/config
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
 
@@ -153,7 +153,7 @@ services:
   #     PGID: 65534
   #     UMASK_SET: 000
   #   volumes:
-  #     - ./headphones:/config
+  #     - ./runtime_conf/headphones:/config
   #     - ./shared/:/shared:rshared
   #     - /etc/localtime:/etc/localtime:ro
   #   depends_on:
@@ -174,7 +174,7 @@ services:
   #   depends_on:
   #     - rclone
   #   volumes:
-  #     - ./lazylibrarian:/config
+  #     - ./runtime_conf/lazylibrarian:/config
   #     - ./shared/:/shared:rshared
   #     - /etc/localtime:/etc/localtime:ro
   #   labels:
@@ -193,7 +193,7 @@ services:
   #   depends_on:
   #     - rclone
   #   volumes:
-  #     - ./mylar:/config
+  #     - ./runtime_conf/mylar:/config
   #     - ./shared/:/shared:rshared
   #     - /etc/localtime:/etc/localtime:ro
   #   labels:
@@ -214,7 +214,7 @@ services:
   #     - sonarr
   #     - radarr
   #   volumes:
-  #     - ./bazarr:/config
+  #     - ./runtime_conf/bazarr:/config
   #     - ./shared/:/shared:rshared
   #     - /etc/localtime:/etc/localtime:ro
   #   labels:
@@ -238,21 +238,3 @@ services:
   #     - ./shared/:/shared/:rshared
   #   depends_on:
   #     - rclone
-
-    # radarr_bot:
-    #   image: itsmegb/telegram-radarr-bot
-    #   restart: unless-stopped
-    #   depends_on:
-    #     - radarr
-    
-    #   volumes:
-    #     - ./radarr_bot/config:/config
-
-    # sonarr_bot:
-    #   image: subzero79/docker-telegram-sonarr-bot
-    #   restart: unless-stopped
-    #   depends_on:
-    #     - sonarr
-    
-    #   volumes:
-    #     - ./sonarr_bot/config:/config
