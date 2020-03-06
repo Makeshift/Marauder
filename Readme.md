@@ -27,8 +27,44 @@ docker compose up -d sonarr radarr headphones transmission
 ```
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
 
+## Table of Contents
+<!-- MarkdownTOC autolink="true" autoanchor="true" -->
+
+- [Configuration and deployment](#configuration-and-deployment)
+    - [Pre-Setup](#pre-setup)
+    - [Secrets & Env Vars](#secrets--env-vars)
+        - [Top-Level](#top-level)
+        - [Rclone](#rclone)
+    - [Starting the Stack](#starting-the-stack)
+        - [Pre-Warming Rclone \(Optional\)](#pre-warming-rclone-optional)
+    - [Service Configuration](#service-configuration)
+        - [NZBHydra2](#nzbhydra2)
+        - [Sabnzbd](#sabnzbd)
+        - [Transmission](#transmission)
+        - [Radarr](#radarr)
+        - [Sonarr](#sonarr)
+        - [Traktarr](#traktarr)
+        - [Medusa](#medusa)
+        - [Headphones](#headphones)
+        - [LazyLibrarian](#lazylibrarian)
+        - [Mylar](#mylar)
+        - [Bazarr](#bazarr)
+        - [Telegram Bots](#telegram-bots)
+- [How do I watch my media?](#how-do-i-watch-my-media)
+- [Backing up / Moving](#backing-up--moving)
+- [Debugging](#debugging)
+- [Todo](#todo)
+    - [Services:](#services)
+    - [Remote-Control:](#remote-control)
+    - [Documentation:](#documentation)
+
+<!-- /MarkdownTOC -->
+
+
+<a id="configuration-and-deployment"></a>
 ## Configuration and deployment
 
+<a id="pre-setup"></a>
 ### Pre-Setup
 
 You will need:
@@ -44,7 +80,9 @@ You will need:
 git clone github.com/Makeshift/Media-Compose-Stack
 ```
 
+<a id="secrets--env-vars"></a>
 ### Secrets & Env Vars
+<a id="top-level"></a>
 #### Top-Level
 
 If you intend to use my [Docker Nginx Conf Generator](https://github.com/Makeshift/docker-generate-nginx-conf), you can set your domain name in the top level `.env` file.
@@ -54,6 +92,7 @@ cp .env.template .env
 ```
 `domain=example.com`
 
+<a id="rclone"></a>
 #### Rclone
 
 There are several env vars required to get Rclone to work. Here are the vars and where you can get them:
@@ -73,6 +112,7 @@ Remember that you *do not* need to escape the variables in env files.
 cp rclone/secrets.env.template rclone/secrets.env
 ```
 
+<a id="starting-the-stack"></a>
 ### Starting the Stack
 
 Starting the stack should be as simple as
@@ -87,6 +127,7 @@ docker-compose down
 ```
 to clean up the stack. This will not delete any configuration.
 
+<a id="pre-warming-rclone-optional"></a>
 #### Pre-Warming Rclone (Optional)
 
 It may be worth pre-warming the Rclone caches with data.
@@ -103,8 +144,10 @@ rsync -rhn --info=progress2 . $(mktemp -d)
 ```
 The progress bar is a bit fake, but if you know approximately how large your collection is, you can work out how far along you are.
 
+<a id="service-configuration"></a>
 ### Service Configuration
 
+<a id="nzbhydra2"></a>
 #### NZBHydra2
 NZBHydra2 is a searching/caching/indexing tool for Newznab and Torznab indexers. It acts as a proxy in between sources of NZBs and your services, which means less configuration down the line.
 
@@ -115,6 +158,7 @@ You'll only need this if you plan to use this stack with Usenet.
 - Click the `Config` button
 - Click the `API?` button on the right hand side. Note down your API key.
 
+<a id="sabnzbd"></a>
 #### Sabnzbd
 Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
@@ -149,9 +193,11 @@ Copy the below table:
 | medusa            | Default   | Default       |           | `../medusa`           |                               |
 | mylar             | Default   | Default       |           | `../mylar`            |                               |
 
+<a id="transmission"></a>
 #### Transmission
 Todo
 
+<a id="radarr"></a>
 #### Radarr
 
 - Navigate to the web UI on port `7878`
@@ -173,6 +219,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Movie Folder Format               | `{Movie TitleThe} ({Release Year}) ({IMDb Id})`                                                                                            |
 | **Folders**                       |                                                                                                                                            |
 | Automatically Rename Folders      | (Optional - May be a bad idea if you have a large collection that doesn't currently follow the above folder format) Yes                    |
+| Movie Paths Default to Static     | (Optional - If you don't tick the above, this won't do much) No                                                                            |
 | **Importing**                     |                                                                                                                                            |
 | Skip Free Space Check             | Yes                                                                                                                                        |
 | Use Hardlinks instead of Copy     | No                                                                                                                                         |
@@ -202,12 +249,11 @@ The movie and folder formats were chosen to make importing easier in the case of
 | API Key       | The API key you noted down from the SABnzbd section   |
 | Category      | radarr                                                |
 
-Todo: Transmission
-
 **Add movie library**
 - Click 'Add Movies' at the top left
 - Either bulk import your current library, or add a new movie to configure the default library. It should be under `/shared/merged`, eg `/sharged/merged/Media/Movies`.
 
+<a id="sonarr"></a>
 #### Sonarr
 
 - Navigate to the web UI on port `8989`
@@ -217,20 +263,20 @@ Todo: Transmission
 
 - Click "Show Advanced" at the top
 
-| Setting Name                      | Value                                                             |
-|-------------------------------    |---------------------------------                                  |
-| **Episode Naming**                |                                                                   |
-| Rename Episodes                   | Yes                                                               |
-| Standard Episode Format           | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
-| Daily Episode Format              | `{Series TitleTheYear} - {Air-Date} - {Episode Title} ({Quality Full})`                   |
-| Anime Episode Format              | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`    |
-| Series Folder Format              | `{Series TitleTheYear} ({ImdbId})`                                |
-| **Importing**                     |                                                                   |
-| Skip Free Space Check             | Yes                                                               |
-| Use Hardlinks instead of Copy     | No                                                                |
-| Import Extra Files                | Yes                                                               |
-| Extra File Extensions             | `srt,nfo`                                                         |
-| **Root Folders**                  | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |
+| Setting Name                    | Value                                                                                                                                                       |  
+| ------------------------------- | ---------------------------------                                                                                                                           |  
+| **Episode Naming**              |                                                                                                                                                             |  
+| Rename Episodes                 | Yes                                                                                                                                                         |  
+| Standard Episode Format         | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`                                                                      |  
+| Daily Episode Format            | `{Series TitleTheYear} - {Air-Date} - {Episode Title} ({Quality Full})`                                                                                     |  
+| Anime Episode Format            | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`                                                                      |  
+| Series Folder Format            | `{Series TitleTheYear} ({ImdbId})`                                                                                                                          |  
+| **Importing**                   |                                                                                                                                                             |  
+| Skip Free Space Check           | Yes                                                                                                                                                         |  
+| Use Hardlinks instead of Copy   | No                                                                                                                                                          |  
+| Import Extra Files              | Yes                                                                                                                                                         |  
+| Extra File Extensions           | `srt,nfo`                                                                                                                                                   |  
+| **Root Folders**                | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |  
 
 
 **In the `Indexers` tab**
@@ -258,8 +304,157 @@ Todo: Transmission
 **In the `Series` Menu**
 If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
 
-Todo: Transmission
+<a id="traktarr"></a>
+#### Traktarr
+Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
+Todo
+
+<a id="medusa"></a>
+#### Medusa
+Medusa is another TV series downloader, but happens to be slightly better at anime, so it's set up specifically for anime.
+
+- Navigate to the web UI on port `8081`
+- Navigate to the `Settings` page (Cog at the top right)
+
+** In the `General` Menu**
+
+| Setting Name  | Value                                                 |
+|-------------- |-----------------------------------------------------  |
+| **Misc**      |                                                       |
+| Show root directories | `/shared/merged/Media/Anime`                  |
+
+- Press 'Save Changes' at the bottom left
+
+** In the `Search Settings` Menu**
+__ In the `NZB Search` tab __
+
+| Setting Name                            | Value                                                 |  
+| --------------                          | ----------------------------------------------------- |  
+| **NZB Search**                          |                                                       |  
+| Search NZBs                             | True                                                  |  
+| Send .nzb files to                      | SABnzbd                                               |  
+| SABnzbd server URL                      | `localhost:8080`                                      |  
+| Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
+| Use SABnzbd category                    | anime                                                 |  
+| Use sabnzbd category (backlog episodes) | anime                                                 |  
+| Setting Name                            | Value                                                 |  
+
+__ In the `Torrent Search` tab __
+
+| --------------                          | ----------------------------------------------------- |  
+| **Torrent search**                      |                                                       |  
+| Search torrents                         | False (Until I get the Transmission stuff done)       |  
+
+- Press 'Save Changes' at the bottom left
+
+** In the `Search Providers` Menu **
+__ In the `Configure Custom Newsnab Providers` tab __
+
+| --------------                         | ----------------------------------------------------- |  
+| **Configure Custom Newznab Providers** |                                                       |  
+| Select Provider                        | NZBGeek (It's a good base for NZBHydra)               |  
+| Provider Name                          | NZBHydra2                                             |  
+| Site URL                               | `http://localhost:5076`                               |  
+| API Key                                | The key you noted down in the NZBHydra section        |  
+
+- Press 'Save Changes' at the bottom left
+
+__ In the `Provider Priorities` tab __
+
+- Ensure that the NZBHydra2 provider is ticked
+
+** In the `Subtitles Settings` Menu **
+__ In the `Subtitles Search` tab __
+
+| --------------       | ----------------------------------------------------- |  
+| **Subtitles Search** |                                                       |  
+| Search Subtitles     | Yes                                                   |  
+| Subtitle Languages   | English (Or something else, if you like)              |  
+
+__ In the `Subtitles Plugin` tab __
+
+- You will need to configure these to your liking. Alternatively, you can let Bazarr do all the subtitle work for anime as well.
+
+** In the `Post Processing` Menu **
+__ In the `Post Processing` tab **
+
+| --------------                | ----------------------------------------------------- |  
+| **Scheduled Post-Processing** |                                                       |  
+| Scheduled Postprocessor       | Yes                                                   |  
+| Post Processing Dir           | `/shared/merged/downloads/sabnzbd/medusa`             |  
+| Processing Method             | Move                                                  |  
+
+__ In the `Episode Naming` tab **
+
+| --------------     | ----------------------------------------------------- |  
+| **Episode Naming** |                                                       |  
+| Name Pattern       | `Season %0S/%SN - S%0SE%0E - %EN (%QN)`               |  
+
+- Press 'Save Changes' at the bottom left
+
+** In the `Anime` Menu **
+__ In the `AnimeDB Settings` tab __
+
+| -------------- | ----------------------------------------------------- |  
+| **AniDB**      |                                                       |  
+| Enable         | Yes                                                   |  
+| AniDB Username | Your AniDB Username                                   |  
+| AniDB Password | Your AniDB Password                                   |  
+
+- Press 'Save Changes' at the bottom left
+
+
+** Under the `Shows` menu, click `Add Shows` **
+
+- If you have existing shows, click 'Add Existing Shows' and follow the prompts.
+- My recommended settings for the `Customize Options` tab are as follows:
+
+| --------------                      | ----------------------------------------------------- |  
+| Quality                             | Any                                                   |  
+| Subtitles                           | Yes                                                   |  
+| Status for previously aied episodes | Wanted                                                |  
+| Status for all future episodes      | Wanted                                                |  
+| Season Folders                      | Yes                                                   |  
+| Anime                               | Yes                                                   |  
+
+<a id="headphones"></a>
+#### Headphones
+Headphones is an automatic music downloader.
+
+Todo
+
+
+<a id="lazylibrarian"></a>
+#### LazyLibrarian
+LazyLibrarian is an automatic ebook downloader.
+
+Todo
+
+
+<a id="mylar"></a>
+#### Mylar
+Mylar is an automatic comic book downloader.
+
+Todo
+
+<a id="bazarr"></a>
+#### Bazarr
+Bazarr is an automatic subtitle downloader that is compatible with some of the other services here.
+
+Todo
+
+<a id="telegram-bots"></a>
+#### Telegram Bots
+This stack will eventually include my (Telegram bot)[https://github.com/Makeshift/telegram-sonarr-radarr-bot], that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
+
+<a id="how-do-i-watch-my-media"></a>
+## How do I watch my media?
+Once I finish off the downloader stack, there will be a separate stack available for managing the consumption of the media downloaded by this stack.
+
+I've separated them as I personally run them on different machines. If there's demand, I may provide a combined version that has it all-in-one.
+
+<a id="backing-up--moving"></a>
 ## Backing up / Moving
 
 While it may be easier to just `tar` the entire thing to move it (make sure you `docker-compose down` first to unmount gdrive!), sometimes you only want to back up runtime config. Here's an idea of where things are stored and what you should back up.
@@ -274,6 +469,7 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `shared/caches`       | Contains Rclone's pre-upload cache & disk caches                                                  | Maybe     |
 | `shared/merged`       | Union mount containing Google Drive and merged download directories                                                   | No        |
 
+<a id="debugging"></a>
 ## Debugging
 
 Some debug tools have been included, like [sqlite-web](https://github.com/coleifer/sqlite-web) which can be used to edit many of the sqlite DBs used by some of the services.
@@ -291,7 +487,9 @@ The following editors are available:
 | radarr    | sqlite-web    | `./runtime_conf/radarr/nzbdrone.db`   | 8082  |
 | sonarr    | sqlite-web    | `./runtime_conf/sonarr/sonarr.db`     | 8083  |
 
+<a id="todo"></a>
 ## Todo
+<a id="services"></a>
 ### Services:
 
 - [x] Rclone
@@ -308,11 +506,13 @@ The following editors are available:
 - [ ] Transmission
 - [ ] Jackett
 
+<a id="remote-control"></a>
 ### Remote-Control:
 
 - [ ] Radarr Telegram Bot
 - [ ] Sonarr Telegram Bot
 
+<a id="documentation"></a>
 ### Documentation:
 
 - [x] Readme

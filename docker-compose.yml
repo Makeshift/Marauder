@@ -125,8 +125,46 @@ services:
   #   restart: unless-stopped
   #   entrypoint: "python traktarr.py --config /config/config.json run --run-now"
 
-  # medusa:
-  #   image: linuxserver/medusa
+  medusa:
+    image: linuxserver/medusa
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    depends_on:
+      - rclone
+    labels:
+      - proxy.hosts=medusa.${domain},medusa.local.${domain},medusa.public.${domain}
+      - proxy.port=8081
+    restart: unless-stopped
+    volumes:
+      - ./medusa:/config
+      - ./shared/:/shared:rshared
+      - /etc/localtime:/etc/localtime:ro
+
+  # headphones:
+  #   image: linuxserver/headphones
+  #   network_mode: "host"
+  #   environment:
+  #     TZ: "Europe/London"
+  #     PUID: 65534
+  #     PGID: 65534
+  #     UMASK_SET: 000
+  #   volumes:
+  #     - ./headphones:/config
+  #     - ./shared/:/shared:rshared
+  #     - /etc/localtime:/etc/localtime:ro
+  #   depends_on:
+  #     - rclone
+  #   labels:
+  #     - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
+  #     - proxy.port=8181
+  #   restart: unless-stopped
+
+  # lazylibrarian:
+  #   image: linuxserver/lazylibrarian
   #   network_mode: "host"
   #   environment:
   #     TZ: "Europe/London"
@@ -135,105 +173,86 @@ services:
   #     UMASK_SET: 000
   #   depends_on:
   #     - rclone
-  #   labels:
-  #     - proxy.hosts=medusa.${domain},medusa.local.${domain},medusa.public.${domain}
-  #     - proxy.port=8081
-  #   restart: unless-stopped
   #   volumes:
-  #     - ./medusa:/config
+  #     - ./lazylibrarian:/config
   #     - ./shared/:/shared:rshared
   #     - /etc/localtime:/etc/localtime:ro
-
-#  headphones:
-#    image: linuxserver/headphones
-#    network_mode: "host"
-#    environment:
-#      TZ: "Europe/London"
-#      PUID: 65534
-#      PGID: 65534
-#      UMASK_SET: 000
-#    volumes:
-#      - ./headphones:/config
-#      - ./shared/:/shared:rshared
-#      - /etc/localtime:/etc/localtime:ro
-#    depends_on:
-#      - rclone
-#    labels:
-#      - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
-#      - proxy.port=8181
-#    restart: unless-stopped
-
-#  lazylibrarian:
-#    image: linuxserver/lazylibrarian
-#    network_mode: "host"
-#    environment:
-#      TZ: "Europe/London"
-#      PUID: 65534
-#      PGID: 65534
-#      UMASK_SET: 000
-#    depends_on:
-#      - rclone
-#    volumes:
-#      - ./lazylibrarian:/config
-#      - ./shared/:/shared:rshared
-#      - /etc/localtime:/etc/localtime:ro
-#    labels:
-#      - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
-#      - proxy.port=5299
-#    restart: unless-stopped
-
-#  mylar:
-#    image: linuxserver/mylar
-#    network_mode: "host"
-#    environment:
-#      TZ: "Europe/London"
-#      PUID: 65534
-#      PGID: 65534
-#      UMASK_SET: 000
-#    depends_on:
-#      - rclone
-#    volumes:
-#      - ./mylar:/config
-#      - ./shared/:/shared:rshared
-#      - /etc/localtime:/etc/localtime:ro
-#    labels:
-#      - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
-#      - proxy.port=8090
-#    restart: unless-stopped
-
-#  bazarr:
-#    image: linuxserver/bazarr
-#    network_mode: "host"
-#    environment:
-#      TZ: "Europe/London"
-#      PUID: 65534
-#      PGID: 65534
-#      UMASK_SET: 000
-#    depends_on:
-#      - rclone
-#    volumes:
-#      - ./bazarr:/config
-#      - ./shared/:/shared:rshared
-#      - /etc/localtime:/etc/localtime:ro
-#    labels:
-#      - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
-#      - proxy.port=6767
-#    restart: unless-stopped
-
-  # radarr_bot:
-  #   image: itsmegb/telegram-radarr-bot
+  #   labels:
+  #     - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
+  #     - proxy.port=5299
   #   restart: unless-stopped
+
+  # mylar:
+  #   image: linuxserver/mylar
+  #   network_mode: "host"
+  #   environment:
+  #     TZ: "Europe/London"
+  #     PUID: 65534
+  #     PGID: 65534
+  #     UMASK_SET: 000
   #   depends_on:
-  #     - radarr
-  
+  #     - rclone
   #   volumes:
-  #     - ./radarr_bot/config:/config
-
-  # sonarr_bot:
-  #   image: subzero79/docker-telegram-sonarr-bot
+  #     - ./mylar:/config
+  #     - ./shared/:/shared:rshared
+  #     - /etc/localtime:/etc/localtime:ro
+  #   labels:
+  #     - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
+  #     - proxy.port=8090
   #   restart: unless-stopped
+
+  # bazarr:
+  #   image: linuxserver/bazarr
+  #   network_mode: "host"
+  #   environment:
+  #     TZ: "Europe/London"
+  #     PUID: 65534
+  #     PGID: 65534
+  #     UMASK_SET: 000
   #   depends_on:
+  #     - rclone
   #     - sonarr
-  
+  #     - radarr
   #   volumes:
-  #     - ./sonarr_bot/config:/config
+  #     - ./bazarr:/config
+  #     - ./shared/:/shared:rshared
+  #     - /etc/localtime:/etc/localtime:ro
+  #   labels:
+  #     - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
+  #     - proxy.port=6767
+  #   restart: unless-stopped
+
+  # plex:
+  #   image: plexinc/pms-docker:plexpass
+  #   network_mode: "host"
+  #   restart: unless-stopped
+  #   environment:
+  #     - TZ=Europe/London
+  #     - PLEX_CLAIM=${PLEX_CLAIM}
+  #   labels:
+  #     - proxy.hosts=plex.${domain},plex.local.${domain},plex.public.${domain}
+  #     - proxy.port=32400
+  #     - proxy.template=/plex.vhost
+  #   volumes:
+  #     - ./runtime_config/plex/:/config/
+  #     - ./shared/:/shared/:rshared
+  #   depends_on:
+  #     - rclone
+
+    # radarr_bot:
+    #   image: itsmegb/telegram-radarr-bot
+    #   restart: unless-stopped
+    #   depends_on:
+    #     - radarr
+    
+    #   volumes:
+    #     - ./radarr_bot/config:/config
+
+    # sonarr_bot:
+    #   image: subzero79/docker-telegram-sonarr-bot
+    #   restart: unless-stopped
+    #   depends_on:
+    #     - sonarr
+    
+    #   volumes:
+    #     - ./sonarr_bot/config:/config
