@@ -144,24 +144,24 @@ services:
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
 
-  # headphones:
-  #   image: linuxserver/headphones
-  #   network_mode: "host"
-  #   environment:
-  #     TZ: "Europe/London"
-  #     PUID: 65534
-  #     PGID: 65534
-  #     UMASK_SET: 000
-  #   volumes:
-  #     - ./runtime_conf/headphones:/config
-  #     - ./shared/:/shared:rshared
-  #     - /etc/localtime:/etc/localtime:ro
-  #   depends_on:
-  #     - rclone
-  #   labels:
-  #     - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
-  #     - proxy.port=8181
-  #   restart: unless-stopped
+  headphones:
+    image: linuxserver/headphones
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    volumes:
+      - ./runtime_conf/headphones:/config
+      - ./shared/:/shared:rshared
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - rclone
+    labels:
+      - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
+      - proxy.port=8181
+    restart: unless-stopped
 
   # lazylibrarian:
   #   image: linuxserver/lazylibrarian

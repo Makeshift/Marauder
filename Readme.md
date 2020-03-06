@@ -18,14 +18,20 @@ This setup has one gigantic shared folder named `shared`. It's set up with Rclon
 ## FAQ
 
 **Q: Why are most of the containers on the host network?**
+
 **A:** You'd be surprised how much CPU a bandwith-heavy container can use using the Docker proxy (especially for something like Sabnzbd). It just makes sense to allow the heavy stuff to bridge straight to the host, which also comes with its own set of connectivity challenges. Also, each open port would be a proxy process, so having a large range for torrenting would suck.
 
 **Q: How do I disable some of the services I don't want/need?**
+
 **A:** The easiest way would probably choose the services you want when you're starting the stack. Some of them have dependants, so if you choose `sonarr` you will get `rclone` by default as well, but you can customise which ones you want:
 ```bash
 docker compose up -d sonarr radarr headphones transmission
 ```
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
+
+**Q: There are some extra settings in the service interface that you don't mention! What do I do?!
+
+**A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, this doc would be even longer than it already is.
 
 ## Table of Contents
 <!-- MarkdownTOC autolink="true" autoanchor="true" -->
@@ -335,9 +341,8 @@ Medusa is another TV series downloader, but happens to be slightly better at ani
 | Send .nzb files to                      | SABnzbd                                               |  
 | SABnzbd server URL                      | `localhost:8080`                                      |  
 | Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
-| Use SABnzbd category                    | anime                                                 |  
-| Use sabnzbd category (backlog episodes) | anime                                                 |  
-| Setting Name                            | Value                                                 |  
+| Use SABnzbd category                    | medusa                                                |  
+| Use sabnzbd category (backlog episodes) | medusa                                                |  
 
 _In the `Torrent Search` tab_
 
@@ -431,8 +436,69 @@ _In the `AnimeDB Settings` tab_
 #### Headphones
 Headphones is an automatic music downloader.
 
-Todo
+- Navigate to the web UI on port `8181`
+- Navigate to the `Settings` page (Cog at the top right)
 
+**In the `Download Settings` Tab**
+
+| Setting Name          | Value                                                 |  
+| --------------        | ----------------------------------------------------- |  
+| **Usenet**              |                                                       |  
+| SABnzbd Host | `/shared/merged/Media/Anime`                          |  
+| SABnzbd Host                      | `localhost:8080`                                      |  
+| Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
+| SABnzbd category                    | headphones                                                 |  
+| Music Download Directory | `/shared/merged/downloads/sabnzbd/headphones` |
+
+- Click 'Save Changes' at the bottom left
+
+**In the `Search Providers` tab**
+
+| Setting Name             | Value                                                 |  
+| --------------           | ----------------------------------------------------- |  
+| **NZBs**                 |                                                       |  
+| Custom Newznab Providers | Ticked                                                |  
+| Newznab Host             | `http://localhost:5076`                               |  
+| Newznab API              | The key you noted down in the NZBHydra section        |  
+
+**In the `Quality & Post Processing` tab**
+
+| Setting Name                         | Value                                                 |  
+| --------------                       | ----------------------------------------------------- |  
+| **Quality**                          |                                                       |  
+| Highest Quality including lossless   | Ticked (Optional)                                     |  
+| **Post-Processing**                  |                                                       |  
+| Move Downloads to Destination Folder | Ticked                                                |  
+| Replace existing folders?            | Ticked (Optional)                                     |  
+| Keep original folder (i.e copy)      | Ticked (Optional)                                     |  
+| Rename Files                         | Ticked (Optional)                                     |  
+| Correct metadata                     | Ticked (Optional)                                     |  
+| Delete leftover files                | Ticked (Optional)                                     |  
+| Keep original nfo                    | Ticked (Optional)                                     |  
+| Embed lyrics                         | Ticked (Optional)                                     |  
+| Embed album art in each file         | Ticked (Optional)                                     |  
+| Add album art jpeg to album folder   | Ticked (Optional)                                     |  
+| Destination Directory                | `/shared/merged/Media/Music`                          |  
+
+- Click 'Save Changes' at the bottom left
+
+**In the `Advanced Settings` tab**
+| Setting Name                         | Value                                                 |  
+| --------------                       | ----------------------------------------------------- |  
+| **Renaming Options**                          |                                                       |  
+| Folder Format   | `$Artist - $Album ($Year)`                                     |  
+| File Format | `$Track - $Title` |
+| **Miscellaneous** ||
+| Automatically include extras when adding an artist | Single, Ep, Compilation |
+| Only include 'official' extras | Ticked |
+| Automatically mark all albums as wanted | Ticked |
+
+- Click 'Save Changes' at the bottom left
+
+**In the `Manage` Menu (At the top)**
+- You can scan your current collection here.
+
+**In the `Search Providers` tab**
 
 <a id="lazylibrarian"></a>
 #### LazyLibrarian
