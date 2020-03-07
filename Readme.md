@@ -528,27 +528,90 @@ LazyLibrarian is an automatic ebook downloader.
 
 **In the `Processing` tab**
 
-| Setting Name          | Value                                                 |  
-| --------------        | ----------------------------------------------------- |  
-| **Status** |                                                       |  
-| Missing Book Status                  | Wanted                                             |  
-| New Book Status | Wanted |
-| New AudioBook Status | Skipped (Optional) |
-| New Authors eBook Status | Skipped |
-| New Authors AudioBook Status | Skipped | 
-| New Series Status | Wanted |
-| **Folders** | |
-| Download Directories | `/shared/merged/downloads/sabnzbd/lazylibrarian` |
-| eBook Library Folder | `/shared/merged/Media/Books/` |
-| AudioBook Library Folder | `/shared/merged/Media/Audiobooks` |
-| **Miscellaneous** | |
-| Rename existing books on libraryscan | Ticked |
+| Setting Name                         | Value                                                 |  
+| --------------                       | ----------------------------------------------------- |  
+| **Status**                           |                                                       |  
+| Missing Book Status                  | Wanted                                                |  
+| New Book Status                      | Wanted                                                |  
+| New AudioBook Status                 | Skipped (Optional)                                    |  
+| New Authors eBook Status             | Skipped                                               |  
+| New Authors AudioBook Status         | Skipped                                               |  
+| New Series Status                    | Wanted                                                |  
+| **Folders**                          |                                                       |  
+| Download Directories                 | `/shared/merged/downloads/sabnzbd/lazylibrarian`      |  
+| eBook Library Folder                 | `/shared/merged/Media/Books/`                         |  
+| AudioBook Library Folder             | `/shared/merged/Media/Audiobooks`                     |  
+| **Miscellaneous**                    |                                                       |  
+| Rename existing books on libraryscan | Ticked                                                |  
+
+- Click 'Save Changes' at the bottom left
 
 <a id="mylar"></a>
 #### Mylar
 Mylar is an automatic comic book downloader.
 
-Todo
+- Navigate to the web UI on port `8090`
+- Navigate to the `Config` page (Cog at the top right)
+
+**In the `Web Interface` tab**
+
+- Note that Mylar requires a ComicVine account and [API key](https://comicvine.gamespot.com/api/) for searching to work.
+
+| Setting Name        | Value                                                       |  
+| --------------      | -----------------------------------------------------       |  
+| **API**             |                                                             |  
+| ComicVine API Key   | Can be obtained [here](https://comicvine.gamespot.com/api/) |  
+| **Comic Location**  |                                                             |  
+| Comic Location Path | `/shared/merged/Media/Comics`                               |  
+
+**In the `Download settings` tab**
+
+| Setting Name                       | Value                                                 |  
+| --------------                     | ----------------------------------------------------- |  
+| **Usenet**                         |                                                       |  
+| Sabnzbd                            | Ticked                                                |  
+| SABnzbd Host                       | `localhost`                                           |  
+| SABnzbd Port                       | `8080`                                                |  
+| Sabnzbd API key                    | The API key you saved from the SABnzbd section        |  
+| SABnzbd category                   | mylar                                                 |  
+| Enable Completed Download Handling | Ticked                                                |  
+
+
+**In the `Search providers` tab**
+
+| Setting Name   | Value                                                 |  
+| -------------- | ----------------------------------------------------- |  
+| **Newznab**    |                                                       |  
+| Use Newznab    | Ticked (Click 'Add Newznab')                          |  
+| Newznab Name   | NZBHydra2                                             |  
+| Newznab Host   | `http://localhost:5076`                               |  
+| Newznab API    | The key you noted down in the NZBHydra section        |  
+
+**In the `Quality & Post Processing` tab**
+
+| Setting Name                                  | Value                                                 |  
+| --------------                                | ----------------------------------------------------- |  
+| **Post-Processing**                           |                                                       |  
+| Enable Post-Processing                        | Ticked                                                |  
+| **Metadata Tagging**                          |                                                       |  
+| Enable Metadata Tagging                       | Ticked                                                |  
+| Write ComicRack (cr) tags (ComicInfo.xml)     | Ticked                                                |  
+| Write ComicBookLover (Cbl) tags (zip comment) | Ticked                                                |  
+| Overwrite existing cbz tags (if they exist)   | Ticked                                                |  
+| **Failed Download Handling**                  |                                                       |  
+| Enabled Failed Download Handling              | Ticked                                                |  
+| Enable Automatic-Retry for Failed Downloads   | Ticked                                                |  
+
+**In the `Advanced Settings` tab**
+
+| Setting Name   | Value                                                 |  
+| -------------- | ----------------------------------------------------- |  
+| **Miscellaneous**    |                                                       |  
+| Automatically Mark All Issues as Wanted    | Ticked                          |  
+| Place cover.jpg into Comic Directory for each comic | Ticked |
+| Write cvinfo into each comic directory | Ticked |
+
+- Click 'Save Changes' at the bottom left
 
 <a id="bazarr"></a>
 #### Bazarr
