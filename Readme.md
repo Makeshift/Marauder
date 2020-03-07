@@ -483,29 +483,66 @@ Headphones is an automatic music downloader.
 - Click 'Save Changes' at the bottom left
 
 **In the `Advanced Settings` tab**
-| Setting Name                         | Value                                                 |  
-| --------------                       | ----------------------------------------------------- |  
-| **Renaming Options**                          |                                                       |  
-| Folder Format   | `$Artist - $Album ($Year)`                                     |  
-| File Format | `$Track - $Title` |
-| **Miscellaneous** ||
-| Automatically include extras when adding an artist | Single, Ep, Compilation |
-| Only include 'official' extras | Ticked |
-| Automatically mark all albums as wanted | Ticked |
+
+| Setting Name                                       | Value                                                 |  
+| --------------                                     | ----------------------------------------------------- |  
+| **Renaming Options**                               |                                                       |  
+| Folder Format                                      | `$Artist - $Album ($Year)`                            |  
+| File Format                                        | `$Track - $Title`                                     |  
+| **Miscellaneous**                                  |                                                       |  
+| Automatically include extras when adding an artist | Single, Ep, Compilation                               |  
+| Only include 'official' extras                     | Ticked                                                |  
+| Automatically mark all albums as wanted            | Ticked                                                |  
 
 - Click 'Save Changes' at the bottom left
 
 **In the `Manage` Menu (At the top)**
 - You can scan your current collection here.
 
-**In the `Search Providers` tab**
-
 <a id="lazylibrarian"></a>
 #### LazyLibrarian
 LazyLibrarian is an automatic ebook downloader.
 
-Todo
+- Navigate to the web UI on port `5299`
+- Navigate to the `Config` page
 
+**In the `Downloaders` tab**
+
+| Setting Name         | Value                                                 |  
+| --------------       | ----------------------------------------------------- |  
+| **Usenet**           |                                                       |  
+| Use Sabnzbd+         | Ticked                                                |  
+| SABnzbd Host         | `localhost`                                           |  
+| SABnzbd Port         | `8080`                                                |  
+| Sabnzbd API key      | The API key you saved from the SABnzbd section        |  
+| Use SABnzbd category | lazylibrarian                                         |  
+
+**In the `Providers` tab**
+
+| Setting Name          | Value                                                 |  
+| --------------        | ----------------------------------------------------- |  
+| **Newznab Providers** |                                                       |  
+| Name                  | NZBHydra2                                             |  
+| Newznab URL #0        | `http://localhost:5076`                               |  
+| Newznab API #0        | The key you noted down in the NZBHydra section        |  
+
+**In the `Processing` tab**
+
+| Setting Name          | Value                                                 |  
+| --------------        | ----------------------------------------------------- |  
+| **Status** |                                                       |  
+| Missing Book Status                  | Wanted                                             |  
+| New Book Status | Wanted |
+| New AudioBook Status | Skipped (Optional) |
+| New Authors eBook Status | Skipped |
+| New Authors AudioBook Status | Skipped | 
+| New Series Status | Wanted |
+| **Folders** | |
+| Download Directories | `/shared/merged/downloads/sabnzbd/lazylibrarian` |
+| eBook Library Folder | `/shared/merged/Media/Books/` |
+| AudioBook Library Folder | `/shared/merged/Media/Audiobooks` |
+| **Miscellaneous** | |
+| Rename existing books on libraryscan | Ticked |
 
 <a id="mylar"></a>
 #### Mylar

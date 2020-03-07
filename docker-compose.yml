@@ -163,43 +163,43 @@ services:
       - proxy.port=8181
     restart: unless-stopped
 
-  # lazylibrarian:
-  #   image: linuxserver/lazylibrarian
-  #   network_mode: "host"
-  #   environment:
-  #     TZ: "Europe/London"
-  #     PUID: 65534
-  #     PGID: 65534
-  #     UMASK_SET: 000
-  #   depends_on:
-  #     - rclone
-  #   volumes:
-  #     - ./runtime_conf/lazylibrarian:/config
-  #     - ./shared/:/shared:rshared
-  #     - /etc/localtime:/etc/localtime:ro
-  #   labels:
-  #     - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
-  #     - proxy.port=5299
-  #   restart: unless-stopped
+  lazylibrarian:
+    image: linuxserver/lazylibrarian
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    depends_on:
+      - rclone
+    volumes:
+      - ./runtime_conf/lazylibrarian:/config
+      - ./shared/:/shared:rshared
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
+      - proxy.port=5299
+    restart: unless-stopped
 
-  # mylar:
-  #   image: linuxserver/mylar
-  #   network_mode: "host"
-  #   environment:
-  #     TZ: "Europe/London"
-  #     PUID: 65534
-  #     PGID: 65534
-  #     UMASK_SET: 000
-  #   depends_on:
-  #     - rclone
-  #   volumes:
-  #     - ./runtime_conf/mylar:/config
-  #     - ./shared/:/shared:rshared
-  #     - /etc/localtime:/etc/localtime:ro
-  #   labels:
-  #     - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
-  #     - proxy.port=8090
-  #   restart: unless-stopped
+  mylar:
+    image: linuxserver/mylar
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    depends_on:
+      - rclone
+    volumes:
+      - ./runtime_conf/mylar:/config
+      - ./shared/:/shared:rshared
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
+      - proxy.port=8090
+    restart: unless-stopped
 
   # bazarr:
   #   image: linuxserver/bazarr
