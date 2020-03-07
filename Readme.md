@@ -45,7 +45,9 @@ Alternatively, you can also just comment out the services you don't want in the 
     - [rclone & Env Vars](#rclone--env-vars)
         - [Top-Level](#top-level)
         - [Rclone](#rclone)
-    - [Starting the Stack](#starting-the-stack)
+    - [Initial Starting of the Stacks](#initial-starting-of-the-stacks)
+        - [Starting the Downloader Stack](#starting-the-downloader-stack)
+        - [Starting the Watching Stack](#starting-the-watching-stack)
         - [Pre-Warming Rclone \(Optional\)](#pre-warming-rclone-optional)
     - [Service Configuration](#service-configuration)
         - [NZBHydra2](#nzbhydra2)
@@ -60,7 +62,6 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Mylar](#mylar)
         - [Bazarr](#bazarr)
         - [Telegram Bots](#telegram-bots)
-- [How do I watch my media?](#how-do-i-watch-my-media)
 - [Backing up / Moving](#backing-up--moving)
 - [Debugging](#debugging)
 - [Todo](#todo)
@@ -122,10 +123,14 @@ Remember that you *do not* need to escape the variables in env files.
 cp rclone.env.template rclone.env
 ```
 
-<a id="starting-the-stack"></a>
-### Starting the Stack
+<a id="initial-starting-of-the-stacks"></a>
+### Initial Starting of the Stacks
 
-Starting the stack should be as simple as
+<a id="starting-the-downloader-stack"></a>
+#### Starting the Downloader Stack
+
+The default `docker-compose.yml` file is the downloader stack. Starting the stack should be as simple as
+
 ```bash
 docker-compose up -d ; docker-compose logs -f
 ```
@@ -136,6 +141,15 @@ In case of a problem, you can run
 docker-compose down
 ```
 to clean up the stack. This will not delete any configuration.
+
+<a id="starting-the-watching-stack"></a>
+#### Starting the Watching Stack
+
+The watcher stack `plex-compose.yml` is used to deploy the Plex stack with its own Rclone. This is so they can be deployed on different machines and reduce the amount of competing the stacks have to do. 
+
+However, it's still perfectly possible to run both stacks on the same machine.
+
+TODO
 
 <a id="pre-warming-rclone-optional"></a>
 #### Pre-Warming Rclone (Optional)
@@ -697,26 +711,21 @@ Bazarr is an automatic subtitle downloader that is compatible with some of the o
 #### Telegram Bots
 This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
 
-<a id="how-do-i-watch-my-media"></a>
-## How do I watch my media?
-Once I finish off the downloader stack, there will be a separate stack available for managing the consumption of the media downloaded by this stack.
-
-I've separated them as I personally run them on different machines. If there's demand, I may provide a combined version that has it all-in-one.
-
 <a id="backing-up--moving"></a>
 ## Backing up / Moving
 
 While it may be easier to just `tar` the entire thing to move it (make sure you `docker-compose down` first to unmount gdrive!), sometimes you only want to back up runtime config. Here's an idea of where things are stored and what you should back up.
 
-| File                  | Description                                                                                                           | Back up?  |
-|---------------------- |---------------------------------------------------------------------------------------------------------------------- |---------- |
-| `.env`                | Contains env vars used in the compose file itself                                                                     | Yes       |
-| `rclone.env`         | rclone required for Rclone to run                                                                                    | Yes       |
-| `rclone.conf`         | If you've made any tweaks to the mount settings, you might want to back this up                                       | Maybe     |
-| `runtime_conf/`       | Contains all the service-specific config generated after first startup and during use                                 | Yes       |
-| `shared/separate`     | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)  | Maybe     |
-| `shared/caches`       | Contains Rclone's pre-upload cache & disk caches                                                  | Maybe     |
-| `shared/merged`       | Union mount containing Google Drive and merged download directories                                                   | No        |
+| File                   | Description                                                                                                            | Back up?    |       
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------- | ----------  |       
+| `.env`                 | Contains env vars used in the compose file itself                                                                      | Yes         |       
+| `rclone.env`           | rclone required for Rclone to run                                                                                      | Yes         |       
+| `rclone.conf`          | If you've made any tweaks to the mount settings, you might want to back this up                                        | Maybe       |       
+| `runtime_conf/`        | Contains all the service-specific config generated after first startup and during use                                  | Yes         |       
+| `shared/separate`      | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)   | Maybe       |       
+| `shared/caches`        | Contains Rclone's pre-upload cache & disk caches                                                                       | Maybe       |
+| `shared/merged`        | Union mount containing Google Drive and merged download directories                                                    | No          |       
+| `shared/plex`          | Mount containing Google Drive for Plex specifically                                                                    | No          |       
 
 <a id="debugging"></a>
 ## Debugging
