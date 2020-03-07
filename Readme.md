@@ -33,12 +33,16 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, this doc would be even longer than it already is.
 
+**Q: Why is there a custom version of Traktarr?**
+
+**A:** Traktarr times out listing movies after 30 seconds. I edit it so it doesn't. My library is big.
+
 ## Table of Contents
 <!-- MarkdownTOC autolink="true" autoanchor="true" -->
 
 - [Configuration and deployment](#configuration-and-deployment)
     - [Pre-Setup](#pre-setup)
-    - [Secrets & Env Vars](#secrets--env-vars)
+    - [rclone & Env Vars](#rclone--env-vars)
         - [Top-Level](#top-level)
         - [Rclone](#rclone)
     - [Starting the Stack](#starting-the-stack)
@@ -86,8 +90,8 @@ You will need:
 git clone github.com/Makeshift/Media-Compose-Stack
 ```
 
-<a id="secrets--env-vars"></a>
-### Secrets & Env Vars
+<a id="rclone--env-vars"></a>
+### rclone & Env Vars
 <a id="top-level"></a>
 #### Top-Level
 
@@ -115,7 +119,7 @@ There are several env vars required to get Rclone to work. Here are the vars and
 Remember that you *do not* need to escape the variables in env files.
 
 ```bash
-cp rclone/secrets.env.template rclone/secrets.env
+cp rclone.env.template rclone.env
 ```
 
 <a id="starting-the-stack"></a>
@@ -314,7 +318,20 @@ If you have existing series, click 'Import'. If not, click 'Add New' and follow 
 #### Traktarr
 Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
-Todo
+- First, copy the file `traktarr.template.json` to `traktarr.json`. 
+ 
+**Note:** My Traktarr settings are probably *very* extreme for most people. You will likely need to edit these.
+
+- Update the following fields in the JSON object:
+
+| Setting Key   | Value                                                 |
+|-------------- |-----------------------------------------------------  |
+| radarr.api_key          |     Found in Radarr Settings -> General -> Security -> API Key |
+| sonarr.api_key | Found in Sonarr Settings -> General -> Security -> API Key |
+| omdb.api_key | You can generate a key [here](http://www.omdbapi.com/apikey.aspx) |
+| trakt.client_id <br> trakt.client_secret | You can generate these [here](https://trakt.tv/oauth/applications/new) |
+
+- You will need to restart the container for it to pick up the changes: `docker-compose restart traktarr`
 
 <a id="medusa"></a>
 #### Medusa
@@ -604,12 +621,12 @@ Mylar is an automatic comic book downloader.
 
 **In the `Advanced Settings` tab**
 
-| Setting Name   | Value                                                 |  
-| -------------- | ----------------------------------------------------- |  
-| **Miscellaneous**    |                                                       |  
-| Automatically Mark All Issues as Wanted    | Ticked                          |  
-| Place cover.jpg into Comic Directory for each comic | Ticked |
-| Write cvinfo into each comic directory | Ticked |
+| Setting Name                                        | Value                                                 |  
+| --------------                                      | ----------------------------------------------------- |  
+| **Miscellaneous**                                   |                                                       |  
+| Automatically Mark All Issues as Wanted             | Ticked                                                |  
+| Place cover.jpg into Comic Directory for each comic | Ticked                                                |  
+| Write cvinfo into each comic directory              | Ticked                                                |  
 
 - Click 'Save Changes' at the bottom left
 
@@ -617,7 +634,64 @@ Mylar is an automatic comic book downloader.
 #### Bazarr
 Bazarr is an automatic subtitle downloader that is compatible with some of the other services here.
 
-Todo
+- Navigate to the web UI on port `6767`
+- Follow the wizard to set up using the below settings
+
+**In the `General` tab**
+
+| Setting Name                   | Value                                                 |  
+| --------------                 | ----------------------------------------------------- |  
+| **Path Mappings For TV Shows** |                                                       |  
+| **Path for Sonarr**            | **Path for Bazarr**                                   |  
+| `/shared/merged/Media/TV`      | `/shared/merged/Media/TV`                             |  
+| **Path Mappings for Movies**   |                                                       |  
+| **Path for Radarr**            | **Path for Bazarr**                                   |  
+| `/shared/merged/Media/Movies`  | `/shared/merged/Media/Movies`                         |  
+
+- Click 'Next'
+
+**In the `Subtitles` tab**
+
+| Setting Name                | Value                                                 |  
+| --------------              | ----------------------------------------------------- |  
+| **Subtitles Providers**     | This section will have to be configured by you.       |  
+| **Subtitles Languages**     |                                                       |  
+| Enabled Languages           | Optional                                              |  
+| **Series default settings** |                                                       |  
+| Default Enabled             | Yes                                                   |  
+| Languages                   | Optional                                              |  
+| **Movie Default Settings**  |                                                       |  
+| Default Enabled             | Yes                                                   |  
+| Languages                   | Optional                                              |  
+
+- Click 'Next'
+
+**In the `Sonarr` tab**
+
+| Setting Name            | Value                                                      |  
+| --------------          | -----------------------------------------------------      |  
+| **Connection Settings** |                                                            |  
+| Use Sonarr              | Yes                                                        |  
+| Hostname or IP Address  | localhost                                                  |  
+| Listening Port          | 8989                                                       |  
+| API Key                 | Found in Sonarr Settings -> General -> Security -> API Key |  
+
+- Click 'Test'
+- Click 'Next'
+
+**In the `Radarr` tab**
+
+| Setting Name            | Value                                                      |  
+| --------------          | -----------------------------------------------------      |  
+| **Connection Settings** |                                                            |  
+| Use Radarr              | Yes                                                        |  
+| Hostname or IP Address  | localhost                                                  |  
+| Listening Port          | 7878                                                       |  
+| API Key                 | Found in Radarr Settings -> General -> Security -> API Key |  
+
+- Click 'Test'
+- Click 'Save'
+- Click the 'Here' restart prompt
 
 <a id="telegram-bots"></a>
 #### Telegram Bots
@@ -637,8 +711,8 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | File                  | Description                                                                                                           | Back up?  |
 |---------------------- |---------------------------------------------------------------------------------------------------------------------- |---------- |
 | `.env`                | Contains env vars used in the compose file itself                                                                     | Yes       |
-| `rclone/secrets.env`  | Secrets required for Rclone to run                                                                                    | Yes       |
-| `rclone/rclone.conf`  | If you've made any tweaks to the mount settings, you might want to back this up                                       | Maybe     |
+| `rclone.env`         | rclone required for Rclone to run                                                                                    | Yes       |
+| `rclone.conf`         | If you've made any tweaks to the mount settings, you might want to back this up                                       | Maybe     |
 | `runtime_conf/`       | Contains all the service-specific config generated after first startup and during use                                 | Yes       |
 | `shared/separate`     | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)  | Maybe     |
 | `shared/caches`       | Contains Rclone's pre-upload cache & disk caches                                                  | Maybe     |
@@ -672,12 +746,12 @@ The following editors are available:
 - [x] Radarr
 - [x] Sonarr
 - [x] Sabnzbd
-- [ ] Traktarr
-- [ ] Medusa
-- [ ] Headphones
-- [ ] LazyLibrarian
-- [ ] Mylar
-- [ ] Bazarr
+- [x] Traktarr
+- [x] Medusa
+- [x] Headphones
+- [x] LazyLibrarian
+- [x] Mylar
+- [x] Bazarr
 - [ ] Transmission
 - [ ] Jackett
 
@@ -692,17 +766,17 @@ The following editors are available:
 
 - [x] Readme
 - [x] Env Setup
-- [x] Secrets
+- [x] rclone
 - [x] NZBHydra2
 - [x] Radarr
 - [x] Sonarr
 - [x] Sabnzbd
-- [ ] Traktarr
-- [ ] Medusa
-- [ ] Headphones
-- [ ] LazyLibrarian
-- [ ] Mylar
-- [ ] Bazarr
+- [x] Traktarr
+- [x] Medusa
+- [x] Headphones
+- [x] LazyLibrarian
+- [x] Mylar
+- [x] Bazarr
 - [ ] Radarr Telegram Bot
 - [ ] Sonarr Telegram Bot
 - [x] Backing Up

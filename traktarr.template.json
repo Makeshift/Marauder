@@ -1,0 +1,100 @@
+{
+        "core": {
+            "debug": false
+        },
+        "notifications": {
+            "verbose": true
+        },
+        "automatic": {
+            "movies": {
+                "interval": 24,
+                "anticipated": 20,
+                "trending": 30,
+                "popular": 30,
+                "boxoffice": 10,
+                "lists": {
+                    "https://trakt.tv/users/redouaaane/lists/rolling-stone-s-100-greatest-tv-shows-of-all-time": 500,
+                    "https://trakt.tv/users/lish408/lists/rotten-tomatoes-best-of-2019": 500,
+                    "https://trakt.tv/users/andreofgyn/lists/2019-golden-globe-nominees-winners": 500,
+                    "https://trakt.tv/users/andreofgyn/lists/2019-oscar-nominees-winners": 500,
+                    "https://trakt.tv/users/justin/lists/imdb-top-rated-movies": 500,
+                    "https://trakt.tv/users/ruben_vw_/lists/star-wars-canon-timeline": 500,
+                    "https://trakt.tv/users/movistapp/lists/walt-disney-animated-feature-films": 500,
+                    "https://trakt.tv/users/tetharion/lists/worlds-of-dc": 500,
+                    "https://trakt.tv/users/donxy/lists/marvel-cinematic-universe": 500,
+                    "https://trakt.tv/users/thefork/lists/academy-awards-best-picture-winners": 500,
+                    "https://trakt.tv/users/jay-greene/lists/reddit-top-250-movies-2015-2019": 500
+                }
+            },
+            "shows": {
+                "interval": 24,
+                "anticipated": 10,
+                "trending": 10,
+                "popular": 10,
+                "lists": {
+                    "https://trakt.tv/users/redouaaane/lists/rolling-stone-s-100-greatest-tv-shows-of-all-time": 500,
+                    "https://trakt.tv/users/lish408/lists/rotten-tomatoes-best-of-2019": 500,
+                    "https://trakt.tv/users/andreofgyn/lists/2019-golden-globe-nominees-winners": 500,
+                    "https://trakt.tv/users/andreofgyn/lists/2019-oscar-nominees-winners": 500,
+                    "https://trakt.tv/users/justin/lists/imdb-top-rated-movies": 500,
+                    "https://trakt.tv/users/ruben_vw_/lists/star-wars-canon-timeline": 500,
+                    "https://trakt.tv/users/movistapp/lists/walt-disney-animated-feature-films": 500,
+                    "https://trakt.tv/users/tetharion/lists/worlds-of-dc": 500,
+                    "https://trakt.tv/users/donxy/lists/marvel-cinematic-universe": 500,
+                    "https://trakt.tv/users/thefork/lists/academy-awards-best-picture-winners": 500,
+                    "https://trakt.tv/users/jay-greene/lists/reddit-top-250-movies-2015-2019": 500
+                }
+            }
+        },
+        "filters": {
+            "shows": {
+                "disabled_for": [],
+                "allowed_countries": ["us", "gb", "ca"],
+                "allowed_languages": ["en"],
+                "blacklisted_genres": ["talk-show", "news", "sports", "biography", "eastern", "sporting-event"],
+                "blacklisted_networks": [],
+                "blacklisted_min_runtime": 10,
+                "blacklisted_max_runtime": 0,
+                "blacklisted_min_year": 2000,
+                "blacklisted_max_year": 2020,
+                "blacklisted_title_keywords": [],
+                "blacklisted_tvdb_ids": []
+            },
+            "movies": {
+                "disabled_for": [],
+                "allowed_countries": ["us", "gb", "ca"],
+                "allowed_languages": ["en"],
+                "blacklisted_genres": ["eastern", "fan-film", "indie", "sporting-event", "sports"],
+                "blacklisted_min_runtime": 60,
+                "blacklisted_max_runtime": 0,
+                "blacklisted_min_year": 1900,
+                "blacklisted_max_year": 2020,
+                "blacklisted_title_keywords": [],
+                "blacklisted_tmdb_ids": [],
+                "rotten_tomatoes": ""
+            }
+        },
+        "radarr": {
+            "api_key": "<your details here>",
+            "minimum_availability": "released",
+            "quality": "Any",
+            "root_folder": "/shared/merged/Media/Movies/",
+            "url": "http://localhost:7878/"
+        },
+        "sonarr": {
+            "api_key": "<your details here>",
+            "language": "English",
+            "quality": "Any",
+            "root_folder": "/shared/merged/Media/TV/",
+            "tags": {
+            },
+            "url": "http://localhost:8989"
+        },
+        "omdb": {
+            "api_key": "<your details here>"
+        },
+        "trakt": {
+            "client_id": "<your details here>",
+            "client_secret": "<your details here>"
+        }
+    }

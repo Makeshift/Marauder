@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     network_mode: "host"
     build: 
-      context: ./rclone/build/
+      context: ./rclone/
     security_opt:
       - apparmor:unconfined
     devices:
@@ -38,7 +38,7 @@ services:
         --multi-thread-streams 8                \
         --no-update-modtime"
     env_file:
-      - ./rclone/secrets.env
+      - ./rclone.env
     cap_add:
       - SYS_ADMIN
     volumes:
@@ -117,13 +117,20 @@ services:
       - ./shared/separate/downloads/:/shared/merged/downloads/:rshared
     restart: unless-stopped
 
-  # traktarr:
-  #   image: cloudb0x/traktarr
-  #   network_mode: "host"
-  #   volumes:
-  #     - ./traktarr:/config
-  #   restart: unless-stopped
-  #   entrypoint: "python traktarr.py --config /config/config.json run --run-now"
+  traktarr:
+    image: makeshift27015/traktarr
+    network_mode: "host"
+    build: 
+      context: ./traktarr/
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+      RUNNOW: "yes"
+    volumes:
+      - ./traktarr.json:/config/config.json
+    restart: unless-stopped
 
   medusa:
     image: linuxserver/medusa
@@ -201,26 +208,24 @@ services:
       - proxy.port=8090
     restart: unless-stopped
 
-  # bazarr:
-  #   image: linuxserver/bazarr
-  #   network_mode: "host"
-  #   environment:
-  #     TZ: "Europe/London"
-  #     PUID: 65534
-  #     PGID: 65534
-  #     UMASK_SET: 000
-  #   depends_on:
-  #     - rclone
-  #     - sonarr
-  #     - radarr
-  #   volumes:
-  #     - ./runtime_conf/bazarr:/config
-  #     - ./shared/:/shared:rshared
-  #     - /etc/localtime:/etc/localtime:ro
-  #   labels:
-  #     - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
-  #     - proxy.port=6767
-  #   restart: unless-stopped
+  bazarr:
+    image: linuxserver/bazarr
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    depends_on:
+      - rclone
+    volumes:
+      - ./runtime_conf/bazarr:/config
+      - ./shared/:/shared:rshared
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
+      - proxy.port=6767
+    restart: unless-stopped
 
   # plex:
   #   image: plexinc/pms-docker:plexpass

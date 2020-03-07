@@ -1,6 +1,7 @@
 **/*.env
 telegram-radarr-bot/
 telegram-sonarr-bot/
-traktarr/
+traktarr.json
 runtime_conf/
 shared/
+rclone.env
