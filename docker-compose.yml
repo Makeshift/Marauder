@@ -4,8 +4,6 @@ services:
     image: makeshift27015/rclone
     restart: unless-stopped
     network_mode: "host"
-    build: 
-      context: ./rclone/
     security_opt:
       - apparmor:unconfined
     devices:
@@ -120,14 +118,15 @@ services:
   traktarr:
     image: makeshift27015/traktarr
     network_mode: "host"
-    build: 
-      context: ./traktarr/
     environment:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
       UMASK_SET: 000
       RUNNOW: "yes"
+    depends_on:
+      - radarr
+      - sonarr
     volumes:
       - ./traktarr.json:/config/config.json
     restart: unless-stopped
@@ -211,15 +210,14 @@ services:
   bazarr:
     image: makeshift27015/bazarr
     network_mode: "host"
-    build: 
-      context: ./bazarr/
     environment:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
       UMASK_SET: 000
     depends_on:
-      - rclone
+      - radarr
+      - sonarr
     volumes:
       - ./runtime_conf/bazarr:/config
       - ./shared/:/shared:rshared
