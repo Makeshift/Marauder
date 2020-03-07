@@ -209,8 +209,10 @@ services:
     restart: unless-stopped
 
   bazarr:
-    image: linuxserver/bazarr
+    image: makeshift27015/bazarr
     network_mode: "host"
+    build: 
+      context: ./bazarr/
     environment:
       TZ: "Europe/London"
       PUID: 65534

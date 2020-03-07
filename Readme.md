@@ -33,9 +33,9 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, this doc would be even longer than it already is.
 
-**Q: Why is there a custom version of Traktarr?**
+**Q: Why is there a custom version of Traktarr/Bazarr?**
 
-**A:** Traktarr times out listing movies after 30 seconds. I edit it so it doesn't. My library is big.
+**A:** Traktarr/Bazarr times out listing movies/TV after 30/60 seconds. I edit it so it times out after 5 minutes instead. My library is big, and the Sonarr/Radarr APIs lag like crazy when they're doing _anything_.
 
 ## Table of Contents
 <!-- MarkdownTOC autolink="true" autoanchor="true" -->
