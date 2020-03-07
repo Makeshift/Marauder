@@ -318,7 +318,7 @@ If you have existing series, click 'Import'. If not, click 'Add New' and follow 
 #### Traktarr
 Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
-- First, copy the file `traktarr.template.json` to `traktarr.json`. 
+- First, copy the file `traktarr.json.template` to `traktarr.json`. 
  
 **Note:** My Traktarr settings are probably *very* extreme for most people. You will likely need to edit these.
 

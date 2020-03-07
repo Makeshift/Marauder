@@ -16,7 +16,7 @@ services:
         --umask 000                             \
         --uid 65534                             \
         --gid 65534                             \
-        -v                                      \
+        -vv                                     \
         --checkers 32                           \
         --buffer-size 32M                       \
         --transfers 16                          \
@@ -40,7 +40,7 @@ services:
     cap_add:
       - SYS_ADMIN
     volumes:
-      - ./rclone/rclone.conf:/rclone.conf:ro
+      - ./rclone.conf:/rclone.conf:ro
       - ./shared/:/shared/:rshared
 
   nzbhydra:
