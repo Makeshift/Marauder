@@ -46,9 +46,10 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 - [Configuration and deployment](#configuration-and-deployment)
     - [Pre-Setup](#pre-setup)
-    - [rclone & Env Vars](#rclone--env-vars)
+    - [Rclone & Env Vars](#rclone--env-vars)
         - [Top-Level](#top-level)
         - [Rclone](#rclone)
+        - [Plex](#plex)
     - [Initial Starting of the Stacks](#initial-starting-of-the-stacks)
         - [Starting the Downloader Stack](#starting-the-downloader-stack)
         - [Starting the Watching Stack](#starting-the-watching-stack)
@@ -67,7 +68,7 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Mylar](#mylar)
         - [Bazarr](#bazarr)
         - [Telegram Bots](#telegram-bots)
-        - [Plex](#plex)
+        - [Plex](#plex-1)
         - [Advanced Plex Modifications](#advanced-plex-modifications)
         - [Tautulli](#tautulli)
         - [Ombi](#ombi)
@@ -101,7 +102,7 @@ git clone github.com/Makeshift/Media-Compose-Stack
 ```
 
 <a id="rclone--env-vars"></a>
-### rclone & Env Vars
+### Rclone & Env Vars
 <a id="top-level"></a>
 #### Top-Level
 
@@ -132,11 +133,22 @@ Remember that you *do not* need to escape the variables in env files.
 cp rclone.env.template rclone.env
 ```
 
+<a id="plex"></a>
+#### Plex
+
+You can optionally provide a `PLEX_CLAIM` env var in `plex.env` to speed up the process of claiming your server.
+
+You can obtain the value [here](https://plex.tv/claim).
+
+```bash
+cp plex.env.template plex.env
+```
+
 <a id="initial-starting-of-the-stacks"></a>
 ### Initial Starting of the Stacks
 
 <a id="starting-the-downloader-stack"></a>
-#### ![download stack](./docs/images/download.png)Starting the Downloader Stack
+#### ![download stack](./docs/images/download.png) Starting the Downloader Stack
 
 The default `docker-compose.yml` file is the downloader stack. Starting the stack should be as simple as
 
@@ -152,7 +164,7 @@ docker-compose down
 to clean up the stack. This will not delete any configuration.
 
 <a id="starting-the-watching-stack"></a>
-#### ![watch stack](./docs/images/watch.png)Starting the Watching Stack
+#### ![watch stack](./docs/images/watch.png) Starting the Watching Stack
 
 The watcher stack `plex-compose.yml` is used to deploy the Plex stack with its own Rclone. This is so they can be deployed on different machines and reduce the amount of competing the stacks have to do. 
 
@@ -163,7 +175,7 @@ docker-compose -f plex-compose.yml up -d
 ```
 
 <a id="pre-warming-rclone-optional"></a>
-#### ![download stack](./docs/images/download.png)![watch stack](./docs/images/watch.png)Pre-Warming Rclone (Optional)
+#### ![download stack](./docs/images/download.png)![watch stack](./docs/images/watch.png) Pre-Warming Rclone (Optional)
 
 It may be worth pre-warming the Rclone caches with data.
 Go to `shared/merged/Media` (or whichever folder your Media lies in) and run:
@@ -186,7 +198,7 @@ Services with the ![download stack](./docs/images/download.png) icon are part of
 Services with the ![watch stack](./docs/images/watch.png) icon are part of the 'Watcher' stack.
 
 <a id="nzbhydra2"></a>
-#### ![download stack](./docs/images/download.png)NZBHydra2 
+#### ![download stack](./docs/images/download.png) NZBHydra2 
 NZBHydra2 is a searching/caching/indexing tool for Newznab and Torznab indexers. It acts as a proxy in between sources of NZBs and your services, which means less configuration down the line.
 
 You'll only need this if you plan to use this stack with Usenet.
@@ -197,7 +209,7 @@ You'll only need this if you plan to use this stack with Usenet.
 - Click the `API?` button on the right hand side. Note down your API key.
 
 <a id="sabnzbd"></a>
-#### ![download stack](./docs/images/download.png)Sabnzbd 
+#### ![download stack](./docs/images/download.png) Sabnzbd 
 Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 - On your host, run `chmod -R 777 shared/separate/sabnzbd`
@@ -232,14 +244,14 @@ Copy the below table:
 | mylar             | Default   | Default       |           | `../mylar`            |                               |
 
 <a id="transmission"></a>
-#### ![download stack](./docs/images/download.png)Transmission 
+#### ![download stack](./docs/images/download.png) Transmission 
 Todo
 
 <a id="jackett"></a>
-#### ![download stack](./docs/images/download.png)Jackett 
+#### ![download stack](./docs/images/download.png) Jackett 
 
 <a id="radarr"></a>
-#### ![download stack](./docs/images/download.png)Radarr 
+#### ![download stack](./docs/images/download.png) Radarr 
 
 - Navigate to the web UI on port `7878`
 - Navigate to the `Settings` page
@@ -295,7 +307,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 - Either bulk import your current library, or add a new movie to configure the default library. It should be under `/shared/merged`, eg `/sharged/merged/Media/Movies`.
 
 <a id="sonarr"></a>
-#### ![download stack](./docs/images/download.png)Sonarr 
+#### ![download stack](./docs/images/download.png) Sonarr 
 
 - Navigate to the web UI on port `8989`
 - Navigate to the `Settings` page
@@ -346,7 +358,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
 
 <a id="traktarr"></a>
-#### ![download stack](./docs/images/download.png)Traktarr 
+#### ![download stack](./docs/images/download.png) Traktarr 
 Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
 - First, copy the file `traktarr.json.template` to `traktarr.json`. 
@@ -365,7 +377,7 @@ Traktarr can automatically add new TV series and movies to Sonarr & Radarr based
 - You will need to restart the container for it to pick up the changes: `docker-compose restart traktarr`
 
 <a id="medusa"></a>
-#### ![download stack](./docs/images/download.png)Medusa 
+#### ![download stack](./docs/images/download.png) Medusa 
 Medusa is another TV series downloader, but happens to be slightly better at anime, so it's set up specifically for anime.
 
 - Navigate to the web UI on port `8081`
@@ -481,7 +493,7 @@ _In the `AnimeDB Settings` tab_
 | Anime                               | Yes                                                   |  
 
 <a id="headphones"></a>
-#### ![download stack](./docs/images/download.png)Headphones 
+#### ![download stack](./docs/images/download.png) Headphones 
 Headphones is an automatic music downloader.
 
 - Navigate to the web UI on port `8181`
@@ -548,7 +560,7 @@ Headphones is an automatic music downloader.
 - You can scan your current collection here.
 
 <a id="lazylibrarian"></a>
-#### ![download stack](./docs/images/download.png)LazyLibrarian 
+#### ![download stack](./docs/images/download.png) LazyLibrarian 
 LazyLibrarian is an automatic ebook downloader.
 
 - Navigate to the web UI on port `5299`
@@ -595,7 +607,7 @@ LazyLibrarian is an automatic ebook downloader.
 - Click 'Save Changes' at the bottom left
 
 <a id="mylar"></a>
-#### ![download stack](./docs/images/download.png)Mylar 
+#### ![download stack](./docs/images/download.png) Mylar 
 Mylar is an automatic comic book downloader.
 
 - Navigate to the web UI on port `8090`
@@ -662,7 +674,7 @@ Mylar is an automatic comic book downloader.
 - Click 'Save Changes' at the bottom left
 
 <a id="bazarr"></a>
-#### Bazarr ![download stack](./docs/images/download.png)
+#### ![download stack](./docs/images/download.png) Bazarr 
 Bazarr is an automatic subtitle downloader that is compatible with some of the other services here.
 
 - Navigate to the web UI on port `6767`
@@ -725,30 +737,30 @@ Bazarr is an automatic subtitle downloader that is compatible with some of the o
 - Click the 'Here' restart prompt
 
 <a id="telegram-bots"></a>
-#### ![download stack](./docs/images/download.png)Telegram Bots 
+#### ![download stack](./docs/images/download.png) Telegram Bots 
 This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
 
 Todo
 
-<a id="plex"></a>
-#### ![watch stack](./docs/images/watch.png)Plex 
+<a id="plex-1"></a>
+#### ![watch stack](./docs/images/watch.png) Plex 
 
 Todo
 
 <a id="advanced-plex-modifications"></a>
-#### ![watch stack](./docs/images/watch.png)Advanced Plex Modifications 
+#### ![watch stack](./docs/images/watch.png) Advanced Plex Modifications 
 
 You can do horrendous things to the Plex database to get it to act JUST how you like it. I'll be going through some of those here.
 
 Todo
 
 <a id="tautulli"></a>
-#### ![watch stack](./docs/images/watch.png)Tautulli 
+#### ![watch stack](./docs/images/watch.png) Tautulli 
 
 Todo
 
 <a id="ombi"></a>
-#### ![watch stack](./docs/images/watch.png)Ombi 
+#### ![watch stack](./docs/images/watch.png) Ombi 
 
 Todo
 
