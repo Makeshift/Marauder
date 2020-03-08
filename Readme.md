@@ -725,7 +725,7 @@ Bazarr is an automatic subtitle downloader that is compatible with some of the o
 - Click the 'Here' restart prompt
 
 <a id="telegram-bots"></a>
-#### Telegram Bots ![download](download)
+#### Telegram Bots ![download stack](./docs/images/download.svg)
 This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
 
 Todo
@@ -736,7 +736,7 @@ Todo
 Todo
 
 <a id="advanced-plex-modifications"></a>
-#### Advanced Plex Modifications ![watch](watch)
+#### Advanced Plex Modifications ![watch stack](./docs/images/watch.svg)
 
 You can do horrendous things to the Plex database to get it to act JUST how you like it. I'll be going through some of those here.
 
@@ -841,7 +841,3 @@ The following editors are available:
 - [ ] Advanced Plex
 - [ ] Tautulli
 - [ ] Ombi
-
-
-[download]: ./docs/images/download.svg "download"
-[watch]: ./docs/images/watch.svg "watch"
