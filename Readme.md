@@ -843,5 +843,5 @@ The following editors are available:
 - [ ] Ombi
 
 
-[download]: https://github.com/Makeshift/Media-Compose-Stack/raw/master/docs/images/download.svg "download"
-[watch]: https://github.com/Makeshift/Media-Compose-Stack/raw/master/docs/images/watch.svg "watch"
+[download]: ./docs/images/download.svg "download"
+[watch]: ./docs/images/watch.svg "watch"
