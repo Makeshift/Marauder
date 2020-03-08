@@ -37,6 +37,10 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** Traktarr/Bazarr times out listing movies/TV after 30/60 seconds. I edit it so it times out after 5 minutes instead. My library is big, and the Sonarr/Radarr APIs lag like crazy when they're doing _anything_.
 
+**Q: Why Plex as opposed to Emby/Jellyfin/Serviio/Whatever?**
+
+**A:** Jellyfin's Chromecast support is iffy at best, especially with subtitles (I watch anime on my Chromecast, deal with it). Emby has similar issues with casting and subtitles but is probably otherwise the least-worst offering. Serviio is a little feature bare. Plex, as much hacking as it requires to get to work, and as *absolutely freaking terrible* as its new interface is, does work once it's set up properly, and handles the abuse I throw at it fairly well.
+
 ## Table of Contents
 <!-- MarkdownTOC autolink="true" autoanchor="true" -->
 
@@ -53,6 +57,7 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [NZBHydra2](#nzbhydra2)
         - [Sabnzbd](#sabnzbd)
         - [Transmission](#transmission)
+        - [Jackett](#jackett)
         - [Radarr](#radarr)
         - [Sonarr](#sonarr)
         - [Traktarr](#traktarr)
@@ -62,6 +67,10 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Mylar](#mylar)
         - [Bazarr](#bazarr)
         - [Telegram Bots](#telegram-bots)
+        - [Plex](#plex)
+        - [Advanced Plex Modifications](#advanced-plex-modifications)
+        - [Tautulli](#tautulli)
+        - [Ombi](#ombi)
 - [Backing up / Moving](#backing-up--moving)
 - [Debugging](#debugging)
 - [Todo](#todo)
@@ -147,9 +156,11 @@ to clean up the stack. This will not delete any configuration.
 
 The watcher stack `plex-compose.yml` is used to deploy the Plex stack with its own Rclone. This is so they can be deployed on different machines and reduce the amount of competing the stacks have to do. 
 
-However, it's still perfectly possible to run both stacks on the same machine.
+However, it's still perfectly possible to run both stacks on the same machine, using the same config. I did this to do the initial scanning and prepopulating of databases on a cloud server prior to moving it to my local server.
 
-TODO
+```bash
+docker-compose -f plex-compose.yml up -d
+```
 
 <a id="pre-warming-rclone-optional"></a>
 #### Pre-Warming Rclone (Optional)
@@ -170,9 +181,12 @@ The progress bar is a bit fake, but if you know approximately how large your col
 
 <a id="service-configuration"></a>
 ### Service Configuration
+Services with the ![download](download) icon are part of the 'Downloader' stack.
+
+Services with the ![watch](watch) icon are part of the 'Watcher' stack.
 
 <a id="nzbhydra2"></a>
-#### NZBHydra2
+#### NZBHydra2 ![download](download)
 NZBHydra2 is a searching/caching/indexing tool for Newznab and Torznab indexers. It acts as a proxy in between sources of NZBs and your services, which means less configuration down the line.
 
 You'll only need this if you plan to use this stack with Usenet.
@@ -183,7 +197,7 @@ You'll only need this if you plan to use this stack with Usenet.
 - Click the `API?` button on the right hand side. Note down your API key.
 
 <a id="sabnzbd"></a>
-#### Sabnzbd
+#### Sabnzbd ![download](download)
 Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 - On your host, run `chmod -R 777 shared/separate/sabnzbd`
@@ -218,11 +232,14 @@ Copy the below table:
 | mylar             | Default   | Default       |           | `../mylar`            |                               |
 
 <a id="transmission"></a>
-#### Transmission
+#### Transmission ![download](download)
 Todo
 
+<a id="jackett"></a>
+#### Jackett ![download](download)
+
 <a id="radarr"></a>
-#### Radarr
+#### Radarr ![download](download)
 
 - Navigate to the web UI on port `7878`
 - Navigate to the `Settings` page
@@ -278,7 +295,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 - Either bulk import your current library, or add a new movie to configure the default library. It should be under `/shared/merged`, eg `/sharged/merged/Media/Movies`.
 
 <a id="sonarr"></a>
-#### Sonarr
+#### Sonarr ![download](download)
 
 - Navigate to the web UI on port `8989`
 - Navigate to the `Settings` page
@@ -329,7 +346,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
 
 <a id="traktarr"></a>
-#### Traktarr
+#### Traktarr ![download](download)
 Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
 - First, copy the file `traktarr.json.template` to `traktarr.json`. 
@@ -348,7 +365,7 @@ Traktarr can automatically add new TV series and movies to Sonarr & Radarr based
 - You will need to restart the container for it to pick up the changes: `docker-compose restart traktarr`
 
 <a id="medusa"></a>
-#### Medusa
+#### Medusa ![download](download)
 Medusa is another TV series downloader, but happens to be slightly better at anime, so it's set up specifically for anime.
 
 - Navigate to the web UI on port `8081`
@@ -464,7 +481,7 @@ _In the `AnimeDB Settings` tab_
 | Anime                               | Yes                                                   |  
 
 <a id="headphones"></a>
-#### Headphones
+#### Headphones ![download](download)
 Headphones is an automatic music downloader.
 
 - Navigate to the web UI on port `8181`
@@ -531,7 +548,7 @@ Headphones is an automatic music downloader.
 - You can scan your current collection here.
 
 <a id="lazylibrarian"></a>
-#### LazyLibrarian
+#### LazyLibrarian ![download](download)
 LazyLibrarian is an automatic ebook downloader.
 
 - Navigate to the web UI on port `5299`
@@ -578,7 +595,7 @@ LazyLibrarian is an automatic ebook downloader.
 - Click 'Save Changes' at the bottom left
 
 <a id="mylar"></a>
-#### Mylar
+#### Mylar ![download](download)
 Mylar is an automatic comic book downloader.
 
 - Navigate to the web UI on port `8090`
@@ -645,7 +662,7 @@ Mylar is an automatic comic book downloader.
 - Click 'Save Changes' at the bottom left
 
 <a id="bazarr"></a>
-#### Bazarr
+#### Bazarr ![download](download)
 Bazarr is an automatic subtitle downloader that is compatible with some of the other services here.
 
 - Navigate to the web UI on port `6767`
@@ -708,8 +725,33 @@ Bazarr is an automatic subtitle downloader that is compatible with some of the o
 - Click the 'Here' restart prompt
 
 <a id="telegram-bots"></a>
-#### Telegram Bots
+#### Telegram Bots ![download](download)
 This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
+
+Todo
+
+<a id="plex"></a>
+#### Plex ![watch](watch)
+
+Todo
+
+<a id="advanced-plex-modifications"></a>
+#### Advanced Plex Modifications ![watch](watch)
+
+You can do horrendous things to the Plex database to get it to act JUST how you like it. I'll be going through some of those here.
+
+Todo
+
+<a id="tautulli"></a>
+#### Tautulli ![watch](watch)
+
+Todo
+
+<a id="ombi"></a>
+#### Ombi ![watch](watch)
+
+Todo
+
 
 <a id="backing-up--moving"></a>
 ## Backing up / Moving
@@ -763,12 +805,16 @@ The following editors are available:
 - [x] Bazarr
 - [ ] Transmission
 - [ ] Jackett
+- [ ] Plex
+- [ ] Tautulli
+- [ ] Ombi
 
 <a id="remote-control"></a>
 ### Remote-Control:
 
 - [ ] Radarr Telegram Bot
 - [ ] Sonarr Telegram Bot
+- [ ] Ombi
 
 <a id="documentation"></a>
 ### Documentation:
@@ -791,3 +837,11 @@ The following editors are available:
 - [x] Backing Up
 - [ ] Transmission
 - [ ] Jackett
+- [ ] Plex
+- [ ] Advanced Plex
+- [ ] Tautulli
+- [ ] Ombi
+
+
+[download]: https://github.com/Makeshift/Media-Compose-Stack/raw/master/docs/images/download.svg "download"
+[watch]: https://github.com/Makeshift/Media-Compose-Stack/raw/master/docs/images/watch.svg "watch"

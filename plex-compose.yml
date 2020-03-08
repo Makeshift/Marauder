@@ -1,0 +1,67 @@
+version: '3.4'
+services:
+  rclone_plex:
+    image: makeshift27015/rclone
+    restart: unless-stopped
+    network_mode: "host"
+    security_opt:
+      - apparmor:unconfined
+    devices:
+      - "/dev/fuse:/dev/fuse"
+    environment:
+      MountCommands: "                               \
+        --fast-list                                  \
+        --allow-other                                \
+        --allow-non-empty                            \
+        --umask 000                                  \
+        --uid 65534                                  \
+        --gid 65534                                  \
+        -v                                           \
+        --checkers 128                               \
+        --buffer-size 64M                            \
+        --transfers 128                              \
+        --use-mmap                                   \
+        --vfs-cache-mode writes                      \
+        --poll-interval 120s                         \
+        --attr-timeout 8700h                         \
+        --dir-cache-time 8760h                       \
+        --vfs-read-chunk-size 1M                     \
+        --vfs-read-chunk-size-limit 4G               \
+        --vfs-cache-poll-interval 20m                \
+        --vfs-cache-max-age 8760h                    \
+        --vfs-cache-max-size 256G                    \
+        --cache-dir=/shared/caches/rclone_plex/vfs/  \
+        --low-level-retries 3                        \
+        --multi-thread-cutoff 25M                    \
+        --multi-thread-streams 8                     \
+        --no-update-modtime                          \
+        --rc"
+    env_file:
+      - ./rclone.env
+    environment:
+        MountPoint: "/shared/plex"
+        RemotePath: "encryptedgdrive:" 
+        CacheFolderSuffix: "_plex"
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - ./rclone.conf:/rclone.conf:ro
+      - ./shared/:/shared/:rshared
+
+  plex:
+    image: plexinc/pms-docker:plexpass
+    network_mode: "host"
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/London
+    env_file:
+      - ./plex.env
+    labels:
+      - proxy.hosts=plex.${domain},plex.local.${domain},plex.public.${domain}
+      - proxy.port=32400
+      - proxy.template=/plex.vhost
+    volumes:
+      - ./runtime_config/plex/:/config/
+      - ./shared/:/shared/:rshared
+    depends_on:
+      - rclone_plex
