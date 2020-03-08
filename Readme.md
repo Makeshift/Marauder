@@ -54,23 +54,23 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Starting the Watching Stack](#starting-the-watching-stack)
         - [Pre-Warming Rclone \(Optional\)](#pre-warming-rclone-optional)
     - [Service Configuration](#service-configuration)
-        - [NZBHydra2](#nzbhydra2)
-        - [Sabnzbd](#sabnzbd)
-        - [Transmission](#transmission)
-        - [Jackett](#jackett)
-        - [Radarr](#radarr)
-        - [Sonarr](#sonarr)
-        - [Traktarr](#traktarr)
-        - [Medusa](#medusa)
-        - [Headphones](#headphones)
-        - [LazyLibrarian](#lazylibrarian)
-        - [Mylar](#mylar)
-        - [Bazarr](#bazarr)
-        - [Telegram Bots](#telegram-bots)
-        - [Plex](#plex)
-        - [Advanced Plex Modifications](#advanced-plex-modifications)
-        - [Tautulli](#tautulli)
-        - [Ombi](#ombi)
+        - [NZBHydra2 {:height="32px" width="32px"}](#nzbhydra2-height32px-width32px)
+        - [Sabnzbd {:height="32px" width="32px"}](#sabnzbd-height32px-width32px)
+        - [Transmission {:height="32px" width="32px"}](#transmission-height32px-width32px)
+        - [Jackett {:height="32px" width="32px"}](#jackett-height32px-width32px)
+        - [Radarr {:height="32px" width="32px"}](#radarr-height32px-width32px)
+        - [Sonarr {:height="32px" width="32px"}](#sonarr-height32px-width32px)
+        - [Traktarr {:height="32px" width="32px"}](#traktarr-height32px-width32px)
+        - [Medusa {:height="32px" width="32px"}](#medusa-height32px-width32px)
+        - [Headphones {:height="32px" width="32px"}](#headphones-height32px-width32px)
+        - [LazyLibrarian {:height="32px" width="32px"}](#lazylibrarian-height32px-width32px)
+        - [Mylar {:height="32px" width="32px"}](#mylar-height32px-width32px)
+        - [Bazarr {:height="32px" width="32px"}](#bazarr-height32px-width32px)
+        - [Telegram Bots {:height="32px" width="32px"}](#telegram-bots-height32px-width32px)
+        - [Plex {:height="32px" width="32px"}](#plex-height32px-width32px)
+        - [Advanced Plex Modifications {:height="32px" width="32px"}](#advanced-plex-modifications-height32px-width32px)
+        - [Tautulli {:height="32px" width="32px"}](#tautulli-height32px-width32px)
+        - [Ombi {:height="32px" width="32px"}](#ombi-height32px-width32px)
 - [Backing up / Moving](#backing-up--moving)
 - [Debugging](#debugging)
 - [Todo](#todo)
@@ -181,12 +181,12 @@ The progress bar is a bit fake, but if you know approximately how large your col
 
 <a id="service-configuration"></a>
 ### Service Configuration
-Services with the ![download stack](./docs/images/download.svg =24x24) icon are part of the 'Downloader' stack.
+Services with the ![download stack](./docs/images/download.svg){:height="32px" width="32px"} icon are part of the 'Downloader' stack.
 
-Services with the ![watch stack](./docs/images/watch.svg =24x24) icon are part of the 'Watcher' stack.
+Services with the ![watch stack](./docs/images/watch.svg){:height="32px" width="32px"} icon are part of the 'Watcher' stack.
 
-<a id="nzbhydra2"></a>
-#### NZBHydra2 ![download stack](./docs/images/download.svg =24x24)
+<a id="nzbhydra2-height32px-width32px"></a>
+#### NZBHydra2 ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 NZBHydra2 is a searching/caching/indexing tool for Newznab and Torznab indexers. It acts as a proxy in between sources of NZBs and your services, which means less configuration down the line.
 
 You'll only need this if you plan to use this stack with Usenet.
@@ -196,8 +196,8 @@ You'll only need this if you plan to use this stack with Usenet.
 - Click the `Config` button
 - Click the `API?` button on the right hand side. Note down your API key.
 
-<a id="sabnzbd"></a>
-#### Sabnzbd ![download stack](./docs/images/download.svg =24x24)
+<a id="sabnzbd-height32px-width32px"></a>
+#### Sabnzbd ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 - On your host, run `chmod -R 777 shared/separate/sabnzbd`
@@ -231,15 +231,15 @@ Copy the below table:
 | medusa            | Default   | Default       |           | `../medusa`           |                               |
 | mylar             | Default   | Default       |           | `../mylar`            |                               |
 
-<a id="transmission"></a>
-#### Transmission ![download stack](./docs/images/download.svg =24x24)
+<a id="transmission-height32px-width32px"></a>
+#### Transmission ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Todo
 
-<a id="jackett"></a>
-#### Jackett ![download stack](./docs/images/download.svg =24x24)
+<a id="jackett-height32px-width32px"></a>
+#### Jackett ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 
-<a id="radarr"></a>
-#### Radarr ![download stack](./docs/images/download.svg =24x24)
+<a id="radarr-height32px-width32px"></a>
+#### Radarr ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 
 - Navigate to the web UI on port `7878`
 - Navigate to the `Settings` page
@@ -294,8 +294,8 @@ The movie and folder formats were chosen to make importing easier in the case of
 - Click 'Add Movies' at the top left
 - Either bulk import your current library, or add a new movie to configure the default library. It should be under `/shared/merged`, eg `/sharged/merged/Media/Movies`.
 
-<a id="sonarr"></a>
-#### Sonarr ![download stack](./docs/images/download.svg =24x24)
+<a id="sonarr-height32px-width32px"></a>
+#### Sonarr ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 
 - Navigate to the web UI on port `8989`
 - Navigate to the `Settings` page
@@ -345,8 +345,8 @@ The movie and folder formats were chosen to make importing easier in the case of
 **In the `Series` Menu**
 If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
 
-<a id="traktarr"></a>
-#### Traktarr ![download stack](./docs/images/download.svg =24x24)
+<a id="traktarr-height32px-width32px"></a>
+#### Traktarr ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Traktarr can automatically add new TV series and movies to Sonarr & Radarr based on Trakt lists.
 
 - First, copy the file `traktarr.json.template` to `traktarr.json`. 
@@ -364,8 +364,8 @@ Traktarr can automatically add new TV series and movies to Sonarr & Radarr based
 
 - You will need to restart the container for it to pick up the changes: `docker-compose restart traktarr`
 
-<a id="medusa"></a>
-#### Medusa ![download stack](./docs/images/download.svg =24x24)
+<a id="medusa-height32px-width32px"></a>
+#### Medusa ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Medusa is another TV series downloader, but happens to be slightly better at anime, so it's set up specifically for anime.
 
 - Navigate to the web UI on port `8081`
@@ -480,8 +480,8 @@ _In the `AnimeDB Settings` tab_
 | Season Folders                      | Yes                                                   |  
 | Anime                               | Yes                                                   |  
 
-<a id="headphones"></a>
-#### Headphones ![download stack](./docs/images/download.svg =24x24)
+<a id="headphones-height32px-width32px"></a>
+#### Headphones ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Headphones is an automatic music downloader.
 
 - Navigate to the web UI on port `8181`
@@ -547,8 +547,8 @@ Headphones is an automatic music downloader.
 **In the `Manage` Menu (At the top)**
 - You can scan your current collection here.
 
-<a id="lazylibrarian"></a>
-#### LazyLibrarian ![download stack](./docs/images/download.svg =24x24)
+<a id="lazylibrarian-height32px-width32px"></a>
+#### LazyLibrarian ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 LazyLibrarian is an automatic ebook downloader.
 
 - Navigate to the web UI on port `5299`
@@ -594,8 +594,8 @@ LazyLibrarian is an automatic ebook downloader.
 
 - Click 'Save Changes' at the bottom left
 
-<a id="mylar"></a>
-#### Mylar ![download stack](./docs/images/download.svg =24x24)
+<a id="mylar-height32px-width32px"></a>
+#### Mylar ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Mylar is an automatic comic book downloader.
 
 - Navigate to the web UI on port `8090`
@@ -661,8 +661,8 @@ Mylar is an automatic comic book downloader.
 
 - Click 'Save Changes' at the bottom left
 
-<a id="bazarr"></a>
-#### Bazarr ![download stack](./docs/images/download.svg =24x24)
+<a id="bazarr-height32px-width32px"></a>
+#### Bazarr ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 Bazarr is an automatic subtitle downloader that is compatible with some of the other services here.
 
 - Navigate to the web UI on port `6767`
@@ -724,31 +724,31 @@ Bazarr is an automatic subtitle downloader that is compatible with some of the o
 - Click 'Save'
 - Click the 'Here' restart prompt
 
-<a id="telegram-bots"></a>
-#### Telegram Bots ![download stack](./docs/images/download.svg =24x24)
+<a id="telegram-bots-height32px-width32px"></a>
+#### Telegram Bots ![download stack](./docs/images/download.svg){:height="32px" width="32px"}
 This stack will eventually include my [Telegram bot](https://github.com/Makeshift/telegram-sonarr-radarr-bot), that will let you add new wanted items to any of the above services. However, at the moment development for it is paused. I do intend to continue it at some point.
 
 Todo
 
-<a id="plex"></a>
-#### Plex ![watch stack](./docs/images/watch.svg =24x24)
+<a id="plex-height32px-width32px"></a>
+#### Plex ![watch stack](./docs/images/watch.svg){:height="32px" width="32px"}
 
 Todo
 
-<a id="advanced-plex-modifications"></a>
-#### Advanced Plex Modifications ![watch stack](./docs/images/watch.svg =24x24)
+<a id="advanced-plex-modifications-height32px-width32px"></a>
+#### Advanced Plex Modifications ![watch stack](./docs/images/watch.svg){:height="32px" width="32px"}
 
 You can do horrendous things to the Plex database to get it to act JUST how you like it. I'll be going through some of those here.
 
 Todo
 
-<a id="tautulli"></a>
-#### Tautulli ![watch stack](./docs/images/watch.svg =24x24)
+<a id="tautulli-height32px-width32px"></a>
+#### Tautulli ![watch stack](./docs/images/watch.svg){:height="32px" width="32px"}
 
 Todo
 
-<a id="ombi"></a>
-#### Ombi ![watch stack](./docs/images/watch.svg =24x24)
+<a id="ombi-height32px-width32px"></a>
+#### Ombi ![watch stack](./docs/images/watch.svg){:height="32px" width="32px"}
 
 Todo
 
