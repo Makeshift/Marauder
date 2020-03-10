@@ -8,8 +8,13 @@ services:
       - apparmor:unconfined
     devices:
       - "/dev/fuse:/dev/fuse"
+    env_file:
+      - ./rclone.env
     environment:
-      MountCommands: "                               \
+        MountPoint: "/shared/plex"
+        RemotePath: "encryptedgdrive:" 
+        CacheFolderSuffix: "_plex"
+        MountCommands: "                             \
         --fast-list                                  \
         --allow-other                                \
         --allow-non-empty                            \
@@ -36,12 +41,6 @@ services:
         --multi-thread-streams 8                     \
         --no-update-modtime                          \
         --rc"
-    env_file:
-      - ./rclone.env
-    environment:
-        MountPoint: "/shared/plex"
-        RemotePath: "encryptedgdrive:" 
-        CacheFolderSuffix: "_plex"
     cap_add:
       - SYS_ADMIN
     volumes:
@@ -61,7 +60,7 @@ services:
       - proxy.port=32400
       - proxy.template=/plex.vhost
     volumes:
-      - ./runtime_config/plex/:/config/
+      - ./runtime_conf/plex/:/config/
       - ./shared/:/shared/:rshared
     depends_on:
       - rclone_plex

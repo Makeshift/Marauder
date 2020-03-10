@@ -249,6 +249,7 @@ Todo
 
 <a id="jackett"></a>
 #### ![download stack](./docs/images/download.png) Jackett 
+Todo
 
 <a id="radarr"></a>
 #### ![download stack](./docs/images/download.png) Radarr 
@@ -745,7 +746,7 @@ Todo
 <a id="plex-1"></a>
 #### ![watch stack](./docs/images/watch.png) Plex 
 
-Todo
+- Navigate to the web UI on port `32400`
 
 <a id="advanced-plex-modifications"></a>
 #### ![watch stack](./docs/images/watch.png) Advanced Plex Modifications 
