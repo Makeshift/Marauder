@@ -48,6 +48,8 @@ Alternatively, you can also just comment out the services you don't want in the 
     - [Pre-Setup](#pre-setup)
     - [Rclone & Env Vars](#rclone--env-vars)
         - [Top-Level](#top-level)
+            - [domain](#domain)
+            - [plex_host](#plex_host)
         - [Rclone](#rclone)
         - [Plex](#plex)
     - [Initial Starting of the Stacks](#initial-starting-of-the-stacks)
@@ -106,12 +108,22 @@ git clone github.com/Makeshift/Media-Compose-Stack
 <a id="top-level"></a>
 #### Top-Level
 
-If you intend to use my [Docker Nginx Conf Generator](https://github.com/Makeshift/docker-generate-nginx-conf), you can set your domain name in the top level `.env` file.
-
 ```bash
 cp .env.template .env
 ```
+
+<a id="domain"></a>
+##### domain
 `domain=example.com`
+If you intend to use my [Docker Nginx Conf Generator](https://github.com/Makeshift/docker-generate-nginx-conf), you can set your domain name here. Each container with a web UI will be given a label containing `<service>.<domain>`.
+
+<a id="plex_host"></a>
+##### plex_host
+**Note:** Not yet fully implemented.
+`plex_host=127.0.0.1`
+What's the IP address/hostname of the machine hosting the Watching ![watch stack](./docs/images/watch.png) stack? If entered here, a script will be used to inform the Plex Rclone instance to clear the cache for newly uploaded media.
+
+If you're running Watching ![watch stack](./docs/images/watch.png) on the same host as the Downloader ![download stack](./docs/images/download.png) stack, you can ignore this option.
 
 <a id="rclone"></a>
 #### Rclone
@@ -212,7 +224,7 @@ You'll only need this if you plan to use this stack with Usenet.
 #### ![download stack](./docs/images/download.png) Sabnzbd 
 Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
-- On your host, run `chmod -R 777 shared/separate/sabnzbd`
+- On your host, run `chmod -R 755 shared/separate/`
 - Connect to the Web UI on port `8080`.
 - Follow the quick-start wizard
 - Click the cog at the top right
@@ -396,7 +408,10 @@ Medusa is another TV series downloader, but happens to be slightly better at ani
 **In the `Search Settings` Menu**
 
 | Setting Name                            | Value                                                 |  
-| --------------                          | ----------------------------------------------------- |  
+| --------------                          | ----------------------------------------------------- | 
+| **Episode Search**                      |                                                       |
+| Forced Backlog Search day(s)            | 7300                                                  |
+| Backlog Search Interval                 | 10080
 | **NZB Search**                          |                                                       |  
 | Search NZBs                             | True                                                  |  
 | Send .nzb files to                      | SABnzbd                                               |  
@@ -420,16 +435,30 @@ _In the `Configure Custom Newsnab Providers` tab_
 | Setting Name                           | Value                                                 |  
 | --------------                         | ----------------------------------------------------- |  
 | **Configure Custom Newznab Providers** |                                                       |  
-| Select Provider                        | NZBGeek (It's a good base for NZBHydra)               |  
+| Select Provider                        | -- add new provider --                                |  
 | Provider Name                          | NZBHydra2                                             |  
 | Site URL                               | `http://localhost:5076`                               |  
 | API Key                                | The key you noted down in the NZBHydra section        |  
 
+- Ctrl+Click on all of the Newznab search categories, then click the 'Select Categories' button.
+- Press the 'Add' button.
 - Press 'Save Changes' at the bottom left
+
+_In the `Provider Options` tab_
+ 
+ | Setting Name                           | Value                                                 |  
+| --------------                         | ----------------------------------------------------- |  
+| Configure Provider | NZBHydra2                                                       |  
+| Enable daily searches                        | Ticked               |  
+| Enable for 'Manual search' feature                          | Ticked                                             |  
+| Enable backlog searches                               | Ticked                               |  
+| Backlog search mode                                | season packs only        |  
+| Enable fallback | Ticked |
 
 _In the `Provider Priorities` tab_
 
-- Ensure that the NZBHydra2 provider is ticked
+- Ensure that the NZBHydra2 provider is ticked and dragged to the top.
+- Press 'Save Changes' at the bottom left
 
 **In the `Subtitles Settings` Menu**
 
@@ -505,7 +534,6 @@ Headphones is an automatic music downloader.
 | Setting Name          | Value                                                 |  
 | --------------        | ----------------------------------------------------- |  
 | **Usenet**              |                                                       |  
-| SABnzbd Host | `/shared/merged/Media/Anime`                          |  
 | SABnzbd Host                      | `localhost:8080`                                      |  
 | Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
 | SABnzbd category                    | headphones                                                 |  
@@ -587,6 +615,8 @@ LazyLibrarian is an automatic ebook downloader.
 | Newznab URL #0        | `http://localhost:5076`                               |  
 | Newznab API #0        | The key you noted down in the NZBHydra section        |  
 
+- Make sure you tick the tiny tickbox at the top right of the NZBHydra2 box to enable it.
+
 **In the `Processing` tab**
 
 | Setting Name                         | Value                                                 |  
@@ -627,15 +657,17 @@ Mylar is an automatic comic book downloader.
 
 **In the `Download settings` tab**
 
-| Setting Name                       | Value                                                 |  
-| --------------                     | ----------------------------------------------------- |  
-| **Usenet**                         |                                                       |  
-| Sabnzbd                            | Ticked                                                |  
-| SABnzbd Host                       | `localhost`                                           |  
-| SABnzbd Port                       | `8080`                                                |  
-| Sabnzbd API key                    | The API key you saved from the SABnzbd section        |  
-| SABnzbd category                   | mylar                                                 |  
-| Enable Completed Download Handling | Ticked                                                |  
+| Setting Name                           | Value                                                 |  
+| --------------                         | ----------------------------------------------------- |  
+| **Usenet**                             |                                                       |  
+| Sabnzbd                                | Ticked                                                |  
+| SABnzbd Host                           | `localhost:8080`                                      |  
+| Sabnzbd API key                        | The API key you saved from the SABnzbd section        |  
+| SABnzbd category                       | mylar                                                 |  
+| Are Mylar/Sabnzbd on separate machines | Ticked                                                |  
+| Enable Completed Download Handling     | Ticked                                                |  
+ 
+
 
 
 **In the `Search providers` tab**
