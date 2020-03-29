@@ -235,25 +235,28 @@ Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 **In the `Folders` tab**
 
-| Setting Name                                      | Value                                                                                         |
-|-------------------------------------------------- |---------------------------------------------------------------------------------------------- |
-| Temporary Download Folder                         | `/shared/merged/downloads/sabnzbd/incomplete`                                                 |
-| Minimum Free Space for Temporary Download Folder  | A reasonable number, I chose 300GB on a 2TB disk                                              |
-| Completed Download Folder                         | `/shared/merged/downloads/sabnzbd/default/` (We'll be overriding this with categories later)  |
-| Permissions for completed downloads               | 777                                                                                           |
+| Setting Name                                       | Value                                                                                          |  
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |  
+| Temporary Download Folder                          | `/shared/merged/downloads/sabnzbd/incomplete`                                                  |  
+| Minimum Free Space for Temporary Download Folder   | A reasonable number, I chose 300GB on a 2TB disk                                               |  
+| Completed Download Folder                          | `/shared/merged/downloads/sabnzbd/default/` (We'll be overriding this with categories later)   |  
+| Permissions for completed downloads                | 777                                                                                            |  
+| Scripts Folder                                     | `/scripts`                                                                                     |  
 
 **In the `Categories` tab**
 Copy the below table:
 
-| Category          | Priority  | Processing    | Script    | Folder/Path           | Indexer Categories/Groups     |
-|---------------    |---------- |------------   |--------   |--------------------   |---------------------------    |
-| Default           | Normal    | +Delete       |           |                       |                               |
-| sonarr            | Default   | Default       |           | `../sonarr`           |                               |
-| headphones        | Default   | Default       |           | `../headphones`       |                               |
-| radarr            | Default   | Default       |           | `../radarr`           |                               |
-| lazylibrarian     | Default   | Default       |           | `../lazylibrarian`    |                               |
-| medusa            | Default   | Default       |           | `../medusa`           |                               |
-| mylar             | Default   | Default       |           | `../mylar`            |                               |
+| Category        | Priority   | Processing   | Script                                           | Folder/Path          | Indexer Categories/Groups   |  
+| --------------- | ---------- | ------------ | --------                                         | -------------------- | --------------------------- |  
+| Default         | Normal     | +Delete      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` |                      |                             |  
+| sonarr          | Default    | Default      |                                                  | `../sonarr`          |                             |  
+| headphones      | Default    | Default      |                                                  | `../headphones`      |                             |  
+| radarr          | Default    | Default      |                                                  | `../radarr`          |                             |  
+| lazylibrarian   | Default    | Default      |                                                  | `../lazylibrarian`   |                             |  
+| medusa          | Default    | Default      |                                                  | `../medusa`          |                             |  
+| mylar           | Default    | Default      |                                                  | `../mylar`           |                             |  
+
+The script in the `Default` category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
 
 <a id="transmission"></a>
 #### ![download stack](./docs/images/download.png) Transmission 
