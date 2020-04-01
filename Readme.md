@@ -29,7 +29,7 @@ docker compose up -d sonarr radarr headphones transmission
 ```
 Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
 
-**Q: There are some extra settings in the service interface that you don't mention! What do I do?!
+**Q: There are some extra settings in the service interface that you don't mention! What do I do?!**
 
 **A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, this doc would be even longer than it already is.
 
@@ -51,6 +51,7 @@ Alternatively, you can also just comment out the services you don't want in the 
             - [domain](#domain)
             - [plex_host](#plex_host)
         - [Rclone](#rclone)
+            - [Multiple service credential files](#multiple-service-credential-files)
         - [Plex](#plex)
     - [Initial Starting of the Stacks](#initial-starting-of-the-stacks)
         - [Starting the Downloader Stack](#starting-the-downloader-stack)
@@ -144,6 +145,13 @@ Remember that you *do not* need to escape the variables in env files.
 ```bash
 cp rclone.env.template rclone.env
 ```
+
+<a id="multiple-service-credential-files"></a>
+##### Multiple service credential files
+
+You can upload more than the 750GB/day limit by switching the service file that Rclone uses. At some point I'd like to use the union mount to randomise which service account is used.
+
+TODO
 
 <a id="plex"></a>
 #### Plex
@@ -249,14 +257,14 @@ Copy the below table:
 | Category        | Priority   | Processing   | Script                                           | Folder/Path          | Indexer Categories/Groups   |  
 | --------------- | ---------- | ------------ | --------                                         | -------------------- | --------------------------- |  
 | Default         | Normal     | +Delete      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` |                      |                             |  
-| sonarr          | Default    | Default      |                                                  | `../sonarr`          |                             |  
-| headphones      | Default    | Default      |                                                  | `../headphones`      |                             |  
-| radarr          | Default    | Default      |                                                  | `../radarr`          |                             |  
-| lazylibrarian   | Default    | Default      |                                                  | `../lazylibrarian`   |                             |  
-| medusa          | Default    | Default      |                                                  | `../medusa`          |                             |  
-| mylar           | Default    | Default      |                                                  | `../mylar`           |                             |  
+| sonarr          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../sonarr`          |                             |  
+| headphones      | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../headphones`      |                             |  
+| radarr          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../radarr`          |                             |  
+| lazylibrarian   | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../lazylibrarian`   |                             |  
+| medusa          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../medusa`          |                             |  
+| mylar           | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../mylar`           |                             |  
 
-The script in the `Default` category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
+The script in each category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
 
 <a id="transmission"></a>
 #### ![download stack](./docs/images/download.png) Transmission 

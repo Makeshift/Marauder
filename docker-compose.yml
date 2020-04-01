@@ -17,9 +17,9 @@ services:
         --uid 65534                                  \
         --gid 65534                                  \
         -v                                           \
-        --checkers 32                                \
+        --checkers 12                                \
         --buffer-size 16M                            \
-        --transfers 64                               \
+        --transfers 12                               \
         --use-mmap                                   \
         --vfs-cache-mode writes                      \
         --poll-interval 120s                         \
