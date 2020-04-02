@@ -245,9 +245,9 @@ Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 | Setting Name                                       | Value                                                                                          |  
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |  
-| Temporary Download Folder                          | `/shared/merged/downloads/sabnzbd/incomplete`                                                  |  
+| Temporary Download Folder                          | `/shared/separate/downloads/sabnzbd/incomplete`                                                |  
 | Minimum Free Space for Temporary Download Folder   | A reasonable number, I chose 300GB on a 2TB disk                                               |  
-| Completed Download Folder                          | `/shared/merged/downloads/sabnzbd/default/` (We'll be overriding this with categories later)   |  
+| Completed Download Folder                          | `/shared/separate/downloads/sabnzbd/default/` (We'll be overriding this with categories later) |  
 | Permissions for completed downloads                | 777                                                                                            |  
 | Scripts Folder                                     | `/scripts`                                                                                     |  
 
@@ -286,23 +286,25 @@ Todo
 
 The movie and folder formats were chosen to make importing easier in the case of losing the Radarr database. However, they are fairly optional.
 
-| Setting Name                      | Value                                                                                                                                      |
-|-------------------------------    |---------------------------------                                                                                                           |
-| **Movie Naming**                  |                                                                                                                                            |
-| Rename Movies                     | Yes                                                                                                                                        |
-| Replace Illegal Characters        | Yes                                                                                                                                        |
-| Colon Replacement Format          | Replace with Space Dash Space                                                                                                              |
-| Standard Movie Format             | `{Movie Title} ({Release Year}) ({IMDb Id}) {{Quality Full}}`                                                                              |
-| Movie Folder Format               | `{Movie TitleThe} ({Release Year}) ({IMDb Id})`                                                                                            |
-| **Folders**                       |                                                                                                                                            |
-| Automatically Rename Folders      | (Optional - May be a bad idea if you have a large collection that doesn't currently follow the above folder format) Yes                    |
-| Movie Paths Default to Static     | (Optional - If you don't tick the above, this won't do much) No                                                                            |
-| **Importing**                     |                                                                                                                                            |
-| Skip Free Space Check             | Yes                                                                                                                                        |
-| Use Hardlinks instead of Copy     | No                                                                                                                                         |
-| Import Extra Files                | Yes                                                                                                                                        |
-| Extra File Extensions             | `srt,nfo`                                                                                                                                  |
-|                                   |                                                                                                                                            |
+| Setting Name                    | Value                                                                                                                                                    |  
+| ------------------------------- | ---------------------------------                                                                                                                        |  
+| **Movie Naming**                |                                                                                                                                                          |  
+| Rename Movies                   | Yes                                                                                                                                                      |  
+| Replace Illegal Characters      | Yes                                                                                                                                                      |  
+| Colon Replacement Format        | Replace with Space Dash Space                                                                                                                            |  
+| Standard Movie Format           | `{Movie Title} ({Release Year}) ({IMDb Id}) {{Quality Full}}`                                                                                            |  
+| Movie Folder Format             | `{Movie TitleThe} ({Release Year}) ({IMDb Id})`                                                                                                          |  
+| **Folders**                     |                                                                                                                                                          |  
+| Automatically Rename Folders    | (Optional - May be a bad idea if you have a large collection that doesn't currently follow the above folder format) Yes                                  |  
+| Movie Paths Default to Static   | (Optional - If you don't tick the above, this won't do much) No                                                                                          |  
+| **Importing**                   |                                                                                                                                                          |  
+| Skip Free Space Check           | Yes                                                                                                                                                      |  
+| Use Hardlinks instead of Copy   | No                                                                                                                                                       |  
+| Import Extra Files              | Yes                                                                                                                                                      |  
+| Extra File Extensions           | `srt,nfo`                                                                                                                                                |  
+| **File Management**             |                                                                                                                                                          |  
+| Recycling Bin                   | `/shared/merged/Media/RecyclingBin/radarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.) |  
+| Recycling Bin Cleanup           | 0                                                                                                                                                        |  
 
 **In the `Indexers` tab**
 - Press the `+` to add a new indexer
@@ -353,6 +355,9 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Use Hardlinks instead of Copy   | No                                                                                                                                                          |  
 | Import Extra Files              | Yes                                                                                                                                                         |  
 | Extra File Extensions           | `srt,nfo`                                                                                                                                                   |  
+| **File Management**             |                                                                                                                                                             |  
+| Recycling Bin                   | `/shared/merged/Media/RecyclingBin/sonarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.)    |  
+| Recycling Bin Cleanup           | 0                                                                                                                                                           |  
 | **Root Folders**                | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |  
 
 
@@ -493,7 +498,7 @@ _In the `Post Processing` tab_
 | --------------                | ----------------------------------------------------- |  
 | **Scheduled Post-Processing** |                                                       |  
 | Scheduled Postprocessor       | Yes                                                   |  
-| Post Processing Dir           | `/shared/merged/downloads/sabnzbd/medusa`             |  
+| Post Processing Dir           | `/shared/separate/downloads/sabnzbd/medusa`             |  
 | Processing Method             | Move                                                  |  
 
 _In the `Episode Naming` tab_
@@ -548,7 +553,7 @@ Headphones is an automatic music downloader.
 | SABnzbd Host                      | `localhost:8080`                                      |  
 | Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
 | SABnzbd category                    | headphones                                                 |  
-| Music Download Directory | `/shared/merged/downloads/sabnzbd/headphones` |
+| Music Download Directory | `/shared/separate/downloads/sabnzbd/headphones` |
 
 - Click 'Save Changes' at the bottom left
 
@@ -640,7 +645,7 @@ LazyLibrarian is an automatic ebook downloader.
 | New Authors AudioBook Status         | Skipped                                               |  
 | New Series Status                    | Wanted                                                |  
 | **Folders**                          |                                                       |  
-| Download Directories                 | `/shared/merged/downloads/sabnzbd/lazylibrarian`      |  
+| Download Directories                 | `/shared/separate/downloads/sabnzbd/lazylibrarian`    |  
 | eBook Library Folder                 | `/shared/merged/Media/Books/`                         |  
 | AudioBook Library Folder             | `/shared/merged/Media/Audiobooks`                     |  
 | **Miscellaneous**                    |                                                       |  
@@ -676,6 +681,7 @@ Mylar is an automatic comic book downloader.
 | Sabnzbd API key                        | The API key you saved from the SABnzbd section        |  
 | SABnzbd category                       | mylar                                                 |  
 | Are Mylar/Sabnzbd on separate machines | Ticked                                                |  
+| SABnzbd Download Directory             | `/shared/separate/downloads/sabnzbd/mylar`            |  
 | Enable Completed Download Handling     | Ticked                                                |  
  
 
@@ -822,7 +828,7 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `runtime_conf/`        | Contains all the service-specific config generated after first startup and during use                                  | Yes         |       
 | `shared/separate`      | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)   | Maybe       |       
 | `shared/caches`        | Contains Rclone's pre-upload cache & disk caches                                                                       | Maybe       |
-| `shared/merged`        | Union mount containing Google Drive and merged download directories                                                    | No          |       
+| `shared/merged`        | Mount containing Google Drive for uploads and scanning                                                                 | No          |       
 | `shared/plex`          | Mount containing Google Drive for Plex specifically                                                                    | No          |       
 
 <a id="debugging"></a>

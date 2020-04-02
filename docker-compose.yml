@@ -116,7 +116,7 @@ services:
       - proxy.port=8080
     volumes:
       - ./runtime_conf/sabnzbd:/config
-      - ./shared/separate/downloads/:/shared/merged/downloads/:rshared
+      - ./shared:/shared:rshared
       - ./scripts:/scripts
     restart: unless-stopped
 
