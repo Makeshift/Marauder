@@ -834,19 +834,22 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 
 There's a lot of services included in these stacks. If you need to configure firewalls, here's what you need to know:
 
-| Service       | Description        | Filename             | Stack Name                                             | Port  |  
-| rclone        | Remote Control API | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5572  |  
-| nzbhydra      | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5076  |  
-| radarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 7878  |  
-| sonarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8989  |  
-| sabnzbd       | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8080  |  
-| medusa        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8081  |  
-| headphones    | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8181  |  
-| lazylibrarian | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5299  |  
-| mylar         | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8090  |  
-| bazarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 6767  |  
-| rclone        | Remote Control API | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 5573  |  
-| plex          | Web UI             | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 32400 |  
+| Service           | Description        | Filename             | Stack Name                                             | Port  |  
+| --------------    | ------------------ | -------------------- | ------------------------------------------------------ | ----- |  
+| rclone            | Remote Control API | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5572  |  
+| nzbhydra          | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5076  |  
+| radarr            | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 7878  |  
+| sonarr            | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8989  |  
+| sabnzbd           | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8080  |  
+| medusa            | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8081  |  
+| headphones        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8181  |  
+| lazylibrarian     | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5299  |  
+| mylar             | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8090  |  
+| bazarr            | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 6767  |  
+| rclone            | Remote Control API | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 5573  |  
+| plex              | Web UI             | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 32400 |  
+| sqlite-web_radarr | Web UI             | `edit-dbs.yml`       | Debug                                                  | 8082  |  
+| sqlite-web_sonarr | Web UI             | `edit-dbs.yml`       | Debug                                                  | 8083  |  
 
 <a id="debugging"></a>
 ## Debugging
