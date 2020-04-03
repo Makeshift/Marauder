@@ -76,6 +76,7 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Tautulli](#tautulli)
         - [Ombi](#ombi)
 - [Backing up / Moving](#backing-up--moving)
+- [Service Port Matrix](#service-port-matrix)
 - [Debugging](#debugging)
 - [Todo](#todo)
     - [Services:](#services)
@@ -249,22 +250,19 @@ Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 | Minimum Free Space for Temporary Download Folder   | A reasonable number, I chose 300GB on a 2TB disk                                               |  
 | Completed Download Folder                          | `/shared/separate/downloads/sabnzbd/default/` (We'll be overriding this with categories later) |  
 | Permissions for completed downloads                | 777                                                                                            |  
-| Scripts Folder                                     | `/scripts`                                                                                     |  
 
 **In the `Categories` tab**
 Copy the below table:
 
-| Category        | Priority   | Processing   | Script                                           | Folder/Path          | Indexer Categories/Groups   |  
-| --------------- | ---------- | ------------ | --------                                         | -------------------- | --------------------------- |  
-| Default         | Normal     | +Delete      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` |                      |                             |  
-| sonarr          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../sonarr`          |                             |  
-| headphones      | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../headphones`      |                             |  
-| radarr          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../radarr`          |                             |  
-| lazylibrarian   | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../lazylibrarian`   |                             |  
-| medusa          | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../medusa`          |                             |  
-| mylar           | Default    | Default      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` | `../mylar`           |                             |  
-
-The script in each category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
+| Category        | Priority   | Processing   | Script   | Folder/Path          | Indexer Categories/Groups   |  
+| --------------- | ---------- | ------------ | -------- | -------------------- | --------------------------- |  
+| Default         | Normal     | +Delete      |          |                      |                             |  
+| sonarr          | Default    | Default      |          | `../sonarr`          |                             |  
+| headphones      | Default    | Default      |          | `../headphones`      |                             |  
+| radarr          | Default    | Default      |          | `../radarr`          |                             |  
+| lazylibrarian   | Default    | Default      |          | `../lazylibrarian`   |                             |  
+| medusa          | Default    | Default      |          | `../medusa`          |                             |  
+| mylar           | Default    | Default      |          | `../mylar`           |                             |  
 
 <a id="transmission"></a>
 #### ![download stack](./docs/images/download.png) Transmission 
@@ -830,6 +828,25 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `shared/caches`        | Contains Rclone's pre-upload cache & disk caches                                                                       | Maybe       |
 | `shared/merged`        | Mount containing Google Drive for uploads and scanning                                                                 | No          |       
 | `shared/plex`          | Mount containing Google Drive for Plex specifically                                                                    | No          |       
+
+<a id="service-port-matrix"></a>
+## Service Port Matrix
+
+There's a lot of services included in these stacks. If you need to configure firewalls, here's what you need to know:
+
+| Service       | Description        | Filename             | Stack Name                                             | Port  |  
+| rclone        | Remote Control API | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5572  |  
+| nzbhydra      | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5076  |  
+| radarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 7878  |  
+| sonarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8989  |  
+| sabnzbd       | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8080  |  
+| medusa        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8081  |  
+| headphones    | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8181  |  
+| lazylibrarian | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 5299  |  
+| mylar         | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 8090  |  
+| bazarr        | Web UI             | `docker-compose.yml` | ![download stack](./docs/images/download.png) Download | 6767  |  
+| rclone        | Remote Control API | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 5573  |  
+| plex          | Web UI             | `plex-compose.yml`   | ![watch stack](./docs/images/watch.png) Watch          | 32400 |  
 
 <a id="debugging"></a>
 ## Debugging

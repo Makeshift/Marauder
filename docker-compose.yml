@@ -30,7 +30,7 @@ services:
         --vfs-cache-poll-interval 20m                \
         --vfs-cache-max-age 8760h                    \
         --vfs-cache-max-size 256G                    \
-        --cache-dir=/shared/caches/rclone_plex/vfs/  \
+        --cache-dir=/shared/caches/rclone/vfs/       \
         --low-level-retries 3                        \
         --multi-thread-cutoff 25M                    \
         --multi-thread-streams 8                     \
@@ -67,7 +67,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./runtime_conf/radarr:/config
       - ./shared/:/shared:rshared
-      - ./scripts:/scripts
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -87,7 +86,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ./runtime_conf/sonarr:/config
       - ./shared/:/shared:rshared
-      - ./scripts:/scripts
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -117,7 +115,6 @@ services:
     volumes:
       - ./runtime_conf/sabnzbd:/config
       - ./shared:/shared:rshared
-      - ./scripts:/scripts
     restart: unless-stopped
 
   traktarr:
@@ -149,12 +146,10 @@ services:
     labels:
       - proxy.hosts=medusa.${domain},medusa.local.${domain},medusa.public.${domain}
       - proxy.port=8081
-      - ./scripts:/scripts
     restart: unless-stopped
     volumes:
       - ./runtime_conf/medusa:/config
       - ./shared/:/shared:rshared
-
       - /etc/localtime:/etc/localtime:ro
 
   headphones:
@@ -169,7 +164,6 @@ services:
       - ./runtime_conf/headphones:/config
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
-      - ./scripts:/scripts
     depends_on:
       - rclone
     labels:
@@ -191,7 +185,6 @@ services:
       - ./runtime_conf/lazylibrarian:/config
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
-      - ./scripts:/scripts
     labels:
       - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
       - proxy.port=5299
@@ -211,7 +204,6 @@ services:
       - ./runtime_conf/mylar:/config
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
-      - ./scripts:/scripts
     labels:
       - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
       - proxy.port=8090
