@@ -2,7 +2,7 @@
 set +x
 
 HOST="127.0.0.1"
-PORT="5573"
+PORT="5572"
 
 FULL_FOLDER=$(dirname "${SAB_COMPLETE_DIR}")
 FOLDER=${FULL_FOLDER#/shared/merged/}

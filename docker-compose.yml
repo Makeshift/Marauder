@@ -114,7 +114,7 @@ services:
       - proxy.port=8080
     volumes:
       - ./runtime_conf/sabnzbd:/config
-      - ./shared:/shared:rshared
+      - ./shared/separate/downloads/sabnzbd:/shared/merged/downloads/sabnzbd:rshared
     restart: unless-stopped
 
   traktarr:

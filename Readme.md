@@ -246,23 +246,25 @@ Sabnzbd is used to download from Usenet. You'll need Usenet account(s).
 
 | Setting Name                                       | Value                                                                                          |  
 | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |  
-| Temporary Download Folder                          | `/shared/separate/downloads/sabnzbd/incomplete`                                                |  
+| Temporary Download Folder                          | `/shared/merged/downloads/sabnzbd/incomplete`                                                |  
 | Minimum Free Space for Temporary Download Folder   | A reasonable number, I chose 300GB on a 2TB disk                                               |  
-| Completed Download Folder                          | `/shared/separate/downloads/sabnzbd/default/` (We'll be overriding this with categories later) |  
+| Completed Download Folder                          | `/shared/merged/downloads/sabnzbd/default/` (We'll be overriding this with categories later) |  
 | Permissions for completed downloads                | 777                                                                                            |  
 
 **In the `Categories` tab**
 Copy the below table:
 
-| Category        | Priority   | Processing   | Script   | Folder/Path          | Indexer Categories/Groups   |  
-| --------------- | ---------- | ------------ | -------- | -------------------- | --------------------------- |  
-| Default         | Normal     | +Delete      |          |                      |                             |  
-| sonarr          | Default    | Default      |          | `../sonarr`          |                             |  
-| headphones      | Default    | Default      |          | `../headphones`      |                             |  
-| radarr          | Default    | Default      |          | `../radarr`          |                             |  
-| lazylibrarian   | Default    | Default      |          | `../lazylibrarian`   |                             |  
-| medusa          | Default    | Default      |          | `../medusa`          |                             |  
-| mylar           | Default    | Default      |          | `../mylar`           |                             |  
+| Category        | Priority   | Processing   | Script                                           | Folder/Path          | Indexer Categories/Groups   |  
+| --------------- | ---------- | ------------ | --------                                         | -------------------- | --------------------------- |  
+| Default         | Normal     | +Delete      | `sabnzbd_post_process_clear_rclone_vfs_cache.sh` |                      |                             |  
+| sonarr          | Default    | Default      |                                                  | `../sonarr`          |                             |  
+| headphones      | Default    | Default      |                                                  | `../headphones`      |                             |  
+| radarr          | Default    | Default      |                                                  | `../radarr`          |                             |  
+| lazylibrarian   | Default    | Default      |                                                  | `../lazylibrarian`   |                             |  
+| medusa          | Default    | Default      |                                                  | `../medusa`          |                             |  
+| mylar           | Default    | Default      |                                                  | `../mylar`           |                             |  
+
+The script in the `Default` category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
 
 <a id="transmission"></a>
 #### ![download stack](./docs/images/download.png) Transmission 
@@ -496,7 +498,7 @@ _In the `Post Processing` tab_
 | --------------                | ----------------------------------------------------- |  
 | **Scheduled Post-Processing** |                                                       |  
 | Scheduled Postprocessor       | Yes                                                   |  
-| Post Processing Dir           | `/shared/separate/downloads/sabnzbd/medusa`             |  
+| Post Processing Dir           | `/shared/merged/downloads/sabnzbd/medusa`             |  
 | Processing Method             | Move                                                  |  
 
 _In the `Episode Naming` tab_
@@ -551,7 +553,7 @@ Headphones is an automatic music downloader.
 | SABnzbd Host                      | `localhost:8080`                                      |  
 | Sabnzbd API key                         | The API key you saved from the SABnzbd section        |  
 | SABnzbd category                    | headphones                                                 |  
-| Music Download Directory | `/shared/separate/downloads/sabnzbd/headphones` |
+| Music Download Directory | `/shared/merged/downloads/sabnzbd/headphones` |
 
 - Click 'Save Changes' at the bottom left
 
@@ -643,7 +645,7 @@ LazyLibrarian is an automatic ebook downloader.
 | New Authors AudioBook Status         | Skipped                                               |  
 | New Series Status                    | Wanted                                                |  
 | **Folders**                          |                                                       |  
-| Download Directories                 | `/shared/separate/downloads/sabnzbd/lazylibrarian`    |  
+| Download Directories                 | `/shared/merged/downloads/sabnzbd/lazylibrarian`    |  
 | eBook Library Folder                 | `/shared/merged/Media/Books/`                         |  
 | AudioBook Library Folder             | `/shared/merged/Media/Audiobooks`                     |  
 | **Miscellaneous**                    |                                                       |  
@@ -824,9 +826,9 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `rclone.env`           | rclone required for Rclone to run                                                                                      | Yes         |       
 | `rclone.conf`          | If you've made any tweaks to the mount settings, you might want to back this up                                        | Maybe       |       
 | `runtime_conf/`        | Contains all the service-specific config generated after first startup and during use                                  | Yes         |       
-| `shared/separate`      | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads)   | Maybe       |       
-| `shared/caches`        | Contains Rclone's pre-upload cache & disk caches                                                                       | Maybe       |
-| `shared/merged`        | Mount containing Google Drive for uploads and scanning                                                                 | No          |       
+| `shared/separate`      | Individual mounts for downloaders (You can back these up if you care about losing unsorted or in-progress downloads) and in-progress uploads   | Maybe       |       
+| `shared/caches`        | Contains Rclone's disk caches                                                                       | Maybe       |
+| `shared/merged`        | Union mount containing Google Drive, download and merged upload directories                                                                 | No          |       
 | `shared/plex`          | Mount containing Google Drive for Plex specifically                                                                    | No          |       
 
 <a id="service-port-matrix"></a>
