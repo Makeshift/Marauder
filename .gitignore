@@ -6,3 +6,5 @@ runtime_conf/
 shared/
 rclone.env
 *.tar.gz
+service_accounts/*.json
+service_accounts/*.csv

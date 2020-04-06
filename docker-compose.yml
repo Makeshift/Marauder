@@ -44,6 +44,7 @@ services:
     volumes:
       - ./rclone.conf:/rclone.conf:ro
       - ./shared/:/shared/:rshared
+      - ./service_accounts/:/service_accounts/:ro
 
   nzbhydra:
     image: hotio/nzbhydra2

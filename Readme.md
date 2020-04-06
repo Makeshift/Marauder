@@ -136,9 +136,8 @@ There are several env vars required to get Rclone to work. Here are the vars and
 |--------------------------------   |-----------------------------------------------------------------------------------    |--------------------------------------------------------------------------------------------------------------------                                                        |
 | rclone_encryption_password1       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password`                                                           |
 | rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password2`                                                          |
-| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`                                                              |
-| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | This is the email address that the service account will be impersonating to access Google Drive                                                                            |
-| rclone_service_credential_file    | [Google Drive Service Account](https://rclone.org/drive/#service-account-support)     | Open the file and use [a JSON minifier](https://www.cleancss.com/json-minify/) to minify the JSON to keep your envfile readable.                                           |
+| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`. Only set this if you don't intend to use service accounts.                                                              |
+| rclone_gdrive_impersonate         | Google Drive Owner's Email Address                                                    | If you're using [service accounts](https://rclone.org/drive/#use-case-google-apps-g-suite-account-and-individual-drive) this is the email address that the service account will be impersonating to access Google Drive                                                                            |
 | rclone_gdrive_mount_folder        | If your crypt directory is not the top level of Gdrive, this is the encrypted folder  | My GDrive is set up with Rclone encrypting the top level folder `encrypted`, so my mount folder is simply `encrypted`.                                                     |
 
 Remember that you *do not* need to escape the variables in env files.
@@ -150,9 +149,11 @@ cp rclone.env.template rclone.env
 <a id="multiple-service-credential-files"></a>
 ##### Multiple service credential files
 
-You can upload more than the 750GB/day limit by switching the service file that Rclone uses. At some point I'd like to use the union mount to randomise which service account is used.
+You can upload more than the 750GB/day limit by switching the service file that Rclone uses.
 
-TODO
+* Create a bunch of [service accounts](https://rclone.org/drive/#use-case-google-apps-g-suite-account-and-individual-drive), remember to set your `rclone_drive_impersonate` env var.
+* Place your service accounts in the `service_accounts` folder. They must end in `.json`.
+* Done. They will automatically cycle when uploading.
 
 <a id="plex"></a>
 #### Plex
