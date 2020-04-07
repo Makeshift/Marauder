@@ -116,6 +116,7 @@ services:
     volumes:
       - ./runtime_conf/sabnzbd:/config
       - ./shared/separate/downloads/sabnzbd:/shared/merged/downloads/sabnzbd:rshared
+      - ./scripts:/scripts
     restart: unless-stopped
 
   traktarr:
