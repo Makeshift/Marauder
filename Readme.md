@@ -11,7 +11,7 @@ There are several other attempts at this, such as [Cloudbox](https://github.com/
 - They require an entire VM or machine dedicated to it
 - They aren't _fully_ dockerized, it mangles the host machine and places config/installation all over the place, making it difficult to back up or fully utilise machine resources
 - They regularly have rookie mistakes such as moving data between two Docker volumes, causing unneccessary high disk I/O
-- They make too many assumptions about your current setup, and make it difficult to change
+- They make too many assumptions about your current setup, and make it difficult to change (Well, so does mine, but it's __my__ setup so I'm allowed to be a hypocrite)
 
 This setup has one gigantic shared folder named `shared`. It's set up with Rclone union mounts so that programs like Sonarr, Radarr, Medusa etc. all believe that the downloading and gdrive media directories are on the same filesystem (because they are!). This severely reduces I/O compared to moving things between volumes. There's then some clever volume mapping so all the programs have matched up directories even though they're technically pointed to different places.
 
@@ -164,6 +164,8 @@ Team drives are limited to 400,000 files, meaning that if you have a large colle
 Grab your team ids and delimit them by a space, and config will be generated on startup of the rclone container to combine them. This assumes your folder layout and encryption are identical on each team drive.
 
 `rclone_team_drive_ids=0AHh2Szlzsxxxxxxxxx 0AHh2Szlzsyyyyyyyyy 0AHh2Szlzszzzzzzzzz`
+
+The drives will then be cycled when `teamDriveFileLimitExceeded` is hit.
 
 <a id="plex"></a>
 #### Plex
