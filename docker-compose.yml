@@ -43,7 +43,7 @@ services:
     cap_add:
       - SYS_ADMIN
     volumes:
-      - ./rclone.conf:/rclone.conf:ro
+      - ./rclone_conf:/rclone_conf:ro
       - ./shared/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
 

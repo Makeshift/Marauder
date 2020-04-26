@@ -1,11 +1,5 @@
-[union]
-type = union
-upstreams = /shared/separate/ encryptedgdrive:/:nc
-action_policy = ff
-create_policy = ff
-search_policy = ff
 
-[gdrive]
+[gdrive_${count}]
 type = drive
 scope = drive
 workers = 12
@@ -16,28 +10,28 @@ pacer_min_sleep = 1ms
 pacer_burst = 5000
 team_drive = ${rclone_team_drive_id}
 
-[gcache]
+[gcache_${count}]
 type = cache
 info_age = 8700h
 chunk_total_size = 50G
-remote = gdrive:/${rclone_gdrive_mount_folder}
+remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
 workers = 12
-tmp_upload_path = /shared/caches/rclone${CacheFolderSuffix}/tmp_upload_path/
-db_path = /shared/caches/rclone${CacheFolderSuffix}/db_path/
-chunk_path = /shared/caches/rclone${CacheFolderSuffix}/chunk_path/
+tmp_upload_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/tmp_upload_path/
+db_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/db_path/
+chunk_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/chunk_path/
 
-[encryptedgdrive]
+[gdrive_upload_crypt_${count}]
 type = crypt
-remote = gcache:/
+remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
 workers = 12
 filename_encryption = standard
 directory_name_encryption = true
 password = ${rclone_encryption_password1}
 password2 = ${rclone_encryption_password2}
 
-[uploadgdrive]
+[gdrive_mount_crypt_${count}]
 type = crypt
-remote = gdrive:/${rclone_gdrive_mount_folder}
+remote = gcache_${count}:/
 workers = 12
 filename_encryption = standard
 directory_name_encryption = true

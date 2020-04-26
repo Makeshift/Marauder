@@ -52,6 +52,7 @@ Alternatively, you can also just comment out the services you don't want in the 
             - [plex_host](#plex_host)
         - [Rclone](#rclone)
             - [Multiple service credential files](#multiple-service-credential-files)
+            - [Multiple Drives](#multiple-drives)
         - [Plex](#plex)
     - [Initial Starting of the Stacks](#initial-starting-of-the-stacks)
         - [Starting the Downloader Stack](#starting-the-downloader-stack)
@@ -138,8 +139,7 @@ There are several env vars required to get Rclone to work. Here are the vars and
 | rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password2`                                                          |
 <!--| rclone_gdrive_token               | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | Only set this if you don't intend to use service accounts. If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `token`.  |-->
 | rclone_gdrive_mount_folder        | If your crypt directory is not the top level of Gdrive, this is the encrypted folder  | My GDrive is set up with Rclone encrypting the top level folder `encrypted`, so my mount folder is simply `encrypted`.                                                     |
-| rclone_team_drive_id              | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | Only set this if you're using a team drive. If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `team_drive` |
-
+| rclone_team_drive_ids             | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | Only set this if you're using a team drive. If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `team_drive`. If you want to combine multiple team drives, add them all in this variable delimited by a space. |
 Remember that you *do not* need to escape the variables in env files.
 
 ```bash
@@ -155,6 +155,15 @@ You can upload more than the 750GB/day limit by switching the service file that 
 * I used [88lex's sa-gen](https://github.com/88lex/sa-gen) to generate my service accounts. You can then add them all to a group, and share the team drive with the group. There's a guide [here](https://github.com/88lex/sa-guide) on how to do this.
 * Drop your service account json files in the `service_accounts` folder. `1.json` is used by default to mount the drive. The rest of the `.json`'s will be cycled when uploading
 * The upload script will now automatically switch service accounts when the limit has been reached
+
+<a id="multiple-drives"></a>
+##### Multiple Drives
+
+Team drives are limited to 400,000 files, meaning that if you have a large collection you'll likely need more than one drive. This is supported by the `rclone_team_drive_ids` env var in `rclone.env`.
+
+Grab your team ids and delimit them by a space, and config will be generated on startup of the rclone container to combine them. This assumes your folder layout and encryption are identical on each team drive.
+
+`rclone_team_drive_ids=0AHh2Szlzsxxxxxxxxx 0AHh2Szlzsyyyyyyyyy 0AHh2Szlzszzzzzzzzz`
 
 <a id="plex"></a>
 #### Plex
