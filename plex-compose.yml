@@ -12,7 +12,6 @@ services:
       - ./rclone.env
     environment:
         MountPoint: "/shared/plex"
-        RemotePath: "encryptedgdrive:" 
         CacheFolderSuffix: "_plex"
         MountCommands: "                             \
         --fast-list                                  \
@@ -41,12 +40,13 @@ services:
         --multi-thread-streams 8                     \
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5573                       \
+        --drive-service-account-file /service_accounts/80.json \
         --rc"
     cap_add:
       - SYS_ADMIN
     volumes:
-      - ./rclone.conf:/rclone.conf:ro
-      - ./shared/:/shared/:rshared
+      - ./rclone_conf:/rclone_conf:ro
+      - ./shared_plex/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
 
   plex:
@@ -63,6 +63,6 @@ services:
       - proxy.template=/plex.vhost
     volumes:
       - ./runtime_conf/plex/:/config/
-      - ./shared/:/shared/:rshared
+      - ./shared_plex/:/shared/:rshared
     depends_on:
       - rclone_plex
