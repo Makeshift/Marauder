@@ -77,6 +77,8 @@ Alternatively, you can also just comment out the services you don't want in the 
         - [Tautulli](#tautulli)
         - [Ombi](#ombi)
 - [Backing up / Moving](#backing-up--moving)
+- [Maintenance](#maintenance)
+    - [Dedupe](#dedupe)
 - [Service Port Matrix](#service-port-matrix)
 - [Debugging](#debugging)
 - [Todo](#todo)
@@ -843,6 +845,20 @@ While it may be easier to just `tar` the entire thing to move it (make sure you 
 | `shared/caches`        | Contains Rclone's disk caches                                                                       | Maybe       |
 | `shared/merged`        | Union mount containing Google Drive, download and merged upload directories                                                                 | No          |       
 | `shared/plex`          | Mount containing Google Drive for Plex specifically                                                                    | No          |       
+
+<a id="maintenance"></a>
+## Maintenance
+
+There are a couple of sometimes-useful maintenance scripts provided, especially for Rclone.
+
+<a id="dedupe"></a>
+### Dedupe
+
+There is a script that will iterate over all provided team drives and dedupe them using [Rclone's "newest" dedupe mode](https://rclone.org/commands/rclone_dedupe/). It can be ran using the following command:
+
+```bash
+docker-compose exec rclone dedupe
+```
 
 <a id="service-port-matrix"></a>
 ## Service Port Matrix
