@@ -13,7 +13,7 @@ team_drive = ${rclone_team_drive_id}
 [gcache_${count}]
 type = cache
 info_age = 8700h
-chunk_total_size = 50G
+chunk_total_size = ${CacheSizePerMountGb}G
 remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
 workers = 12
 tmp_upload_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/tmp_upload_path/

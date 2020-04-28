@@ -11,6 +11,8 @@ services:
     env_file:
       - ./rclone.env
     environment:
+        CacheSizePerMountGb: 25
+        ItemsPerUpload: 16
         MountPoint: "/shared/plex"
         CacheFolderSuffix: "_plex"
         MountCommands: "                             \
