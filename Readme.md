@@ -361,16 +361,20 @@ The movie and folder formats were chosen to make importing easier in the case of
 | ------------------------------- | ---------------------------------                                                                                                                           |  
 | **Episode Naming**              |                                                                                                                                                             |  
 | Rename Episodes                 | Yes                                                                                                                                                         |  
+| Replace Illegal Characters      | Yes |
 | Standard Episode Format         | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`                                                                      |  
 | Daily Episode Format            | `{Series TitleTheYear} - {Air-Date} - {Episode Title} ({Quality Full})`                                                                                     |  
 | Anime Episode Format            | `{Series TitleTheYear} - S{season:00}E{episode:00} - {Episode Title} ({Quality Full})`                                                                      |  
 | Series Folder Format            | `{Series TitleTheYear} ({ImdbId})`                                                                                                                          |  
+| **Folders** ||
+| Delete empty folders | Yes |
 | **Importing**                   |                                                                                                                                                             |  
 | Skip Free Space Check           | Yes                                                                                                                                                         |  
 | Use Hardlinks instead of Copy   | No                                                                                                                                                          |  
 | Import Extra Files              | Yes                                                                                                                                                         |  
 | Extra File Extensions           | `srt,nfo`                                                                                                                                                   |  
 | **File Management**             |                                                                                                                                                             |  
+| Analyse video files             | No |
 | Recycling Bin                   | `/shared/merged/Media/RecyclingBin/sonarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.)    |  
 | Recycling Bin Cleanup           | 0                                                                                                                                                           |  
 | **Root Folders**                | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |  
@@ -397,6 +401,15 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Port          | 8080                                                  |
 | API Key       | The API key you noted down from the SABnzbd section   |
 | Category      | sonarr                                                |
+
+- In the settings for download clients
+
+| Setting Name                    | Value                                                 |  
+| --------------                  | ----------------------------------------------------- |  
+| **Completed Download Handling** |                                                       |  
+| Remove                          | Yes                                                   |  
+| **Failed Download Handling**    |                                                       |  
+| Remove                          | Yes                                                   |  
 
 **In the `Series` Menu**
 If you have existing series, click 'Import'. If not, click 'Add New' and follow the instructions for adding the root directory `/shared/merged/Media/TV`.
