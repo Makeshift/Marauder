@@ -141,6 +141,7 @@ There are several env vars required to get Rclone to work. Here are the vars and
 | rclone_encryption_password2       | [Rclone Crypt Config](https://rclone.org/crypt/)                                      | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `password2`                                                          |
 | rclone_gdrive_mount_folder        | If your crypt directory is not the top level of Gdrive, this is the encrypted folder  | My GDrive is set up with Rclone encrypting the top level folder `encrypted`, so my mount folder is simply `encrypted`.                                                     |
 | rclone_team_drive_ids             | [Rclone Gdrive Config](https://rclone.org/drive/)                                     | If you've previously set up Rclone, this will be in `~/.config/rclone/rclone.conf` under config param `team_drive`. If you want to combine multiple team drives, add them all in this variable delimited by a space. |
+
 Remember that you *do not* need to escape the variables in env files.
 
 This stack **only** supports team drives at the moment. I tried to support My Drive with sharing but I had trouble exceeding the 750GB/day limit with that setup.
