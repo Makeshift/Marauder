@@ -318,6 +318,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Import Extra Files              | Yes                                                                                                                                                      |  
 | Extra File Extensions           | `srt,nfo`                                                                                                                                                |  
 | **File Management**             |                                                                                                                                                          |  
+| Analyse video files             | No |
 | Recycling Bin                   | `/shared/merged/Media/RecyclingBin/radarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.) |  
 | Recycling Bin Cleanup           | 0                                                                                                                                                        |  
 
