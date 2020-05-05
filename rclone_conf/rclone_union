@@ -2,6 +2,6 @@
 [union]
 type = union
 upstreams = /shared/separate/ ${multi_names}
-action_policy = ff
+action_policy = epall
 create_policy = ff
 search_policy = ff

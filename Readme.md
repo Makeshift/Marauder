@@ -4,6 +4,10 @@ This is designed to be a fully dockerized Media downloading solution utilising G
 
 This particular repo does not contain the media watching/distribution stack. Once I've cleaned that up for release, there will be a link to it here.
 
+## Getting Started
+
+This Readme is huge, so I made a smaller "Getting Started" page [here](docs/getting_started.md). This should be enough to get you going without having to read all of this crap.
+
 ## Motivation
 
 There are several other attempts at this, such as [Cloudbox](https://github.com/Cloudbox/Cloudbox) and [PGBlitz](https://github.com/PGBlitz/PGBlitz.com), however I found these setups a little lacking in certain areas.
@@ -40,6 +44,10 @@ Alternatively, you can also just comment out the services you don't want in the 
 **Q: Why Plex as opposed to Emby/Jellyfin/Serviio/Whatever?**
 
 **A:** Jellyfin's Chromecast support is iffy at best, especially with subtitles (I watch anime on my Chromecast, deal with it). Emby has similar issues with casting and subtitles but is probably otherwise the least-worst offering. Serviio is a little feature bare. Plex, as much hacking as it requires to get to work, and as *absolutely freaking terrible* as its new interface is, does work once it's set up properly, and handles the abuse I throw at it fairly well.
+
+**Q: Wait, you automatically switch team drives? Won't that cause duplicates?**
+
+**A:** Nope, I fixed that in #4.
 
 ## Table of Contents
 <!-- MarkdownTOC autolink="true" autoanchor="true" -->
@@ -322,9 +330,7 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Import Extra Files              | Yes                                                                                                                                                      |  
 | Extra File Extensions           | `srt,nfo`                                                                                                                                                |  
 | **File Management**             |                                                                                                                                                          |  
-| Analyse video files             | No |
-| Recycling Bin                   | `/shared/merged/Media/RecyclingBin/radarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.) |  
-| Recycling Bin Cleanup           | 0                                                                                                                                                        |  
+| Analyse video files             | No ||
 
 **In the `Indexers` tab**
 - Press the `+` to add a new indexer
@@ -380,8 +386,6 @@ The movie and folder formats were chosen to make importing easier in the case of
 | Extra File Extensions           | `srt,nfo`                                                                                                                                                   |  
 | **File Management**             |                                                                                                                                                             |  
 | Analyse video files             | No |
-| Recycling Bin                   | `/shared/merged/Media/RecyclingBin/sonarr` (For some reason, Rclone handles server-side moves better than deletes. You will need to create this folder.)    |  
-| Recycling Bin Cleanup           | 0                                                                                                                                                           |  
 | **Root Folders**                | ~~`/shared/merged/Media/TV`~~ **Warning:** With the current version of Sonarr V3 I've found setting this will cause Sonarr to hang in D state indefinitely. |  
 
 

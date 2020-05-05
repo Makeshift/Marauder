@@ -9,7 +9,7 @@ services:
     devices:
       - "/dev/fuse:/dev/fuse"
     environment:
-      ItemsPerUpload: 12
+      ItemsPerUpload: 10
       CacheSizePerMountGb: 10
       MountCommands: "                               \
         --fast-list                                  \
