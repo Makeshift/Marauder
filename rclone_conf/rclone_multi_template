@@ -20,20 +20,9 @@ tmp_upload_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/tmp_upload_
 db_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/db_path/
 chunk_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/chunk_path/
 
-[gdrive_upload_${count}]
-type = drive
-scope = drive
-use_trash = false
-server_side_across_configs = true
-chunk_size = 128M
-acknowledge_abuse = true
-pacer_min_sleep = 1ms
-pacer_burst = 5000
-team_drive = ${rclone_team_drive_id}
-
 [gdrive_upload_crypt_${count}]
 type = crypt
-remote = gdrive_upload_${count}:/${rclone_gdrive_mount_folder}
+remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
 filename_encryption = standard
 directory_name_encryption = true
 password = ${rclone_encryption_password1}
