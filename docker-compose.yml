@@ -39,7 +39,7 @@ services:
         --multi-thread-streams 8                     \
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5572                       \
-        --drive-service-account-file /service_accounts/1.json \
+        --drive-service-account-file /service_accounts/rclone_mount_download.json \
         --rc"
     env_file:
       - ./rclone.env

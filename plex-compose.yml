@@ -42,7 +42,7 @@ services:
         --multi-thread-streams 8                     \
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5573                       \
-        --drive-service-account-file /service_accounts/2.json \
+        --drive-service-account-file /service_accounts/rclone_mount_plex.json \
         --rc"
     cap_add:
       - SYS_ADMIN
