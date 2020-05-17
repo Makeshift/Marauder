@@ -7,8 +7,8 @@ PORT="5572"
 FULL_FOLDER=$(dirname "${SAB_COMPLETE_DIR}")
 FOLDER=${FULL_FOLDER#/shared/merged/}
 
-echo "Telling Rclone @ ${HOST}:${PORT} to forget directory ${FOLDER} and refresh it"
+echo "Telling Rclone @ ${HOST}:${PORT} to refresh directory ${FOLDER}"
 
-curl -fs -X POST "${HOST}:${PORT}/vfs/forget?dir=${FOLDER}" &
+curl -fs -X POST "${HOST}:${PORT}/vfs/refresh?dir=${FOLDER}"
 
 exit 0

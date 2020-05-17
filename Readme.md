@@ -6,7 +6,9 @@ This particular repo does not contain the media watching/distribution stack. Onc
 
 ## Getting Started
 
-This Readme is huge, so I made a smaller "Getting Started" page [here](docs/getting_started.md). This should be enough to get you going without having to read all of this crap.
+This Readme is huge, so I made a smaller "Getting Started" page [here](https://github.com/Makeshift/Marauder/wiki/Getting-Started). This should be enough to get you going without having to read all of this.
+
+**The documentation is still under construction and is subject to change! If you have any questions in the meantime, please open an issue.**
 
 ## Motivation
 
@@ -113,7 +115,7 @@ You will need:
 - The compose file has labels compatible with my [Docker Nginx Conf Generator](https://github.com/Makeshift/docker-generate-nginx-conf), but it isn't neccessary
 
 ```bash
-git clone github.com/Makeshift/Media-Compose-Stack
+git clone github.com/Makeshift/Marauder
 ```
 
 <a id="rclone--env-vars"></a>
@@ -292,6 +294,10 @@ Copy the below table:
 | mylar           | Default    | Default      |                                                  | `../mylar`           |                             |  
 
 The script in the `Default` category is **extremely** important. It forces Rclone to update its VFS cache when a download finishes, which allows the clients (Radarr, Sonarr etc.) to actually see the completed download. If you don't have this, auto processing won't work!
+
+<!--
+Unwanted extensions: iso, m2ts, exe, com
+-->
 
 <a id="transmission"></a>
 #### ![download stack](./docs/images/download.png) Transmission 
@@ -940,7 +946,7 @@ The following editors are available:
 - [x] Bazarr
 - [ ] Transmission
 - [ ] Jackett
-- [ ] Plex
+- [?] Plex
 - [ ] Tautulli
 - [ ] Ombi
 
