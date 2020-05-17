@@ -4,7 +4,7 @@ This is designed to be a fully dockerized Media downloading + Watching solution 
 
 ## Getting Started
 
-This Readme is huge, so I made a smaller "Getting Started" page [here](https://github.com/Makeshift/Marauder/wiki/Getting-Started). This should be enough to get you going without having to read all of this.
+Check out the "Getting Started" page [here](https://github.com/Makeshift/Marauder/wiki/Getting-Started). This should be enough to get you going.
 
 **The documentation is still under construction and is subject to change! If you have any questions in the meantime, please open an issue.**
 
