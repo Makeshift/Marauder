@@ -1,14 +1,22 @@
-# The Media Compose Stack
+# Marauder
 
-This is designed to be a fully dockerized Media downloading solution utilising Google Drive as an unlimited disk backend. 
-
-This particular repo does not contain the media watching/distribution stack. Once I've cleaned that up for release, there will be a link to it here.
+This is designed to be a fully dockerized Media downloading + Watching solution utilising Google Drive as an unlimited disk backend. 
 
 ## Getting Started
 
 This Readme is huge, so I made a smaller "Getting Started" page [here](https://github.com/Makeshift/Marauder/wiki/Getting-Started). This should be enough to get you going without having to read all of this.
 
 **The documentation is still under construction and is subject to change! If you have any questions in the meantime, please open an issue.**
+
+## Features
+
+- Very, very fast. I regularly download & watch 100+GB 4K movies from the Plex server with no issues.
+- All in one place. If you need to delete everything, or back everything up, you're just dealing with one folder.
+- Has all the random software and stuff you'll need (Well, I'm working on it).
+- Walks you through various optimisations to make your life easier.
+- Requires little to no maintenance once configured.
+- Automatically gets around the 750GB/day upload limit, and 400,000 file limit in Google Drive.
+- Doesn't destroy your disk IO by trying to move giant files between docker volumes.
 
 ## Motivation
 
