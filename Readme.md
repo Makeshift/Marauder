@@ -59,10 +59,16 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **A:** Nope, I fixed that in #4.
 
-### Wiki
+## Wiki
 Pretty much all documentation has been moved to [the wiki](https://github.com/Makeshift/Marauder/wiki).
 
 ## Todo
+
+### Major
+
+- [x] Usenet support
+- [ ] Torrent support
+
 ### Services:
 
 - [x] Rclone
@@ -78,7 +84,7 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 - [x] Bazarr
 - [ ] Transmission
 - [ ] Jackett
-- [?] Plex
+- [x] Plex
 - [ ] Tautulli
 - [ ] Ombi
 
