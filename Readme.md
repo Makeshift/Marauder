@@ -31,6 +31,13 @@ This setup has one gigantic shared folder named `shared`. It's set up with Rclon
 
 ## FAQ
 
+**Q: How much RAM/CPU/Disk space do I need?**
+**A:** This is hard to say. I have 32gb on my VM, but I also have a much larger collection than most so Rclone uses a lot of RAM. Rclone has fairly high limits in its current setup so may run out of memory on machines with less than 16gb - I may include some options to reduce that if needed.
+
+In terms of CPU, it depends on how much you're downloading and whether you're using usenet or torrenting. I wouldn't advise using a Pi 1 for it, but it might run okay on a Pi 4 if you're only downloading a couple films a week or something.
+
+For disk space, you need space to store incomplete downloads and cache them before they're downloaded, so it depends on what you're downloading.
+
 **Q: Why are most of the containers on the host network?**
 
 **A:** You'd be surprised how much CPU a bandwith-heavy container can use using the Docker proxy (especially for something like Sabnzbd). It just makes sense to allow the heavy stuff to bridge straight to the host, which also comes with its own set of connectivity challenges. Also, each open port would be a proxy process, so having a large range for torrenting would suck.
@@ -45,7 +52,7 @@ Alternatively, you can also just comment out the services you don't want in the 
 
 **Q: There are some extra settings in the service interface that you don't mention! What do I do?!**
 
-**A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, this doc would be even longer than it already is.
+**A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, it would take too long to configure.
 
 **Q: Why is there a custom version of Traktarr/Bazarr?**
 
