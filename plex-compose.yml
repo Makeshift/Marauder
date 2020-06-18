@@ -65,6 +65,8 @@ services:
       - proxy.template=/plex.vhost
     volumes:
       - ./runtime_conf/plex/:/config/
+      - ./runtime_conf/plex/Profiles:/usr/lib/plexmediaserver/Resources/Profiles/
+      - ./runtime_conf/plex/transcode/:/transcode/
       - ./shared_plex/:/shared/:rshared
     depends_on:
       - rclone_plex

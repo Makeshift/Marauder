@@ -1,6 +1,6 @@
 version: '3.4'
 services:
-  radarr:
+  radarr_edit:
     image: coleifer/sqlite-web
     container_name: radarr-edit
     ports:
@@ -13,7 +13,7 @@ services:
     volumes:
       - ./runtime_conf/radarr:/data
 
-  sonarr:
+  sonarr_edit:
     image: coleifer/sqlite-web
     container_name: sonarr-edit
     ports:
@@ -25,3 +25,16 @@ services:
       SQLITE_DATABASE: sonarr.db
     volumes:
       - ./runtime_conf/sonarr:/data
+  
+  plex_edit:
+    image: coleifer/sqlite-web
+    container_name: plex-edit
+    ports:
+      - "8084:8080"
+    labels:
+      - proxy.hosts=plex-edit.${domain},plex-edit.local.${domain},plex-edit.public.${domain}
+      - proxy.port=8084
+    environment:
+      SQLITE_DATABASE: com.plexapp.plugins.library.db
+    volumes:
+      - "./runtime_conf/plex/Library/Application Support/Plex Media Server/Plug-in Support/Databases:/data"
