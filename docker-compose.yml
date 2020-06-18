@@ -63,7 +63,7 @@ services:
       - proxy.port=5076
 
   radarr:
-    image: linuxserver/radarr
+    image: makeshift27015/radarr
     restart: unless-stopped
     network_mode: "host"
     depends_on:
@@ -82,7 +82,7 @@ services:
       - proxy.port=7878
 
   sonarr:
-    image: linuxserver/sonarr:preview
+    image: makeshift27015/sonarr
     restart: unless-stopped
     network_mode: "host"
     depends_on:
@@ -234,3 +234,10 @@ services:
       - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
       - proxy.port=6767
     restart: unless-stopped
+
+  jackett:
+    image: linuxserver/jackett
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      
