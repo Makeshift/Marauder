@@ -240,4 +240,25 @@ services:
     network_mode: "host"
     environment:
       TZ: "Europe/London"
-      
+    volumes:
+      - ./runtime_conf/jackett:/config
+    labels:
+      - proxy.hosts=jackett.${domain},jackett.local.${domain},jackett.public.${domain}
+      - proxy.port=9117
+    restart: unless-stopped
+  
+  transmission:
+    image: linuxserver/transmission
+    network_mode: "host"
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK_SET: 000
+    volumes:
+      - ./runtime_conf/transmission:/config
+      - ./shared/:/shared:rshared
+    labels:
+      - proxy.hosts=transmission.${domain},transmission.local.${domain},transmission.public.${domain}
+      - proxy.port=9091
+    restart: unless-stopped
