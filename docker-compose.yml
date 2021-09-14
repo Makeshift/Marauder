@@ -20,6 +20,7 @@ services:
         --uid 65534                                  \
         --gid 65534                                  \
         -v                                           \
+        --timeout 1h                                 \
         --checkers 12                                \
         --buffer-size 16M                            \
         --transfers 12                               \
@@ -40,6 +41,12 @@ services:
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5572                       \
         --drive-service-account-file /service_accounts/rclone_mount_download.json \
+        --rc-user admin                              \
+        --rc-pass admin                              \
+        --rc-web-gui                                 \
+        --rc-serve                                   \
+        --rc-enable-metrics                          \
+        --rc-web-gui-no-open-browser                 \
         --rc"
     env_file:
       - ./rclone.env
@@ -76,7 +83,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     labels:
       - proxy.hosts=radarr.${domain},radarr.local.${domain},radarr.public.${domain}
       - proxy.port=7878
@@ -95,7 +102,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     labels:
       - proxy.hosts=sonarr.${domain},sonarr.local.${domain},sonarr.public.${domain}
       - proxy.port=8989
@@ -111,7 +118,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     depends_on:
       - rclone
     labels:
@@ -130,7 +137,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
       RUNNOW: "yes"
     depends_on:
       - radarr
@@ -146,7 +153,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     depends_on:
       - rclone
     labels:
@@ -165,7 +172,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     volumes:
       - ./runtime_conf/headphones:/config
       - ./shared/:/shared:rshared
@@ -184,7 +191,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     depends_on:
       - rclone
     volumes:
@@ -203,7 +210,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     depends_on:
       - rclone
     volumes:
@@ -222,7 +229,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     depends_on:
       - radarr
       - sonarr
@@ -254,7 +261,7 @@ services:
       TZ: "Europe/London"
       PUID: 65534
       PGID: 65534
-      UMASK_SET: 000
+      UMASK: 000
     volumes:
       - ./runtime_conf/transmission:/config
       - ./shared/:/shared:rshared

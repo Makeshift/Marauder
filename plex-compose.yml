@@ -23,6 +23,7 @@ services:
         --uid 65534                                  \
         --gid 65534                                  \
         -v                                           \
+        --timeout 1h                                 \
         --checkers 32                                \
         --buffer-size 256M                           \
         --transfers 16                               \
@@ -43,6 +44,12 @@ services:
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5573                       \
         --drive-service-account-file /service_accounts/rclone_mount_plex.json \
+        --rc-user admin                              \
+        --rc-pass admin                              \
+        --rc-web-gui                                 \
+        --rc-serve                                   \
+        --rc-enable-metrics                          \
+        --rc-web-gui-no-open-browser                 \
         --rc"
     cap_add:
       - SYS_ADMIN
