@@ -89,7 +89,7 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 - [x] LazyLibrarian
 - [x] Mylar
 - [x] Bazarr
-- [ ] Transmission
+- [x] Transmission
 - [ ] Jackett
 - [x] Plex
 - [ ] Tautulli
@@ -122,6 +122,10 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 - [ ] Transmission
 - [ ] Jackett
 - [ ] Plex
-- [ ] Advanced Plex
+- [x] Advanced Plex
 - [ ] Tautulli
 - [ ] Ombi
+
+### Extras:
+
+- [ ] Intelligently handle torrents and clean up stuff that isn't downloading properly
