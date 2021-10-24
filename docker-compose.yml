@@ -20,7 +20,7 @@ services:
         --uid 65534                                  \
         --gid 65534                                  \
         -v                                           \
-        --timeout 1h                                 \
+	      --timeout 1h				                         \
         --checkers 12                                \
         --buffer-size 16M                            \
         --transfers 12                               \
@@ -41,12 +41,9 @@ services:
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5572                       \
         --drive-service-account-file /service_accounts/rclone_mount_download.json \
-        --rc-user admin                              \
-        --rc-pass admin                              \
-        --rc-web-gui                                 \
-        --rc-serve                                   \
-        --rc-enable-metrics                          \
-        --rc-web-gui-no-open-browser                 \
+	--rc-user admin \
+	--rc-pass admin \
+        --rc-enable-metrics \
         --rc"
     env_file:
       - ./rclone.env
@@ -269,3 +266,11 @@ services:
       - proxy.hosts=transmission.${domain},transmission.local.${domain},transmission.public.${domain}
       - proxy.port=9091
     restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/docker/daemon.json:/etc/docker/daemon.json
+    command: --cleanup --interval 21600
