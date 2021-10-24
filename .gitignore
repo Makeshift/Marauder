@@ -4,6 +4,7 @@ telegram-sonarr-bot/
 traktarr.json
 runtime_conf/
 shared/
+shared_plex/
 rclone.env
 *.tar.gz
 service_accounts/*.json

@@ -9,6 +9,7 @@ acknowledge_abuse = true
 pacer_min_sleep = 1ms
 pacer_burst = 5000
 team_drive = ${rclone_team_drive_id}
+service_account_file = /service_accounts/rclone_default.json
 
 [gcache_${count}]
 type = cache

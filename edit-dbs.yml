@@ -1,6 +1,6 @@
 version: '3.4'
 services:
-  radarr_edit:
+  radarr:
     image: coleifer/sqlite-web
     container_name: radarr-edit
     ports:
@@ -13,7 +13,7 @@ services:
     volumes:
       - ./runtime_conf/radarr:/data
 
-  sonarr_edit:
+  sonarr:
     image: coleifer/sqlite-web
     container_name: sonarr-edit
     ports:
@@ -25,8 +25,8 @@ services:
       SQLITE_DATABASE: sonarr.db
     volumes:
       - ./runtime_conf/sonarr:/data
-  
-  plex_edit:
+
+  plex:
     image: coleifer/sqlite-web
     container_name: plex-edit
     ports:
