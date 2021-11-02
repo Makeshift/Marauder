@@ -10,7 +10,7 @@ services:
       - "/dev/fuse:/dev/fuse"
     environment:
       ItemsPerUpload: 100
-      MaxGbPerUpload: 25
+      MaxGbPerUpload: 250
       CacheSizePerMountGb: 10
       MountCommands: "                               \
         --fast-list                                  \
@@ -41,8 +41,8 @@ services:
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5572                       \
         --drive-service-account-file /service_accounts/rclone_mount_download.json \
-	--rc-user admin \
-	--rc-pass admin \
+	      --rc-user admin \
+	      --rc-pass admin \
         --rc-enable-metrics \
         --rc"
     env_file:
@@ -53,6 +53,10 @@ services:
       - ./rclone_conf:/rclone_conf:ro
       - ./shared/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+    deploy:
+      replicas: ${rclone_enabled:-1}
 
   nzbhydra:
     image: hotio/nzbhydra2
@@ -65,6 +69,8 @@ services:
     labels:
       - proxy.hosts=nzbhydra.${domain},nzbhydra.local.${domain},nzbhydra.public.${domain}
       - proxy.port=5076
+    deploy:
+      replicas: ${nzbhydra_enabled:-1}
 
   radarr:
     image: makeshift27015/radarr
@@ -84,6 +90,8 @@ services:
     labels:
       - proxy.hosts=radarr.${domain},radarr.local.${domain},radarr.public.${domain}
       - proxy.port=7878
+    deploy:
+      replicas: ${radarr_enabled:-1}
 
   sonarr:
     image: makeshift27015/sonarr
@@ -103,14 +111,16 @@ services:
     labels:
       - proxy.hosts=sonarr.${domain},sonarr.local.${domain},sonarr.public.${domain}
       - proxy.port=8989
+    deploy:
+      replicas: ${sonarr_enabled:-1}
 
   sabnzbd:
     image: linuxserver/sabnzbd
     network_mode: "host"
-    # deploy:
-    #   resources:
-    #     limits:
-    #       cpus: '12'
+    deploy:
+      resources:
+        limits:
+          cpus: '12'
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -126,6 +136,8 @@ services:
       - ./shared/separate/downloads/sabnzbd:/shared/merged/downloads/sabnzbd:rshared
       - ./scripts:/scripts
     restart: unless-stopped
+    deploy:
+      replicas: ${sabnzbd_enabled:-1}
 
   traktarr:
     image: makeshift27015/traktarr
@@ -142,6 +154,8 @@ services:
     volumes:
       - ./traktarr.json:/config/config.json
     restart: unless-stopped
+    deploy:
+      replicas: ${traktarr_enabled:-1}
 
   medusa:
     image: linuxserver/medusa
@@ -161,6 +175,8 @@ services:
       - ./runtime_conf/medusa:/config
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
+    deploy:
+      replicas: ${medusa_enabled:-1}
 
   headphones:
     image: linuxserver/headphones
@@ -180,6 +196,8 @@ services:
       - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
       - proxy.port=8181
     restart: unless-stopped
+    deploy:
+      replicas: ${headphones_enabled:-1}
 
   lazylibrarian:
     image: linuxserver/lazylibrarian
@@ -199,6 +217,8 @@ services:
       - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
       - proxy.port=5299
     restart: unless-stopped
+    deploy:
+      replicas: ${lazylibrarian_enabled:-1}
 
   mylar:
     image: linuxserver/mylar
@@ -218,6 +238,8 @@ services:
       - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
       - proxy.port=8090
     restart: unless-stopped
+    deploy:
+      replicas: ${mylar_enabled:-1}
 
   bazarr:
     image: makeshift27015/bazarr
@@ -238,6 +260,8 @@ services:
       - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
       - proxy.port=6767
     restart: unless-stopped
+    deploy:
+      replicas: ${bazarr_enabled:-1}
 
   jackett:
     image: linuxserver/jackett
@@ -250,6 +274,8 @@ services:
       - proxy.hosts=jackett.${domain},jackett.local.${domain},jackett.public.${domain}
       - proxy.port=9117
     restart: unless-stopped
+    deploy:
+      replicas: ${jackett_enabled:-1}
   
   transmission:
     image: linuxserver/transmission
@@ -266,6 +292,8 @@ services:
       - proxy.hosts=transmission.${domain},transmission.local.${domain},transmission.public.${domain}
       - proxy.port=9091
     restart: unless-stopped
+    deploy:
+      replicas: ${transmission_enabled:-1}
 
   watchtower:
     image: containrrr/watchtower
@@ -274,3 +302,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - /etc/docker/daemon.json:/etc/docker/daemon.json
     command: --cleanup --interval 21600
+    deploy:
+      replicas: ${watchtower_enabled:-1}

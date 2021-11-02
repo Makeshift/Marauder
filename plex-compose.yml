@@ -51,6 +51,8 @@ services:
       - ./rclone_conf:/rclone_conf:ro
       - ./shared_plex/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
+    deploy:
+      replicas: ${rclone_enabled:-1}
 
   plex:
     image: plexinc/pms-docker:plexpass
@@ -73,3 +75,5 @@ services:
       ${plex_domain}: 127.0.0.1
     depends_on:
       - rclone_plex
+    deploy:
+      replicas: ${plex_enabled:-1}

@@ -44,11 +44,7 @@ For disk space, you need space to store incomplete downloads and cache them befo
 
 **Q: How do I disable some of the services I don't want/need?**
 
-**A:** The easiest way would probably choose the services you want when you're starting the stack. Some of them have dependants, so if you choose `sonarr` you will get `rclone` by default as well, but you can customise which ones you want:
-```bash
-docker compose up -d sonarr radarr headphones transmission
-```
-Alternatively, you can also just comment out the services you don't want in the `docker-compose.yml` file. This may be a more convenient solution for some.
+**A:** You can edit the `.env` file (after you've made a copy of `.env.template`) and disable any service by changing it from a `1` to a `0`. eg to disable LazyLibrarian, you could add `lazylibrarian_enabled=0`.
 
 **Q: There are some extra settings in the service interface that you don't mention! What do I do?!**
 
