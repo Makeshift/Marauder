@@ -11,7 +11,6 @@ services:
     env_file:
       - ./rclone.env
     environment:
-        CacheSizePerMountGb: 25
         ItemsPerUpload: 16
         MountPoint: "/shared/plex"
         CacheFolderSuffix: "_plex"
@@ -51,6 +50,8 @@ services:
       - ./rclone_conf:/rclone_conf:ro
       - ./shared_plex/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: false
     deploy:
       replicas: ${rclone_enabled:-1}
 
