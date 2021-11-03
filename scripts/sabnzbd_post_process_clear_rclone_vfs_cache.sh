@@ -9,7 +9,7 @@ FOLDER=${FULL_FOLDER#/shared/merged/}
 
 echo "Telling Rclone @ ${HOST}:${PORT} to refresh directory ${FOLDER}"
 
-curl -fs -X POST "admin:admin@${HOST}:${PORT}/vfs/refresh?dir=${FOLDER}"
+curl -fs -X POST "admin:admin@${HOST}:${PORT}/vfs/refresh?dir=${FOLDER}&recursive=true"
 
 sleep 30
 
