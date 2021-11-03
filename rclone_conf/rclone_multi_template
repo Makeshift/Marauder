@@ -11,16 +11,6 @@ pacer_burst = 5000
 team_drive = ${rclone_team_drive_id}
 service_account_file = /service_accounts/rclone_default.json
 
-[gcache_${count}]
-type = cache
-info_age = 8700h
-chunk_total_size = ${CacheSizePerMountGb}G
-remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
-workers = 12
-tmp_upload_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/tmp_upload_path/
-db_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/db_path/
-chunk_path = /shared/caches/gcache_${count}${CacheFolderSuffix}/chunk_path/
-
 [gdrive_upload_crypt_${count}]
 type = crypt
 remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
@@ -31,7 +21,7 @@ password2 = ${rclone_encryption_password2}
 
 [gdrive_mount_crypt_${count}]
 type = crypt
-remote = gcache_${count}:/
+remote = gdrive_${count}:/${rclone_gdrive_mount_folder}
 filename_encryption = standard
 directory_name_encryption = true
 password = ${rclone_encryption_password1}
