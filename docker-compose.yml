@@ -59,7 +59,7 @@ services:
       replicas: ${rclone_enabled:-1}
 
   nzbhydra:
-    image: hotio/nzbhydra2
+    image: makeshift27015/nzbhydra2
     restart: unless-stopped
     network_mode: "host"
     volumes:
@@ -115,7 +115,7 @@ services:
       replicas: ${sonarr_enabled:-1}
 
   sabnzbd:
-    image: linuxserver/sabnzbd
+    image: makeshift27015/sabnzbd
     network_mode: "host"
     deploy:
       resources:
@@ -158,7 +158,7 @@ services:
       replicas: ${traktarr_enabled:-1}
 
   medusa:
-    image: linuxserver/medusa
+    image: makeshift27015/medusa
     network_mode: "host"
     environment:
       TZ: "Europe/London"
@@ -179,7 +179,7 @@ services:
       replicas: ${medusa_enabled:-1}
 
   headphones:
-    image: linuxserver/headphones
+    image: makeshift27015/headphones
     network_mode: "host"
     environment:
       TZ: "Europe/London"
@@ -200,7 +200,7 @@ services:
       replicas: ${headphones_enabled:-1}
 
   lazylibrarian:
-    image: linuxserver/lazylibrarian
+    image: makeshift27015/lazylibrarian
     network_mode: "host"
     environment:
       TZ: "Europe/London"
@@ -221,7 +221,7 @@ services:
       replicas: ${lazylibrarian_enabled:-1}
 
   mylar:
-    image: linuxserver/mylar
+    image: makeshift27015/mylar
     network_mode: "host"
     environment:
       TZ: "Europe/London"
@@ -278,7 +278,7 @@ services:
       replicas: ${jackett_enabled:-1}
   
   transmission:
-    image: linuxserver/transmission
+    image: makeshift27015/transmission
     network_mode: "host"
     environment:
       TZ: "Europe/London"
@@ -287,7 +287,7 @@ services:
       UMASK: 000
     volumes:
       - ./runtime_conf/transmission:/config
-      - ./shared/:/shared:rshared
+      - ./shared/separate/downloads/transmission:/shared/merged/downloads/transmission:rshared
     labels:
       - proxy.hosts=transmission.${domain},transmission.local.${domain},transmission.public.${domain}
       - proxy.port=9091
