@@ -32,11 +32,12 @@ This setup has one gigantic shared folder named `shared`. It's set up with Rclon
 ## FAQ
 
 **Q: How much RAM/CPU/Disk space do I need?**
+
 **A:** This is hard to say. I have 32gb on my VM, but I also have a much larger collection than most so Rclone uses a lot of RAM. Rclone has fairly high limits in its current setup so may run out of memory on machines with less than 16gb - I may include some options to reduce that if needed.
 
-In terms of CPU, it depends on how much you're downloading and whether you're using usenet or torrenting. I wouldn't advise using a Pi 1 for it, but it might run okay on a Pi 4 if you're only downloading a couple films a week or something.
+In terms of CPU, it depends on how much you're downloading and whether you're using usenet or torrenting. I wouldn't advise using a Pi 1 for it, but it might run okay on a Pi 4 if you're only downloading a couple films a day or something.
 
-For disk space, you need space to store incomplete downloads and cache them before they're downloaded, so it depends on what you're downloading.
+For disk space, you need space to store incomplete downloads and cache them before they're downloaded, so it depends on what you're downloading. I personally run the entire setup on two raid 0 SSDs for high disk speeds, since essentially they're just caches before uploading.
 
 **Q: Why are most of the containers on the host network?**
 
@@ -50,9 +51,15 @@ For disk space, you need space to store incomplete downloads and cache them befo
 
 **A:** That's intentional. The defaults for whatever I don't mention are usually fine. If I included all of the config options, it would take too long to configure.
 
-**Q: Why is there a custom version of Traktarr/Bazarr?**
+**Q: Why is there a custom container for most services?**
 
-**A:** Traktarr/Bazarr times out listing movies/TV after 30/60 seconds. I edit it so it times out after 5 minutes instead. My library is big, and the Sonarr/Radarr APIs lag like crazy when they're doing _anything_.
+**A:** 
+
+- Traktarr/Bazarr times out listing movies/TV after 30/60 seconds. I edit it so it times out after 5 minutes instead, as sometimes Sonarr/Radarr's APIs can lag.
+- I symlink Sonarr/Radarr's logs to stdout, to make it easier to view their logs
+- The rest of the services contain healthcheck scripts that check that the mount is active, and the web UI is up.
+
+You can see the containers in [Makeshift/Marauder-Containers](https://github.com/Makeshift/Marauder-Containers/).
 
 **Q: Why Plex as opposed to Emby/Jellyfin/Serviio/Whatever?**
 
@@ -70,7 +77,7 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 ### Major
 
 - [x] Usenet support
-- [ ] Torrent support
+- [ ] Torrent support (60%)
 
 ### Services:
 
@@ -86,7 +93,7 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 - [x] Mylar
 - [x] Bazarr
 - [x] Transmission
-- [ ] Jackett
+- [x] Jackett
 - [x] Plex
 - [ ] Tautulli
 - [ ] Ombi
@@ -115,13 +122,13 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 - [ ] Radarr Telegram Bot
 - [ ] Sonarr Telegram Bot
 - [x] Backing Up
-- [ ] Transmission
-- [ ] Jackett
-- [ ] Plex
+- [x] Transmission
+- [x] Jackett
+- [ ] Plex (Needs recommended settings for transcoding etc)
 - [x] Advanced Plex
 - [ ] Tautulli
 - [ ] Ombi
 
 ### Extras:
 
-- [ ] Intelligently handle torrents and clean up stuff that isn't downloading properly
+- [ ] Intelligently handle torrents and clean up stuff that isn't downloading properly 
