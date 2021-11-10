@@ -1,5 +1,6 @@
 #!/bin/bash
-COMMAND="docker run -it -v $(pwd)/service_accounts:/mnt -v $(pwd)/runtime_conf/gdrive_init/gcloud:/root/.config/gcloud"
+mkdir -p "$(pwd)/service_accounts" "$(pwd)/runtime_conf/gdrive_init/gcloud"
+COMMAND="docker run -it -v \"$(pwd)/service_accounts:/mnt\" -v \"$(pwd)/runtime_conf/gdrive_init/gcloud:/root/.config/gcloud\""
 # You can export the below variables in your shell to pass them to the container to override options
 ENV_VARS=("PROJECT_NAME" "PROJECT_NAME_PREFIX" "EXPORT_LOCATION" "NUM_OF_SA" "SA_EMAIL_PREFIX" "GROUP_EMAIL")
 
