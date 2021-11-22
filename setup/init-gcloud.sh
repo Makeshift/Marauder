@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [[ ! -f "docker-compose.yml" ]]; then
+  echo "This script should be ran from the root Marauder directory, where the docker-compose.yml lives. Change directory to there and run: setup/init-gcloud.sh"
+  exit 1
+fi
+
 mkdir -p "$(pwd)/service_accounts" "$(pwd)/runtime_conf/gdrive_init/gcloud"
 COMMAND="docker run -it -v "$(pwd)/service_accounts:/mnt" -v "$(pwd)/runtime_conf/gdrive_init/gcloud:/root/.config/gcloud""
 # You can export the below variables in your shell to pass them to the container to override options
