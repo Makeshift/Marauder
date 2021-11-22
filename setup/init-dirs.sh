@@ -1,5 +1,6 @@
 #!/bin/bash
 
+compose_files=(docker-compose.yml plex-compose.yml)
 compose_search_dirs="/shared/\|/runtime_conf/\|/shared_plex/\|/service_accounts/"
 
 if [[ ! -f "docker-compose.yml" ]]; then
@@ -16,7 +17,7 @@ function make_dirs_from_compose_file() {
   done <<< "$filtered_mounts"
 }
 
-for compose_file in *.yml; do
+for compose_file in "${compose_files[@]}"; do
   echo "Processing file $compose_file"
   make_dirs_from_compose_file "$compose_file"
 done
