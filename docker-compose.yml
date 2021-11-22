@@ -51,8 +51,8 @@ services:
       - SYS_ADMIN
     volumes:
       - ./rclone_conf:/rclone_conf:ro
-      - ./shared/:/shared/:rshared
-      - ./service_accounts/:/service_accounts/:ro
+      - ./shared:/shared:rshared
+      - ./service_accounts:/service_accounts:ro
     labels:
       com.centurylinklabs.watchtower.enable: false
     deploy:
@@ -81,7 +81,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./runtime_conf/radarr:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -102,7 +102,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./runtime_conf/sonarr:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
     environment:
       TZ: "Europe/London"
       PUID: 65534
@@ -173,7 +173,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./runtime_conf/medusa:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     deploy:
       replicas: ${medusa_enabled:-1}
@@ -188,7 +188,7 @@ services:
       UMASK: 000
     volumes:
       - ./runtime_conf/headphones:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     depends_on:
       - rclone
@@ -211,7 +211,7 @@ services:
       - rclone
     volumes:
       - ./runtime_conf/lazylibrarian:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
       - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
@@ -232,7 +232,7 @@ services:
       - rclone
     volumes:
       - ./runtime_conf/mylar:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
       - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
@@ -254,7 +254,7 @@ services:
       - sonarr
     volumes:
       - ./runtime_conf/bazarr:/config
-      - ./shared/:/shared:rshared
+      - ./shared:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
       - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}

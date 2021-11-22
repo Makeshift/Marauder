@@ -48,8 +48,8 @@ services:
       - SYS_ADMIN
     volumes:
       - ./rclone_conf:/rclone_conf:ro
-      - ./shared_plex/:/shared/:rshared
-      - ./service_accounts/:/service_accounts/:ro
+      - ./shared_plex:/shared:rshared
+      - ./service_accounts:/service_accounts:ro
     labels:
       com.centurylinklabs.watchtower.enable: false
     deploy:
@@ -68,10 +68,10 @@ services:
       - proxy.port=32400
       - proxy.template=/plex.vhost
     volumes:
-      - ./runtime_conf/plex/:/config/
+      - ./runtime_conf/plex:/config/
       - ./runtime_conf/plex/Profiles:/usr/lib/plexmediaserver/Resources/Profiles/
-      - ./shared_plex/:/shared/:rshared
-      - ./runtime_conf/plex/transcode/:/transcode/
+      - ./shared_plex:/shared:rshared
+      - ./runtime_conf/plex/transcode:/transcode/
     extra_hosts:
       ${plex_domain}: 127.0.0.1
     depends_on:
