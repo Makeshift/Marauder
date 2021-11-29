@@ -9,11 +9,10 @@ services:
     devices:
       - "/dev/fuse:/dev/fuse"
     environment:
-      ItemsPerUpload: 100
+      ItemsPerUpload: 5000
       MaxGbPerUpload: 250
       CacheSizePerMountGb: 10
       MountCommands: "                               \
-        --fast-list                                  \
         --allow-other                                \
         --allow-non-empty                            \
         --umask 000                                  \
@@ -26,21 +25,20 @@ services:
         --transfers 12                               \
         --use-mmap                                   \
         --vfs-cache-mode writes                      \
-        --poll-interval 120s                         \
-        --attr-timeout 8700h                         \
-        --dir-cache-time 8760h                       \
+        --poll-interval 10m                         \
+        --attr-timeout 10m                         \
+        --dir-cache-time 20s                       \
         --vfs-read-chunk-size 1M                     \
         --vfs-read-chunk-size-limit 4G               \
-        --vfs-cache-poll-interval 20m                \
-        --vfs-cache-max-age 168h                     \
-        --vfs-cache-max-size 50G                     \
+        --vfs-cache-poll-interval 20s                \
+        --vfs-cache-max-age 1h                     \
+        --vfs-cache-max-size 100G                     \
         --cache-dir=/shared/caches/rclone_vfs/       \
         --low-level-retries 3                        \
         --multi-thread-cutoff 25M                    \
         --multi-thread-streams 8                     \
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5572                       \
-        --drive-service-account-file /service_accounts/rclone_mount_download.json \
 	      --rc-user admin \
 	      --rc-pass admin \
         --rc-enable-metrics \
@@ -304,3 +302,25 @@ services:
     command: --cleanup --interval 21600
     deploy:
       replicas: ${watchtower_enabled:-1}
+
+  unmanic:
+    image: makeshift27015/unmanic
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - rclone
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./runtime_conf/unmanic:/config
+      - ./shared/caches/unmanic:/tmp/unmanic
+      - ./shared/:/shared:rshared
+    environment:
+      TZ: "Europe/London"
+      PUID: 65534
+      PGID: 65534
+      UMASK: 000
+    labels:
+      - proxy.hosts=unmanic.${domain},unmanic.local.${domain},unmanic.public.${domain}
+      - proxy.port=8888
+    deploy:
+      replicas: ${unmanic_enabled:-1}
