@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   rclone:
-    image: makeshift27015/rclone
+    image: makeshift27015/rclone:${tag:-latest}
     restart: unless-stopped
     network_mode: "host"
     security_opt:
@@ -16,8 +16,8 @@ services:
         --allow-other                                \
         --allow-non-empty                            \
         --umask 000                                  \
-        --uid 65534                                  \
-        --gid 65534                                  \
+        --uid ${uid:-65534}                                  \
+        --gid ${gid:-65534}                                  \
         -v                                           \
 	      --timeout 1h				                         \
         --checkers 12                                \
@@ -33,6 +33,10 @@ services:
         --vfs-cache-poll-interval 20s                \
         --vfs-cache-max-age 1h                     \
         --vfs-cache-max-size 100G                     \
+        --stats 1m \
+        --stats-one-line \
+        --stats-log-level NOTICE \
+        -P \
         --cache-dir=/shared/caches/rclone_vfs/       \
         --low-level-retries 3                        \
         --multi-thread-cutoff 25M                    \
@@ -51,13 +55,14 @@ services:
       - ./rclone_conf:/rclone_conf:ro
       - ./shared/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
+      - ./logs:/logs
     labels:
-      com.centurylinklabs.watchtower.enable: false
+      com.centurylinklabs.watchtower.enable: ${autoupdate_rclone:-false}
     deploy:
       replicas: ${rclone_enabled:-1}
 
   nzbhydra:
-    image: makeshift27015/nzbhydra2
+    image: makeshift27015/nzbhydra2:${tag:-latest}
     restart: unless-stopped
     network_mode: "host"
     volumes:
@@ -65,13 +70,14 @@ services:
     environment:
       - TZ=Etc/UTC
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_nzbhydra:-true}
       - proxy.hosts=nzbhydra.${domain},nzbhydra.local.${domain},nzbhydra.public.${domain}
       - proxy.port=5076
     deploy:
       replicas: ${nzbhydra_enabled:-1}
 
   radarr:
-    image: makeshift27015/radarr
+    image: makeshift27015/radarr:${tag:-latest}
     restart: unless-stopped
     network_mode: "host"
     depends_on:
@@ -81,18 +87,20 @@ services:
       - ./runtime_conf/radarr:/config
       - ./shared/:/shared:rshared
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
+      DO_AUTO_MANUAL_IMPORT: ${do_auto_manual_import_radarr:-false}
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_radarr:-true}
       - proxy.hosts=radarr.${domain},radarr.local.${domain},radarr.public.${domain}
       - proxy.port=7878
     deploy:
       replicas: ${radarr_enabled:-1}
 
   sonarr:
-    image: makeshift27015/sonarr
+    image: makeshift27015/sonarr:${tag:-latest}
     restart: unless-stopped
     network_mode: "host"
     depends_on:
@@ -102,31 +110,34 @@ services:
       - ./runtime_conf/sonarr:/config
       - ./shared/:/shared:rshared
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
+      DO_AUTO_MANUAL_IMPORT: ${do_auto_manual_import_sonarr:-false}
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_sonarr:-true}
       - proxy.hosts=sonarr.${domain},sonarr.local.${domain},sonarr.public.${domain}
       - proxy.port=8989
     deploy:
       replicas: ${sonarr_enabled:-1}
 
   sabnzbd:
-    image: makeshift27015/sabnzbd
+    image: makeshift27015/sabnzbd:${tag:-latest}
     network_mode: "host"
     deploy:
       resources:
         limits:
           cpus: '12'
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     depends_on:
       - rclone
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_sabnzbd:-true}
       - proxy.hosts=sabnzbd.${domain},sabnzbd.local.${domain},sabnzbd.public.${domain}
       - proxy.port=8080
     volumes:
@@ -138,12 +149,12 @@ services:
       replicas: ${sabnzbd_enabled:-1}
 
   traktarr:
-    image: makeshift27015/traktarr
+    image: makeshift27015/traktarr:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
       RUNNOW: "yes"
     depends_on:
@@ -156,16 +167,17 @@ services:
       replicas: ${traktarr_enabled:-1}
 
   medusa:
-    image: makeshift27015/medusa
+    image: makeshift27015/medusa:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     depends_on:
       - rclone
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_medusa:-true}
       - proxy.hosts=medusa.${domain},medusa.local.${domain},medusa.public.${domain}
       - proxy.port=8081
     restart: unless-stopped
@@ -177,12 +189,12 @@ services:
       replicas: ${medusa_enabled:-1}
 
   headphones:
-    image: makeshift27015/headphones
+    image: makeshift27015/headphones:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     volumes:
       - ./runtime_conf/headphones:/config
@@ -191,6 +203,7 @@ services:
     depends_on:
       - rclone
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_headphones:-true}
       - proxy.hosts=headphones.${domain},headphones.local.${domain},headphones.public.${domain}
       - proxy.port=8181
     restart: unless-stopped
@@ -198,12 +211,12 @@ services:
       replicas: ${headphones_enabled:-1}
 
   lazylibrarian:
-    image: makeshift27015/lazylibrarian
+    image: makeshift27015/lazylibrarian:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     depends_on:
       - rclone
@@ -212,6 +225,7 @@ services:
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_lazylibrarian:-true}
       - proxy.hosts=lazylibrarian.${domain},lazylibrarian.local.${domain},lazylibrarian.public.${domain}
       - proxy.port=5299
     restart: unless-stopped
@@ -219,12 +233,12 @@ services:
       replicas: ${lazylibrarian_enabled:-1}
 
   mylar:
-    image: makeshift27015/mylar
+    image: makeshift27015/mylar:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     depends_on:
       - rclone
@@ -233,6 +247,7 @@ services:
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_mylar:-true}
       - proxy.hosts=mylar.${domain},mylar.local.${domain},mylar.public.${domain}
       - proxy.port=8090
     restart: unless-stopped
@@ -240,12 +255,12 @@ services:
       replicas: ${mylar_enabled:-1}
 
   bazarr:
-    image: makeshift27015/bazarr
+    image: makeshift27015/bazarr:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     depends_on:
       - radarr
@@ -255,6 +270,7 @@ services:
       - ./shared/:/shared:rshared
       - /etc/localtime:/etc/localtime:ro
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_bazarr:-true}
       - proxy.hosts=bazarr.${domain},bazarr.local.${domain},bazarr.public.${domain}
       - proxy.port=6767
     restart: unless-stopped
@@ -265,10 +281,11 @@ services:
     image: linuxserver/jackett
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
+      TZ: ${tz:-"Europe/London"}
     volumes:
       - ./runtime_conf/jackett:/config
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_jackett:-true}
       - proxy.hosts=jackett.${domain},jackett.local.${domain},jackett.public.${domain}
       - proxy.port=9117
     restart: unless-stopped
@@ -276,22 +293,46 @@ services:
       replicas: ${jackett_enabled:-1}
   
   transmission:
-    image: makeshift27015/transmission
+    image: makeshift27015/transmission:${tag:-latest}
     network_mode: "host"
     environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
       UMASK: 000
     volumes:
       - ./runtime_conf/transmission:/config
       - ./shared/separate/downloads/transmission:/shared/merged/downloads/transmission:rshared
     labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_transmission:-true}
       - proxy.hosts=transmission.${domain},transmission.local.${domain},transmission.public.${domain}
       - proxy.port=9091
     restart: unless-stopped
     deploy:
       replicas: ${transmission_enabled:-1}
+
+  unmanic:
+    image: makeshift27015/unmanic:${tag:-latest}
+    restart: unless-stopped
+    network_mode: "host"
+    depends_on:
+      - rclone
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./runtime_conf/unmanic:/config
+      - ./shared/:/shared:rshared
+    environment:
+      TZ: ${tz:-"Europe/London"}
+      PUID: ${uid:-65534}
+      PGID: ${gid:-65534}
+      UMASK: 000
+    labels:
+      - com.centurylinklabs.watchtower.enable=${autoupdate_unmanic:-false}
+      - proxy.hosts=unmanic.${domain},unmanic.local.${domain},unmanic.public.${domain}
+      - proxy.port=8888
+    deploy:
+      replicas: ${unmanic_enabled:-1}
+
 
   watchtower:
     image: containrrr/watchtower
@@ -302,25 +343,3 @@ services:
     command: --cleanup --interval 21600
     deploy:
       replicas: ${watchtower_enabled:-1}
-
-  unmanic:
-    image: makeshift27015/unmanic
-    restart: unless-stopped
-    network_mode: "host"
-    depends_on:
-      - rclone
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./runtime_conf/unmanic:/config
-      - ./shared/caches/unmanic:/tmp/unmanic
-      - ./shared/:/shared:rshared
-    environment:
-      TZ: "Europe/London"
-      PUID: 65534
-      PGID: 65534
-      UMASK: 000
-    labels:
-      - proxy.hosts=unmanic.${domain},unmanic.local.${domain},unmanic.public.${domain}
-      - proxy.port=8888
-    deploy:
-      replicas: ${unmanic_enabled:-1}

@@ -19,8 +19,8 @@ services:
         --allow-other                                \
         --allow-non-empty                            \
         --umask 000                                  \
-        --uid 65534                                  \
-        --gid 65534                                  \
+        --uid ${uid}                                  \
+        --gid ${gid}                                  \
         -v                                           \
         --checkers 32                                \
         --buffer-size 256M                           \
@@ -42,7 +42,6 @@ services:
         --no-update-modtime                          \
         --rc-addr=0.0.0.0:5573                       \
         --rc-no-auth \
-        --drive-service-account-file /service_accounts/rclone_mount_plex.json \
         --rc"
     cap_add:
       - SYS_ADMIN
@@ -51,7 +50,7 @@ services:
       - ./shared_plex/:/shared/:rshared
       - ./service_accounts/:/service_accounts/:ro
     labels:
-      com.centurylinklabs.watchtower.enable: false
+      com.centurylinklabs.watchtower.enable: ${autoupdate_rclone:-false}
     deploy:
       replicas: ${rclone_enabled:-1}
 
@@ -67,6 +66,7 @@ services:
       - proxy.hosts=plex.${domain},plex.local.${domain},plex.public.${domain}
       - proxy.port=32400
       - proxy.template=/plex.vhost
+      - com.centurylinklabs.watchtower.enable: ${autoupdate_plex:-false}
     volumes:
       - ./runtime_conf/plex/:/config/
       - ./runtime_conf/plex/Profiles:/usr/lib/plexmediaserver/Resources/Profiles/
