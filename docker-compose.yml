@@ -12,40 +12,40 @@ services:
       ItemsPerUpload: 5000
       MaxGbPerUpload: 250
       CacheSizePerMountGb: 10
-      MountCommands: "                               \
-        --allow-other                                \
-        --allow-non-empty                            \
-        --umask 000                                  \
-        --uid ${uid:-65534}                                  \
-        --gid ${gid:-65534}                                  \
-        -v                                           \
-	      --timeout 1h				                         \
-        --checkers 12                                \
-        --buffer-size 16M                            \
-        --transfers 12                               \
-        --use-mmap                                   \
-        --vfs-cache-mode writes                      \
-        --poll-interval 10m                         \
-        --attr-timeout 10m                         \
-        --dir-cache-time 20s                       \
-        --vfs-read-chunk-size 1M                     \
-        --vfs-read-chunk-size-limit 4G               \
-        --vfs-cache-poll-interval 20s                \
-        --vfs-cache-max-age 1h                     \
-        --vfs-cache-max-size 100G                     \
-        --stats 1m \
-        --stats-one-line \
-        --stats-log-level NOTICE \
-        -P \
-        --cache-dir=/shared/caches/rclone_vfs/       \
-        --low-level-retries 3                        \
-        --multi-thread-cutoff 25M                    \
-        --multi-thread-streams 8                     \
-        --no-update-modtime                          \
-        --rc-addr=0.0.0.0:5572                       \
-	      --rc-user admin \
-	      --rc-pass admin \
-        --rc-enable-metrics \
+      MountCommands: "                                             \
+        --allow-other                                              \
+        --allow-non-empty                                          \
+        --umask 000                                                \
+        --uid ${uid:-65534}                                        \
+        --gid ${gid:-65534}                                        \
+        -v                                                         \
+	      --timeout 1h				                                       \
+        --checkers 12                                              \
+        --buffer-size 16M                                          \
+        --transfers 12                                             \
+        --use-mmap                                                 \
+        --vfs-cache-mode ${rclone_download_vfs_cache_mode:-writes} \
+        --poll-interval 10m                                        \
+        --attr-timeout 10m                                         \
+        --dir-cache-time 20s                                       \
+        --vfs-read-chunk-size 1M                                   \
+        --vfs-read-chunk-size-limit 4G                             \
+        --vfs-cache-poll-interval 20s                              \
+        --vfs-cache-max-age 1h                                     \
+        --vfs-cache-max-size 100G                                  \
+        --stats 1m                                                 \
+        --stats-one-line                                           \
+        --stats-log-level NOTICE                                   \
+        -P                                                         \
+        --cache-dir=/shared/caches/rclone_vfs/                     \
+        --low-level-retries 3                                      \
+        --multi-thread-cutoff 25M                                  \
+        --multi-thread-streams 8                                   \
+        --no-update-modtime                                        \
+        --rc-addr=0.0.0.0:5572                                     \
+	      --rc-user admin                                            \
+	      --rc-pass admin                                            \
+        --rc-enable-metrics                                        \
         --rc"
     env_file:
       - ./rclone.env
