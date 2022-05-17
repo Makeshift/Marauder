@@ -311,28 +311,6 @@ services:
     deploy:
       replicas: ${transmission_enabled:-1}
 
-  unmanic:
-    image: makeshift27015/unmanic:${tag:-latest}
-    restart: unless-stopped
-    network_mode: "host"
-    depends_on:
-      - rclone
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ./runtime_conf/unmanic:/config
-      - ./shared/:/shared:rshared
-    environment:
-      TZ: ${tz:-"Europe/London"}
-      PUID: ${uid:-65534}
-      PGID: ${gid:-65534}
-      UMASK: 000
-    labels:
-      - com.centurylinklabs.watchtower.enable=${autoupdate_unmanic:-false}
-      - proxy.hosts=unmanic.${domain},unmanic.local.${domain},unmanic.public.${domain}
-      - proxy.port=8888
-    deploy:
-      replicas: ${unmanic_enabled:-1}
-
 
   watchtower:
     image: containrrr/watchtower
