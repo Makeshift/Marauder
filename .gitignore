@@ -9,3 +9,5 @@ rclone.env
 *.tar.gz
 service_accounts/*.json
 service_accounts/*.csv
+docker-compose.override.yml
+*.log
