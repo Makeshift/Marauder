@@ -28,10 +28,8 @@ services:
         --use-mmap                                           \
         --vfs-cache-mode ${rclone_plex_vfs_cache_mode:-full} \
         --poll-interval 120s                                 \
-        --attr-timeout 22h                                   \
+        --attr-timeout 30m                                   \
         --dir-cache-time 24h                                 \
-        --vfs-read-chunk-size 50M                            \
-        --vfs-read-chunk-size-limit 4G                       \
         --vfs-cache-poll-interval 20m                        \
         --vfs-cache-max-age 24h                              \
         --vfs-cache-max-size 256G                            \

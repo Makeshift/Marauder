@@ -57,7 +57,7 @@ services:
       - ./service_accounts:/service_accounts:ro
       - ./logs:/logs
     labels:
-      com.centurylinklabs.watchtower.enable=${autoupdate_rclone:-false}
+      - com.centurylinklabs.watchtower.enable=${autoupdate_rclone:-false}
     deploy:
       replicas: ${rclone_enabled:-1}
 
