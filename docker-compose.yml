@@ -9,6 +9,7 @@ services:
     devices:
       - "/dev/fuse:/dev/fuse"
     environment:
+      DEBUG: ${debug:-false}
       ItemsPerUpload: 5000
       MaxGbPerUpload: 250
       CacheSizePerMountGb: 10
@@ -68,7 +69,8 @@ services:
     volumes:
       - ./runtime_conf/nzbhydra:/config
     environment:
-      - TZ=Etc/UTC
+      TZ: Etc/UTC
+      DEBUG: ${debug:-false}
     labels:
       - com.centurylinklabs.watchtower.enable=${autoupdate_nzbhydra:-true}
       - proxy.hosts=nzbhydra.${domain},nzbhydra.local.${domain},nzbhydra.public.${domain}
@@ -87,6 +89,7 @@ services:
       - ./runtime_conf/radarr:/config
       - ./shared:/shared:rshared
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -110,6 +113,7 @@ services:
       - ./runtime_conf/sonarr:/config
       - ./shared:/shared:rshared
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -130,6 +134,7 @@ services:
         limits:
           cpus: '12'
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -152,6 +157,7 @@ services:
     image: makeshift27015/traktarr:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -170,6 +176,7 @@ services:
     image: makeshift27015/medusa:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -192,6 +199,7 @@ services:
     image: makeshift27015/headphones:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -214,6 +222,7 @@ services:
     image: makeshift27015/lazylibrarian:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -236,6 +245,7 @@ services:
     image: makeshift27015/mylar:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -258,6 +268,7 @@ services:
     image: makeshift27015/bazarr:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}
@@ -281,6 +292,7 @@ services:
     image: linuxserver/jackett
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
     volumes:
       - ./runtime_conf/jackett:/config
@@ -296,6 +308,7 @@ services:
     image: makeshift27015/transmission:${tag:-latest}
     network_mode: "host"
     environment:
+      DEBUG: ${debug:-false}
       TZ: ${tz:-"Europe/London"}
       PUID: ${uid:-65534}
       PGID: ${gid:-65534}

@@ -61,13 +61,14 @@ services:
     network_mode: "host"
     restart: unless-stopped
     environment:
-      - TZ=Europe/London
+      TZ: Europe/London
+      DEBUG: ${debug:-false}
     env_file:
       - ./plex.env
     labels:
       - proxy.hosts=plex.${domain},plex.local.${domain},plex.public.${domain}
       - proxy.port=32400
-      - proxy.template=/plex.vhost
+      - proxy.template=/templates/plex.vhost
       - com.centurylinklabs.watchtower.enable=${autoupdate_plex:-false}
     volumes:
       - ./runtime_conf/plex:/config
