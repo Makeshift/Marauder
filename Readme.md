@@ -1,6 +1,10 @@
+## Archived
+
+Google Drive no longer offers unlimited storage as part of their business tier, meaning that the value of this project has taken a nosedive. Due to this, I am no longer supporting this project and will be archiving the repository.
+
 # Marauder
 
-This is designed to be a fully dockerized Media downloading + Watching solution utilising Google Drive as an unlimited disk backend. 
+This is designed to be a fully dockerized Media downloading + Watching solution utilising Google Drive as an unlimited disk backend.
 
 ## Getting Started
 
@@ -53,7 +57,7 @@ For disk space, you need space to store incomplete downloads and cache them befo
 
 **Q: Why is there a custom container for most services?**
 
-**A:** 
+**A:**
 
 - Traktarr/Bazarr times out listing movies/TV after 30/60 seconds. I edit it so it times out after 5 minutes instead, as sometimes Sonarr/Radarr's APIs can lag.
 - I symlink Sonarr/Radarr's logs to stdout, to make it easier to view their logs
@@ -131,4 +135,4 @@ Pretty much all documentation has been moved to [the wiki](https://github.com/Ma
 
 ### Extras:
 
-- [ ] Intelligently handle torrents and clean up stuff that isn't downloading properly 
+- [ ] Intelligently handle torrents and clean up stuff that isn't downloading properly
